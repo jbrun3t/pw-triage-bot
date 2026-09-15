@@ -223,7 +223,7 @@ class PatchworkBot:
         self.no_hook = no_hook
         self.client = Client(config.patchwork, dry_run=dry_run)
 
-    def __enter__(self) -> PatchworkBot:
+    def __enter__(self) -> Self:
         with contextlib.ExitStack() as opening:
             self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
             opening.enter_context(self._database.bind_ctx(MODELS))

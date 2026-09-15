@@ -52,7 +52,7 @@ def fire(bot: PatchworkBot, section: Handling, series: Series) -> bool:
         path = Path(tmp) / "series.json"
         path.write_text(json.dumps(series.document(section.name), indent=2) + "\n")
         env = os.environ | {"PW_TRIAGE_BOT_JSON": str(path)}
-        status = subprocess.run(section.hook, shell=True, env=env).returncode
+        status = subprocess.run(section.hook, shell=True, env=env, check=False).returncode
 
     if status:
         click.echo(f"series #{series.id}: {section.name}.hook exited {status}", err=True)

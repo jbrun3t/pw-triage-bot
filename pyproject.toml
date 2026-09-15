@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "ruff~=0.16.0"]
 
 [project.scripts]
 pw-triage-bot = "pw_triage_bot.cli:main"

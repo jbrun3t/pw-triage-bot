@@ -15,8 +15,8 @@ Run all three before calling anything done, and have them clean:
 
 ```sh
 .venv/bin/pytest
-ruff check .
-ruff format .
+.venv/bin/ruff check .
+.venv/bin/ruff format .
 ```
 
 ## Patchwork
