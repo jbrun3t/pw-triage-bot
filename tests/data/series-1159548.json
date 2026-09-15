@@ -1,0 +1,45 @@
+{
+  "id": 1159548,
+  "url": "https://patchwork.kernel.org/api/1.3/series/1159548/",
+  "web_url": "https://patchwork.kernel.org/series/1159548/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "name": "[v5] dt-bindings: mailbox: qcom: Document Maili CPUCP mailbox controller",
+  "date": "2026-09-07T08:37:18",
+  "submitter": {
+    "id": 216784,
+    "url": "https://patchwork.kernel.org/api/1.3/people/216784/",
+    "name": "Taniya Das",
+    "email": "taniya.das@oss.qualcomm.com"
+  },
+  "version": 5,
+  "total": 1,
+  "received_total": 1,
+  "received_all": true,
+  "mbox": "https://patchwork.kernel.org/series/1159548/mbox/",
+  "cover_letter": null,
+  "patches": [
+    {
+      "id": 14795575,
+      "url": "https://patchwork.kernel.org/api/1.3/patches/14795575/",
+      "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com/",
+      "msgid": "<20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com>",
+      "list_archive_url": "https://lore.kernel.org/r/20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com",
+      "date": "2026-09-07T08:37:18",
+      "name": "[v5] dt-bindings: mailbox: qcom: Document Maili CPUCP mailbox controller",
+      "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com/mbox/"
+    }
+  ]
+}

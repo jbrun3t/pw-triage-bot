@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pw-triage-bot"
+version = "0.1.0"
+description = "Triage and housekeeping for a patchwork project"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = [
+    "click",
+    "pathspec",
+    "pydantic",
+    "peewee",
+    "pyyaml",
+    "requests",
+    "unidiff",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+pw-triage-bot = "pw_triage_bot.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pw_triage_bot"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["I", "UP", "B", "SIM", "RUF"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

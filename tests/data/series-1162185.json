@@ -1,0 +1,64 @@
+{
+  "id": 1162185,
+  "url": "https://patchwork.kernel.org/api/1.3/series/1162185/",
+  "web_url": "https://patchwork.kernel.org/series/1162185/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "name": "arm64: dts: imx93-kontron: Add support for Kontron i.MX93 DL",
+  "date": "2026-09-10T15:19:07",
+  "submitter": {
+    "id": 200875,
+    "url": "https://patchwork.kernel.org/api/1.3/people/200875/",
+    "name": "Frieder Schrempf",
+    "email": "frieder@fris.de"
+  },
+  "version": 1,
+  "total": 2,
+  "received_total": 2,
+  "received_all": true,
+  "mbox": "https://patchwork.kernel.org/series/1162185/mbox/",
+  "cover_letter": {
+    "id": 14149237,
+    "url": "https://patchwork.kernel.org/api/1.3/covers/14149237/",
+    "web_url": "https://patchwork.kernel.org/project/linux-clk/cover/20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de/",
+    "msgid": "<20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>",
+    "list_archive_url": "https://lore.kernel.org/r/20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de",
+    "date": "2026-09-10T15:19:05",
+    "name": "[0/2] arm64: dts: imx93-kontron: Add support for Kontron i.MX93 DL",
+    "mbox": "https://patchwork.kernel.org/project/linux-clk/cover/20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de/mbox/"
+  },
+  "patches": [
+    {
+      "id": 14805789,
+      "url": "https://patchwork.kernel.org/api/1.3/patches/14805789/",
+      "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260910-upstreaming-v7-3-imx93-displayline-v1-1-bb9446e6ed6e@kontron.de/",
+      "msgid": "<20260910-upstreaming-v7-3-imx93-displayline-v1-1-bb9446e6ed6e@kontron.de>",
+      "list_archive_url": "https://lore.kernel.org/r/20260910-upstreaming-v7-3-imx93-displayline-v1-1-bb9446e6ed6e@kontron.de",
+      "date": "2026-09-10T15:19:06",
+      "name": "[1/2] clk: imx: fracn-gppll: Add 350 MHz support",
+      "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260910-upstreaming-v7-3-imx93-displayline-v1-1-bb9446e6ed6e@kontron.de/mbox/"
+    },
+    {
+      "id": 14805788,
+      "url": "https://patchwork.kernel.org/api/1.3/patches/14805788/",
+      "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de/",
+      "msgid": "<20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de>",
+      "list_archive_url": "https://lore.kernel.org/r/20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de",
+      "date": "2026-09-10T15:19:07",
+      "name": "[2/2] arm64: dts: imx93-kontron: Add support for Kontron i.MX93 DL",
+      "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de/mbox/"
+    }
+  ]
+}

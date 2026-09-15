@@ -1,0 +1,45 @@
+{
+  "id": 1157898,
+  "url": "https://patchwork.kernel.org/api/1.3/series/1157898/",
+  "web_url": "https://patchwork.kernel.org/series/1157898/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "name": "clk: tegra: fix typos in comments",
+  "date": "2026-09-04T11:09:57",
+  "submitter": {
+    "id": 223150,
+    "url": "https://patchwork.kernel.org/api/1.3/people/223150/",
+    "name": "Hemanth Selam",
+    "email": "hemanth.selam@gmail.com"
+  },
+  "version": 1,
+  "total": 1,
+  "received_total": 1,
+  "received_all": true,
+  "mbox": "https://patchwork.kernel.org/series/1157898/mbox/",
+  "cover_letter": null,
+  "patches": [
+    {
+      "id": 14790504,
+      "url": "https://patchwork.kernel.org/api/1.3/patches/14790504/",
+      "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260904110959.21527-1-hemanth.selam@gmail.com/",
+      "msgid": "<20260904110959.21527-1-hemanth.selam@gmail.com>",
+      "list_archive_url": "https://lore.kernel.org/r/20260904110959.21527-1-hemanth.selam@gmail.com",
+      "date": "2026-09-04T11:09:57",
+      "name": "clk: tegra: fix typos in comments",
+      "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260904110959.21527-1-hemanth.selam@gmail.com/mbox/"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "id": 14811449,
+  "url": "https://patchwork.kernel.org/api/1.3/patches/14811449/",
+  "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260913125239.110113-1-bolin.liu@seu.edu.cn/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "msgid": "<20260913125239.110113-1-bolin.liu@seu.edu.cn>",
+  "list_archive_url": "https://lore.kernel.org/r/20260913125239.110113-1-bolin.liu@seu.edu.cn",
+  "date": "2026-09-13T12:52:39",
+  "name": "clk: x86: fch: validate registrations and manage their lifetime",
+  "commit_ref": null,
+  "pull_url": null,
+  "state": "new",
+  "archived": false,
+  "hash": "9df254dd8cd47d3e75d7aa985001ee6bb1eb99c5",
+  "submitter": {
+    "id": 224905,
+    "url": "https://patchwork.kernel.org/api/1.3/people/224905/",
+    "name": "Slavin Liu",
+    "email": "bolin.liu@seu.edu.cn"
+  },
+  "delegate": null,
+  "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260913125239.110113-1-bolin.liu@seu.edu.cn/mbox/",
+  "series": [
+    {
+      "id": 1163855,
+      "url": "https://patchwork.kernel.org/api/1.3/series/1163855/",
+      "web_url": "https://patchwork.kernel.org/series/1163855/",
+      "date": "2026-09-13T12:52:39",
+      "name": "clk: x86: fch: validate registrations and manage their lifetime",
+      "version": 1,
+      "mbox": "https://patchwork.kernel.org/series/1163855/mbox/"
+    }
+  ],
+  "comments": "https://patchwork.kernel.org/api/patches/14811449/comments/",
+  "check": "pending",
+  "checks": "https://patchwork.kernel.org/api/patches/14811449/checks/",
+  "tags": {},
+  "related": [],
+  "headers": {
+    "Received": [
+      "from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com\n [101.71.155.101])\n\t(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))\n\t(No client certificate requested)\n\tby smtp.subspace.kernel.org (Postfix) with ESMTPS id EE96A3E92A9;\n\tSun, 13 Sep 2026 12:52:45 +0000 (UTC)",
+      "from seu.edu.cn (unknown [58.241.16.34])\n\tby smtp.qiye.163.com (Hmail) with ESMTP id 4d907a402;\n\tSun, 13 Sep 2026 20:52:41 +0800 (GMT+08:00)"
+    ],
+    "Authentication-Results": [
+      "smtp.subspace.kernel.org;\n arc=none smtp.client-ip=101.71.155.101",
+      "smtp.subspace.kernel.org;\n dmarc=pass (p=none dis=none) header.from=seu.edu.cn",
+      "smtp.subspace.kernel.org;\n spf=pass smtp.mailfrom=seu.edu.cn",
+      "smtp.subspace.kernel.org;\n\tdkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn\n header.b=\"MNDL4t/w\""
+    ],
+    "ARC-Seal": "i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;\n\tt=1789303968; cv=none;\n b=jj0D7LxS7aXhnbkDeYWbFP0QuEtNV1dd+xBCbQ8YR+tNwprzRqly2Ondio7qhfLFk/4Q1MSYuFApKR6Xwb/5NJLt/ZTj+sybXrVNALG3LWhvzQx3BPgg51p9vTNqsuy9OcBQHErKsFRP244yiIOG9jOQTYbEZquyGd/iCjn0OjU=",
+    "ARC-Message-Signature": "i=1; a=rsa-sha256; d=subspace.kernel.org;\n\ts=arc-20240116; t=1789303968; c=relaxed/simple;\n\tbh=i2tbbFBMP9GoLJ/GNZ9/7nTTtJYV2xBE+ugiYvpnO/I=;\n\th=From:To:Cc:Subject:Date:Message-Id:MIME-Version;\n b=KxyS+wQcpx22jJCFnXwu3Txk3WlyuVHWl4eGeYNzkmpYs0YeF9KwI5ut3vCGA+EMGJFeKT9cHXKnQkg7SITxzmYkhhXBqZgBDceYF9TBIMZlBHSGCDnZd4U3+inEw1bDczpotTdzj4JGlzbZC4qEd8Kp04gqD7wHmuLZTei2bNM=",
+    "ARC-Authentication-Results": "i=1; smtp.subspace.kernel.org;\n dmarc=pass (p=none dis=none) header.from=seu.edu.cn;\n spf=pass smtp.mailfrom=seu.edu.cn;\n dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn\n header.b=MNDL4t/w; arc=none smtp.client-ip=101.71.155.101",
+    "From": "Slavin Liu <bolin.liu@seu.edu.cn>",
+    "To": "sboyd@kernel.org,\n\tbmasney+clk@redhat.com,\n\tjbrunet+clk@baylibre.com",
+    "Cc": "linux-clk@vger.kernel.org,\n\tlinux-kernel@vger.kernel.org,\n\tbolin.liu@seu.edu.cn",
+    "Subject": "[PATCH] clk: x86: fch: validate registrations and manage their\n lifetime",
+    "Date": "Sun, 13 Sep 2026 20:52:39 +0800",
+    "Message-Id": "<20260913125239.110113-1-bolin.liu@seu.edu.cn>",
+    "X-Mailer": "git-send-email 2.34.1",
+    "Precedence": "bulk",
+    "X-Mailing-List": "linux-clk@vger.kernel.org",
+    "List-Id": "<linux-clk.vger.kernel.org>",
+    "List-Subscribe": "<mailto:linux-clk+subscribe@vger.kernel.org>",
+    "List-Unsubscribe": "<mailto:linux-clk+unsubscribe@vger.kernel.org>",
+    "MIME-Version": "1.0",
+    "Content-Transfer-Encoding": "8bit",
+    "X-HM-Tid": "0aa09ad3b50503a1kunmd647239d251235",
+    "X-HM-MType": "10",
+    "X-HM-Spam-Status": "e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly\n\ttZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGElCVkpLGExCGh8eSU4aGVYeHw\n\t5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0\n\tNVSktLVUtZBg++",
+    "DKIM-Signature": "a=rsa-sha256;\n\tb=MNDL4t/waOSdFkKuZqFT1wa+0m8ysXZENruWt+H/RmgeI2Vjf8ZbYrpW74LKT9abU59V4MLdHs9YCm+Ej2K6t/S5ZzgJ2uH5KRe7G+yrjdEsmUJgLFdUe6F//n+Xw9sydoiUk/eGp6LRQQpfKbK/EZjaMvMSSN/ni4IZqqD7tnY=;\n c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;\n\tbh=NHb7UUJbISYSi3I8xvOh3OsDtG2Zo+qNybIwL7QyvVU=;\n\th=date:mime-version:subject:message-id:from;"
+  },
+  "content": "Fixed-rate and mux registration can fail before clk_set_parent()\nevaluates their clk members. Check each registration and the later\nparent/clkdev operations. Use managed clock registration so every new\nerror exit unwinds only successfully registered clocks in reverse order.\nKeep the hardware-clock array local and drop the manual remove callback\nto avoid unregistering managed clocks twice.\n\nDetected by static analysis and reviewed with AI-assisted source auditing.\n\nFixes: 421bf6a1f061 (\"clk: x86: Add ST oscout platform clock\")\nAssisted-by: LLM\nSigned-off-by: Slavin Liu <bolin.liu@seu.edu.cn>\n---\n drivers/clk/x86/clk-fch.c | 109 ++++++++++++++++++++++----------------\n 1 file changed, 62 insertions(+), 47 deletions(-)",
+  "diff": "diff --git a/drivers/clk/x86/clk-fch.c b/drivers/clk/x86/clk-fch.c\nindex cf5cd3ad4647..b66ede14fc22 100644\n--- a/drivers/clk/x86/clk-fch.c\n+++ b/drivers/clk/x86/clk-fch.c\n@@ -35,7 +35,6 @@\n #define AMD_CPU_ID_ST                  0x1576\n \n static const char * const clk_oscout1_parents[] = { \"clk48MHz\", \"clk25MHz\" };\n-static struct clk_hw *hws[ST_MAX_CLKS];\n \n static const struct pci_device_id fch_pci_ids[] = {\n \t{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_ST) },\n@@ -44,8 +43,10 @@ static const struct pci_device_id fch_pci_ids[] = {\n \n static int fch_clk_probe(struct platform_device *pdev)\n {\n+\tstruct clk_hw *hws[ST_MAX_CLKS];\n \tstruct fch_clk_data *fch_data;\n \tstruct pci_dev *rdev;\n+\tint ret;\n \n \tfch_data = dev_get_platdata(&pdev->dev);\n \tif (!fch_data || !fch_data->base)\n@@ -58,55 +59,70 @@ static int fch_clk_probe(struct platform_device *pdev)\n \t}\n \n \tif (pci_match_id(fch_pci_ids, rdev)) {\n-\t\thws[ST_CLK_48M] = clk_hw_register_fixed_rate(NULL, \"clk48MHz\",\n-\t\t\tNULL, 0, 48000000);\n-\t\thws[ST_CLK_25M] = clk_hw_register_fixed_rate(NULL, \"clk25MHz\",\n-\t\t\tNULL, 0, 25000000);\n-\n-\t\thws[ST_CLK_MUX] = clk_hw_register_mux(NULL, \"oscout1_mux\",\n-\t\t\tclk_oscout1_parents, ARRAY_SIZE(clk_oscout1_parents),\n-\t\t\t0, fch_data->base + CLKDRVSTR2, OSCOUT1CLK25MHZ, 3, 0,\n-\t\t\tNULL);\n-\n-\t\tclk_set_parent(hws[ST_CLK_MUX]->clk, hws[ST_CLK_48M]->clk);\n-\n-\t\thws[ST_CLK_GATE] = clk_hw_register_gate(NULL, \"oscout1\",\n-\t\t\t\"oscout1_mux\", 0, fch_data->base + MISCCLKCNTL1,\n-\t\t\tOSCCLKENB, CLK_GATE_SET_TO_DISABLE, NULL);\n-\n-\t\tdevm_clk_hw_register_clkdev(&pdev->dev, hws[ST_CLK_GATE],\n-\t\t\t\t\t    fch_data->name, NULL);\n+\t\thws[ST_CLK_48M] = devm_clk_hw_register_fixed_rate(&pdev->dev, \"clk48MHz\",\n+\t\t\t\t\t\t\t\t  NULL, 0, 48000000);\n+\t\tif (IS_ERR(hws[ST_CLK_48M])) {\n+\t\t\tret = PTR_ERR(hws[ST_CLK_48M]);\n+\t\t\tgoto out_put;\n+\t\t}\n+\t\thws[ST_CLK_25M] = devm_clk_hw_register_fixed_rate(&pdev->dev, \"clk25MHz\",\n+\t\t\t\t\t\t\t\t  NULL, 0, 25000000);\n+\t\tif (IS_ERR(hws[ST_CLK_25M])) {\n+\t\t\tret = PTR_ERR(hws[ST_CLK_25M]);\n+\t\t\tgoto out_put;\n+\t\t}\n+\n+\t\thws[ST_CLK_MUX] =\n+\t\t\tdevm_clk_hw_register_mux(&pdev->dev, \"oscout1_mux\",\n+\t\t\t\t\t\t clk_oscout1_parents,\n+\t\t\t\t\t\t ARRAY_SIZE(clk_oscout1_parents),\n+\t\t\t\t\t\t 0, fch_data->base + CLKDRVSTR2, OSCOUT1CLK25MHZ, 3,\n+\t\t\t\t\t\t 0,\n+\t\t\t\t\t\t NULL);\n+\t\tif (IS_ERR(hws[ST_CLK_MUX])) {\n+\t\t\tret = PTR_ERR(hws[ST_CLK_MUX]);\n+\t\t\tgoto out_put;\n+\t\t}\n+\n+\t\tret = clk_set_parent(hws[ST_CLK_MUX]->clk, hws[ST_CLK_48M]->clk);\n+\t\tif (ret)\n+\t\t\tgoto out_put;\n+\n+\t\thws[ST_CLK_GATE] =\n+\t\t\tdevm_clk_hw_register_gate(&pdev->dev, \"oscout1\",\n+\t\t\t\t\t\t  \"oscout1_mux\", 0, fch_data->base + MISCCLKCNTL1,\n+\t\t\t\t\t\t  OSCCLKENB, CLK_GATE_SET_TO_DISABLE, NULL);\n+\t\tif (IS_ERR(hws[ST_CLK_GATE])) {\n+\t\t\tret = PTR_ERR(hws[ST_CLK_GATE]);\n+\t\t\tgoto out_put;\n+\t\t}\n+\n+\t\tret = devm_clk_hw_register_clkdev(&pdev->dev, hws[ST_CLK_GATE],\n+\t\t\t\t\t\t  fch_data->name, NULL);\n \t} else {\n-\t\thws[CLK_48M_FIXED] = clk_hw_register_fixed_rate(NULL, \"clk48MHz\",\n-\t\t\tNULL, 0, 48000000);\n-\n-\t\thws[CLK_GATE_FIXED] = clk_hw_register_gate(NULL, \"oscout1\",\n-\t\t\t\"clk48MHz\", 0, fch_data->base + MISCCLKCNTL1,\n-\t\t\tOSCCLKENB, 0, NULL);\n-\n-\t\tdevm_clk_hw_register_clkdev(&pdev->dev, hws[CLK_GATE_FIXED],\n-\t\t\t\t\t    fch_data->name, NULL);\n+\t\thws[CLK_48M_FIXED] = devm_clk_hw_register_fixed_rate(&pdev->dev, \"clk48MHz\",\n+\t\t\t\t\t\t\t\t     NULL, 0, 48000000);\n+\t\tif (IS_ERR(hws[CLK_48M_FIXED])) {\n+\t\t\tret = PTR_ERR(hws[CLK_48M_FIXED]);\n+\t\t\tgoto out_put;\n+\t\t}\n+\n+\t\thws[CLK_GATE_FIXED] =\n+\t\t\tdevm_clk_hw_register_gate(&pdev->dev, \"oscout1\",\n+\t\t\t\t\t\t  \"clk48MHz\", 0, fch_data->base + MISCCLKCNTL1,\n+\t\t\t\t\t\t  OSCCLKENB, 0, NULL);\n+\t\tif (IS_ERR(hws[CLK_GATE_FIXED])) {\n+\t\t\tret = PTR_ERR(hws[CLK_GATE_FIXED]);\n+\t\t\tgoto out_put;\n+\t\t}\n+\n+\t\tret = devm_clk_hw_register_clkdev(&pdev->dev, hws[CLK_GATE_FIXED],\n+\t\t\t\t\t\t  fch_data->name, NULL);\n \t}\n \n+out_put:\n \tpci_dev_put(rdev);\n-\treturn 0;\n-}\n-\n-static void fch_clk_remove(struct platform_device *pdev)\n-{\n-\tint i, clks;\n-\tstruct pci_dev *rdev;\n-\n-\trdev = pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(0, 0));\n-\tif (!rdev)\n-\t\treturn;\n-\n-\tclks = pci_match_id(fch_pci_ids, rdev) ? CLK_MAX_FIXED : ST_MAX_CLKS;\n-\n-\tfor (i = 0; i < clks; i++)\n-\t\tclk_hw_unregister(hws[i]);\n-\n-\tpci_dev_put(rdev);\n+\treturn ret;\n }\n \n static struct platform_driver fch_clk_driver = {\n@@ -115,6 +131,5 @@ static struct platform_driver fch_clk_driver = {\n \t\t.suppress_bind_attrs = true,\n \t},\n \t.probe = fch_clk_probe,\n-\t.remove = fch_clk_remove,\n };\n builtin_platform_driver(fch_clk_driver);\n",
+  "prefixes": []
+}

@@ -1,0 +1,88 @@
+{
+  "id": 14805788,
+  "url": "https://patchwork.kernel.org/api/1.3/patches/14805788/",
+  "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "msgid": "<20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de>",
+  "list_archive_url": "https://lore.kernel.org/r/20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de",
+  "date": "2026-09-10T15:19:07",
+  "name": "[2/2] arm64: dts: imx93-kontron: Add support for Kontron i.MX93 DL",
+  "commit_ref": null,
+  "pull_url": null,
+  "state": "not-applicable",
+  "archived": false,
+  "hash": "d18e8d954a7776042225d04fd80330194d0cdc75",
+  "submitter": {
+    "id": 200875,
+    "url": "https://patchwork.kernel.org/api/1.3/people/200875/",
+    "name": "Frieder Schrempf",
+    "email": "frieder@fris.de"
+  },
+  "delegate": null,
+  "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de/mbox/",
+  "series": [
+    {
+      "id": 1162185,
+      "url": "https://patchwork.kernel.org/api/1.3/series/1162185/",
+      "web_url": "https://patchwork.kernel.org/series/1162185/",
+      "date": "2026-09-10T15:19:07",
+      "name": "arm64: dts: imx93-kontron: Add support for Kontron i.MX93 DL",
+      "version": 1,
+      "mbox": "https://patchwork.kernel.org/series/1162185/mbox/"
+    }
+  ],
+  "comments": "https://patchwork.kernel.org/api/patches/14805788/comments/",
+  "check": "pending",
+  "checks": "https://patchwork.kernel.org/api/patches/14805788/checks/",
+  "tags": {},
+  "related": [],
+  "headers": {
+    "Received": "from mail.fris.de (mail.fris.de [116.203.77.234])\n\t(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))\n\t(No client certificate requested)\n\tby smtp.subspace.kernel.org (Postfix) with ESMTPS id 236F84A014B;\n\tThu, 10 Sep 2026 15:20:21 +0000 (UTC)",
+    "Authentication-Results": [
+      "smtp.subspace.kernel.org;\n arc=none smtp.client-ip=116.203.77.234",
+      "smtp.subspace.kernel.org;\n dmarc=pass (p=quarantine dis=none) header.from=fris.de",
+      "smtp.subspace.kernel.org;\n spf=pass smtp.mailfrom=fris.de",
+      "smtp.subspace.kernel.org;\n\tdkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de\n header.b=\"zfxCzCRx\""
+    ],
+    "ARC-Seal": "i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;\n\tt=1789053629; cv=none;\n b=IK/3rv4OvK4dSTFrWGNxkt0Uu/A/AMuSlO6cObShfdE9xc3IN0w/aYwq/L2xHvEkP+nmluxPsvVmW0lkPU3/2PH3RL1K7dLabhNtvJEV1JWLJLg9d++Z52pwObUSEn3otRIufJVwdDSUtoIqnBdNkryHBcpq8xDFEcWlvv8WcJ8=",
+    "ARC-Message-Signature": "i=1; a=rsa-sha256; d=subspace.kernel.org;\n\ts=arc-20240116; t=1789053629; c=relaxed/simple;\n\tbh=qaVLtP24eUQigpsXQ1uRih63mTqL4A2y+Pni/SWk3gs=;\n\th=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:\n\t In-Reply-To:To:Cc;\n b=ZM0Fd16xlPxCAiTtQ0FefigtNPV6Mo88lotmqqmIPAbrltlHfkvFd4Dp/AKC3rursynupurPCm1J/sNVajHWM/cBda+nYczuOIu/9sjfvqmTBsDT1zNLUxaNtr23z0JPwo99T5n8aKMeNmAtmXdi5m9cMnoLkXKptVA6R6G67hw=",
+    "ARC-Authentication-Results": "i=1; smtp.subspace.kernel.org;\n dmarc=pass (p=quarantine dis=none) header.from=fris.de;\n spf=pass smtp.mailfrom=fris.de;\n dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de\n header.b=zfxCzCRx; arc=none smtp.client-ip=116.203.77.234",
+    "From": "Frieder Schrempf <frieder@fris.de>",
+    "DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;\n\tt=1789053611;\n\th=from:from:reply-to:subject:subject:date:date:message-id:message-id:\n\t to:to:cc:cc:mime-version:mime-version:content-type:content-type:\n\t content-transfer-encoding:content-transfer-encoding:\n\t in-reply-to:in-reply-to:references:references;\n\tbh=fMLzyvdCDhOp+LMAXMo33v6YgTadM1kq8Lfjv4tjsH8=;\n\tb=zfxCzCRxpsgEG1AjAnutkwMFKvd7iRH45PJsNk0Dy+mqADVvnFefwJquPyrOot9SkABRCM\n\tjaZjpQZyhKBCSAmcM4DFWZsU/eKXFfTy+ug9SVtC17DBjlg1YOPAgTGnUYXsyeL4b/teyt\n\t8+x/y3sOvq3TuFddB616qpGaR/nHDsXfkGsGAZhcuZ61sr5jJTY5Mein1r2oYriBa3ELyr\n\t7ucQ3fKNyXaApS43UrWsqVWYASv7DVvKMgme81/+gB8Hq15P5jCIrJOCOaFMezG4BHrQzr\n\tVu438FaX8iHdStoMdMJq8tOgf5lOjJTkE6arpaHXnW+w23006731o1JJiivaog==",
+    "Date": "Thu, 10 Sep 2026 17:19:07 +0200",
+    "Subject": "[PATCH 2/2] arm64: dts: imx93-kontron: Add support for Kontron\n i.MX93 DL",
+    "Precedence": "bulk",
+    "X-Mailing-List": "linux-clk@vger.kernel.org",
+    "List-Id": "<linux-clk.vger.kernel.org>",
+    "List-Subscribe": "<mailto:linux-clk+subscribe@vger.kernel.org>",
+    "List-Unsubscribe": "<mailto:linux-clk+unsubscribe@vger.kernel.org>",
+    "MIME-Version": "1.0",
+    "Content-Type": "text/plain; charset=\"utf-8\"",
+    "Content-Transfer-Encoding": "7bit",
+    "Message-Id": "<20260910-upstreaming-v7-3-imx93-displayline-v1-2-bb9446e6ed6e@kontron.de>",
+    "References": "<20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>",
+    "In-Reply-To": "<20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de>",
+    "To": "Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,\n Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,\n Jerome Brunet <jbrunet+clk@baylibre.com>, Frank Li <Frank.Li@nxp.com>,\n Sascha Hauer <s.hauer@pengutronix.de>,\n Pengutronix Kernel Team <kernel@pengutronix.de>,\n Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,\n Krzysztof Kozlowski <krzk+dt@kernel.org>,\n Conor Dooley <conor+dt@kernel.org>",
+    "Cc": "linux-clk@vger.kernel.org, imx@lists.linux.dev,\n linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,\n devicetree@vger.kernel.org, Frieder Schrempf <frieder.schrempf@kontron.de>,\n Mikhail Vaniulin <mikhail.vaniulin@axians.rs>",
+    "X-Developer-Signature": "v=1; a=openpgp-sha256; l=3435;\n i=frieder.schrempf@kontron.de; h=from:subject:message-id;\n bh=2MoUiiYl7TgFn82k5cuGD2bvJWlqdJspTEKCJ86zaqY=;\n b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWvRqZViT9U8Lm1gjAv1zTzaq2L+omzz04+Oay1eTtrX0\n Lrs54RlHaUsDGJcDLJiiixS/Bavbc1ifeSPVUfBzGFlAhnCwMUpABM5vpbhn9K6RS5HtmU/M8g+\n 4Ou1pKziTbfdhi1qm9flK6XoNz0Jnsjwv6DfLXTlaaY5McUpegY/WtZZB9XcCa2stFvmacx09PM\n NPgA=",
+    "X-Developer-Key": "i=frieder.schrempf@kontron.de; a=openpgp;\n fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216"
+  },
+  "content": "From: Mikhail Vaniulin <mikhail.vaniulin@axians.rs>\n\nThis provides an overlay to enable the 7\" LVDS panel on Kontron\ni.MX93 DL devices.\n\nSigned-off-by: Mikhail Vaniulin <mikhail.vaniulin@axians.rs>\nSigned-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>\n---\n arch/arm64/boot/dts/freescale/Makefile             |   4 +\n .../arm64/boot/dts/freescale/imx93-kontron-dl.dtso | 104 +++++++++++++++++++++\n 2 files changed, 108 insertions(+)",
+  "diff": "diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile\nindex 95ae85ab4adf..2f0d3378c050 100644\n--- a/arch/arm64/boot/dts/freescale/Makefile\n+++ b/arch/arm64/boot/dts/freescale/Makefile\n@@ -653,6 +653,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm-pixpaper.dtb\n \n dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb\n dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb\n+\n+imx93-kontron-dl-dtbs += imx93-kontron-bl-osm-s.dtb imx93-kontron-dl.dtbo\n+dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-dl.dtb\n+\n dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb\n dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb\n \ndiff --git a/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso\nnew file mode 100644\nindex 000000000000..2d962823dfeb\n--- /dev/null\n+++ b/arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso\n@@ -0,0 +1,104 @@\n+// SPDX-License-Identifier: GPL-2.0+ OR MIT\n+/*\n+ * Copyright (C) 2024 Kontron Electronics GmbH\n+ */\n+\n+/dts-v1/;\n+/plugin/;\n+\n+#include <dt-bindings/gpio/gpio.h>\n+#include <dt-bindings/interrupt-controller/irq.h>\n+\n+&{/} {\n+\tmodel = \"Kontron DL i.MX93 OSM-S\";\n+\tcompatible = \"kontron,imx93-bl-osm-s\", \"kontron,imx93-osm-s\", \"fsl,imx93\";\n+\n+\tbacklight: backlight {\n+\t\tcompatible = \"pwm-backlight\";\n+\t\tpwms = <&tpm3 3 50000 0>;\n+\t\tbrightness-levels = <0 100>;\n+\t\tnum-interpolated-steps = <100>;\n+\t\tdefault-brightness-level = <100>;\n+\t};\n+\n+\tpanel {\n+\t\tcompatible = \"jenson,bl-jt60050-01a\", \"panel-lvds\";\n+\t\tbacklight = <&backlight>;\n+\t\tdata-mapping = \"vesa-24\";\n+\t\tenable-gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;\n+\t\tpower-supply = <&reg_vcc_panel>;\n+\t\theight-mm = <86>;\n+\t\twidth-mm = <154>;\n+\n+\t\tpanel-timing {\n+\t\t\tclock-frequency = <50000000>;\n+\t\t\thactive = <1024>;\n+\t\t\thback-porch = <160>;\n+\t\t\thfront-porch = <160>;\n+\t\t\thsync-len = <1>;\n+\t\t\tvactive = <600>;\n+\t\t\tvback-porch = <23>;\n+\t\t\tvfront-porch = <12>;\n+\t\t\tvsync-len = <1>;\n+\t\t};\n+\n+\t\tport {\n+\t\t\tpanel_in_lvds0: endpoint {\n+\t\t\t\tremote-endpoint = <&ldb_lvds_ch0>;\n+\t\t\t};\n+\t\t};\n+\t};\n+};\n+\n+&gpio3 {\n+\tpanel-rst-hog {\n+\t\tgpio-hog;\n+\t\tgpios = <26 GPIO_ACTIVE_LOW>;\n+\t\toutput-low;\n+\t\tline-name = \"panel-reset\";\n+\t};\n+\n+\tpanel-stby-hog {\n+\t\tgpio-hog;\n+\t\tgpios = <27 GPIO_ACTIVE_HIGH>;\n+\t\toutput-high;\n+\t\tline-name = \"panel-standby\";\n+\t};\n+};\n+\n+&lcdif {\n+\tstatus = \"okay\";\n+};\n+\n+&ldb_lvds_ch0 {\n+\tremote-endpoint = <&panel_in_lvds0>;\n+};\n+\n+&lpi2c2 {\n+\t#address-cells = <1>;\n+\t#size-cells = <0>;\n+\tstatus = \"okay\";\n+\n+\ttouchscreen@5d {\n+\t\tcompatible = \"goodix,gt928\";\n+\t\treg = <0x5d>;\n+\t\tinterrupt-parent = <&gpio2>;\n+\t\tinterrupts = <22 IRQ_TYPE_LEVEL_LOW>;\n+\t\tirq-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;\n+\t\tAVDD28-supply = <&reg_vcc_panel>;\n+\t\tVDDIO-supply = <&reg_vcc_panel>;\n+\t\treset-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>;\n+\t};\n+};\n+\n+&lvds_bridge {\n+\tstatus = \"okay\";\n+};\n+\n+&media_blk_ctrl {\n+\tstatus = \"okay\";\n+};\n+\n+&tpm3 {\n+\tstatus = \"okay\";\n+};\n",
+  "prefixes": [
+    "2/2"
+  ]
+}

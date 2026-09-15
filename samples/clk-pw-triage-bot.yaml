@@ -1,0 +1,191 @@
+patchwork:
+  url: https://patchwork.kernel.org/api/1.3
+  project: linux-clk
+  # token: ...   # otherwise taken from $PW_TRIAGE_BOT_TOKEN
+
+core:
+  # Paths are gitignore patterns
+  paths:
+    - MAINTAINERS
+    - drivers/clk/
+    - include/linux/clk*.h
+    - include/linux/clk/
+    - include/linux/of_clk.h
+    - include/dt-bindings/clock/
+    - Documentation/devicetree/bindings/clock/
+    - rust/helpers/clk.c
+    - rust/kernel/clk.rs
+    - scripts/gdb/linux/clk.py
+  state: new
+  # Run once the series is triaged, the series document at $PW_TRIAGE_BOT_JSON.
+  # hook: trigger-ci.sh
+
+# Anything touching none of the above.
+foreign:
+  state: not-applicable
+
+delegates:
+  default:
+    state: awaiting-upstream
+
+  # Subtrees of core handed over to someone else. A patch confined to one
+  # delegate is theirs; one crossing delegates, or also touching core files no
+  # delegate claims, is core's. A series holding anything of core's is core's
+  # throughout.
+  amlogic:
+    paths:
+      - drivers/clk/meson/
+      - Documentation/devicetree/bindings/clock/amlogic*
+      - include/dt-bindings/clock/amlogic*
+      - include/dt-bindings/clock/axg-*
+      - include/dt-bindings/clock/g12a-*
+      - include/dt-bindings/clock/gxbb-*
+      - include/dt-bindings/clock/meson*
+  aspeed:
+    paths:
+      - drivers/clk/aspeed/
+      - include/dt-bindings/clock/aspeed*
+      - include/dt-bindings/clock/ast2600-clock.h
+  at91:
+    paths:
+      - drivers/clk/at91/
+      - Documentation/devicetree/bindings/clock/atmel,at91*
+      - include/dt-bindings/clock/at91.h
+      - include/linux/clk/at91_pmc.h
+  canaan:
+    paths:
+      - drivers/clk/clk-k210.c
+      - drivers/clk/clk-k230.c
+      - Documentation/devicetree/bindings/clock/canaan,*
+      - include/dt-bindings/clock/canaan,*
+      - include/dt-bindings/clock/k210-clk.h
+  eyeq:
+    paths:
+      - drivers/clk/clk-eyeq.c
+      - include/dt-bindings/clock/mobileye,*
+  imx:
+    paths:
+      - drivers/clk/imx/
+      - Documentation/devicetree/bindings/clock/*imx*
+      - Documentation/devicetree/bindings/clock/fsl,scu-clk.yaml
+      - Documentation/devicetree/bindings/clock/fsl,vf610-ccm.yaml
+      - include/dt-bindings/clock/*imx*
+      - include/dt-bindings/clock/vf610-clock.h
+      - include/linux/clk/imx.h
+  keystone:
+    paths:
+      - drivers/clk/keystone/
+      - Documentation/devicetree/bindings/clock/keystone-pll.txt
+      - Documentation/devicetree/bindings/clock/ti,am62-audio-refclk.yaml
+      - Documentation/devicetree/bindings/clock/ti,am654-ehrpwm-tbclk.yaml
+      - Documentation/devicetree/bindings/clock/ti,keystone,psc-clock.yaml
+      - Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
+  mediatek:
+    paths:
+      - drivers/clk/mediatek/
+      - Documentation/devicetree/bindings/clock/mediatek,*
+      - "!Documentation/devicetree/bindings/clock/mediatek,mt7621-sysc.yaml"
+      - "!Documentation/devicetree/bindings/clock/mediatek,mtmips-sysc.yaml"
+      - include/dt-bindings/clock/mediatek,*
+      - "!include/dt-bindings/clock/mediatek,mtmips-sysc.h"
+      - include/dt-bindings/clock/mt[0-9]*
+      - "!include/dt-bindings/clock/mt7621-clk.h"
+  mpfs:
+    paths:
+      - drivers/clk/microchip/clk-mpfs*.c
+      - Documentation/devicetree/bindings/clock/microchip,mpfs*
+      - include/dt-bindings/clock/microchip,mpfs*
+  qcom:
+    paths:
+      - drivers/clk/qcom/
+      - Documentation/devicetree/bindings/clock/qcom,*
+      - include/dt-bindings/clock/qcom,*
+      - include/linux/clk/qcom.h
+  renesas:
+    paths:
+      - drivers/clk/renesas/
+      - Documentation/devicetree/bindings/clock/renesas,*
+      - include/dt-bindings/clock/r7s*
+      - include/dt-bindings/clock/r8a*
+      - include/dt-bindings/clock/r9a*
+      - include/dt-bindings/clock/renesas*
+      - include/dt-bindings/clock/sh73a0-clock.h
+      - include/linux/clk/renesas.h
+  rockchip:
+    paths:
+      - drivers/clk/rockchip/
+      - Documentation/devicetree/bindings/clock/rockchip,*
+      - include/dt-bindings/clock/px30-cru.h
+      - include/dt-bindings/clock/rk3*
+      - include/dt-bindings/clock/rockchip,*
+      - include/dt-bindings/clock/rv1*
+  samsung:
+    paths:
+      - drivers/clk/samsung/
+      - Documentation/devicetree/bindings/clock/axis,artpec*
+      - Documentation/devicetree/bindings/clock/google,gs101-clock.yaml
+      - Documentation/devicetree/bindings/clock/samsung,*
+      - Documentation/devicetree/bindings/clock/tesla,fsd-clock.yaml
+      - include/dt-bindings/clock/axis,artpec*
+      - include/dt-bindings/clock/exynos*
+      - include/dt-bindings/clock/fsd-clk.h
+      - include/dt-bindings/clock/google,gs101*
+      - include/dt-bindings/clock/s5p*
+      - include/dt-bindings/clock/samsung,*
+      - include/linux/clk/samsung.h
+  socfpga:
+    paths:
+      - drivers/clk/socfpga/
+      - Documentation/devicetree/bindings/clock/intel,agilex*
+      - Documentation/devicetree/bindings/clock/intel,easic-n5x.yaml
+      - Documentation/devicetree/bindings/clock/intel,stratix10.yaml
+      - include/dt-bindings/clock/agilex-clock.h
+      - include/dt-bindings/clock/intel,agilex*
+      - include/dt-bindings/clock/stratix10-clock.h
+  spacemit:
+    paths:
+      - drivers/clk/spacemit/
+      - Documentation/devicetree/bindings/clock/spacemit,*
+      - include/dt-bindings/clock/spacemit,*
+  sunxi:
+    paths:
+      - drivers/clk/sunxi/
+      - drivers/clk/sunxi-ng/
+      - Documentation/devicetree/bindings/clock/allwinner,*
+      - include/dt-bindings/clock/allwinner,*
+      - include/dt-bindings/clock/sun[0-9]*
+      - include/dt-bindings/clock/suniv-*
+      - include/linux/clk/sunxi-ng.h
+  tegra:
+    paths:
+      - drivers/clk/tegra/
+      - Documentation/devicetree/bindings/clock/nvidia,tegra*
+      - include/dt-bindings/clock/nvidia,tegra*
+      - include/dt-bindings/clock/tegra*
+      - include/linux/clk/tegra.h
+  tenstorrent:
+    paths:
+      - drivers/clk/tenstorrent/
+      - Documentation/devicetree/bindings/clock/tenstorrent,*
+      - include/dt-bindings/clock/tenstorrent,*
+  thead:
+    paths:
+      - drivers/clk/thead/
+      - Documentation/devicetree/bindings/clock/thead,*
+      - include/dt-bindings/clock/thead,*
+
+# State allowed to overwrite for each target state
+transitions:
+  new:
+    - awaiting-upstream
+  under-review:
+    - new
+  awaiting-upstream:
+    - new
+  not-applicable:
+    - new
+  superseded:
+    - new
+    - under-review
+    - awaiting-upstream
+    - not-applicable

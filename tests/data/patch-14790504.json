@@ -1,0 +1,91 @@
+{
+  "id": 14790504,
+  "url": "https://patchwork.kernel.org/api/1.3/patches/14790504/",
+  "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260904110959.21527-1-hemanth.selam@gmail.com/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "msgid": "<20260904110959.21527-1-hemanth.selam@gmail.com>",
+  "list_archive_url": "https://lore.kernel.org/r/20260904110959.21527-1-hemanth.selam@gmail.com",
+  "date": "2026-09-04T11:09:57",
+  "name": "clk: tegra: fix typos in comments",
+  "commit_ref": null,
+  "pull_url": null,
+  "state": "new",
+  "archived": false,
+  "hash": "4132b8399af14b7bd2849e26eea449b16ccc1c48",
+  "submitter": {
+    "id": 223150,
+    "url": "https://patchwork.kernel.org/api/1.3/people/223150/",
+    "name": "Hemanth Selam",
+    "email": "hemanth.selam@gmail.com"
+  },
+  "delegate": null,
+  "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260904110959.21527-1-hemanth.selam@gmail.com/mbox/",
+  "series": [
+    {
+      "id": 1157898,
+      "url": "https://patchwork.kernel.org/api/1.3/series/1157898/",
+      "web_url": "https://patchwork.kernel.org/series/1157898/",
+      "date": "2026-09-04T11:09:57",
+      "name": "clk: tegra: fix typos in comments",
+      "version": 1,
+      "mbox": "https://patchwork.kernel.org/series/1157898/mbox/"
+    }
+  ],
+  "comments": "https://patchwork.kernel.org/api/patches/14790504/comments/",
+  "check": "pending",
+  "checks": "https://patchwork.kernel.org/api/patches/14790504/checks/",
+  "tags": {},
+  "related": [],
+  "headers": {
+    "Received": [
+      "from mail-oo1-f50.google.com (mail-oo1-f50.google.com\n [209.85.161.50])\n\t(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))\n\t(No client certificate requested)\n\tby smtp.subspace.kernel.org (Postfix) with ESMTPS id 777F7468C19\n\tfor <linux-clk@vger.kernel.org>; Fri,  4 Sep 2026 11:10:07 +0000 (UTC)",
+      "by mail-oo1-f50.google.com with SMTP id\n 006d021491bc7-6b132a5009eso676817eaf.1\n        for <linux-clk@vger.kernel.org>; Fri, 04 Sep 2026 04:10:07 -0700 (PDT)",
+      "from volcano9f6e-hostos.amd.com ([165.204.217.251])\n        by smtp.gmail.com with ESMTPSA id\n 5a478bee46e88-33450e140d3sm2492230eec.4.2026.09.04.04.10.01\n        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);\n        Fri, 04 Sep 2026 04:10:05 -0700 (PDT)"
+    ],
+    "Authentication-Results": [
+      "smtp.subspace.kernel.org;\n arc=none smtp.client-ip=209.85.161.50",
+      "smtp.subspace.kernel.org;\n dmarc=pass (p=none dis=none) header.from=gmail.com",
+      "smtp.subspace.kernel.org;\n spf=pass smtp.mailfrom=gmail.com",
+      "smtp.subspace.kernel.org;\n\tdkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com\n header.b=\"CXISd3ZO\""
+    ],
+    "ARC-Seal": "i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;\n\tt=1788520209; cv=none;\n b=kPGNNV4ByQWwbe/JYfyjF1ptMlNzjMKSFMMULVmXL1Ef7E3EjdmXGucpjy81FxOQr7UTotGoSyciHoOiHkqS91gYqcJGv9eAV99yJi4GofzZ2IIKSiRUZU+n4VGTsNGB6IY9xVJHhzZiA/EmkqOqTOnMeV9kuYB9WIHdtgpOqeA=",
+    "ARC-Message-Signature": "i=1; a=rsa-sha256; d=subspace.kernel.org;\n\ts=arc-20240116; t=1788520209; c=relaxed/simple;\n\tbh=GYR7vyanVJ8plJU01WoNFSGTHSYQC4WumzJhgIObNr4=;\n\th=From:To:Cc:Subject:Date:Message-ID:MIME-Version;\n b=avLnhgGVp3LNc5ihZ2IZ9BTPYab8wAYN6qUlqdaSrGoME/PTAon4o7uD2EconyQ1QNIwauAQ4BH3nSAi3yMO1uqiRL6TfD6p1FWDf8v6fz0hpsFGuCAnfyTqj6aSpc8f7rTZvlevIcnC9G5hybICY1MK3mIgEeU0xqxpUlXi0vU=",
+    "ARC-Authentication-Results": "i=1; smtp.subspace.kernel.org;\n dmarc=pass (p=none dis=none) header.from=gmail.com;\n spf=pass smtp.mailfrom=gmail.com;\n dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com\n header.b=CXISd3ZO; arc=none smtp.client-ip=209.85.161.50",
+    "DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;\n        d=gmail.com; s=20251104; t=1788520206; x=1789125006;\n darn=vger.kernel.org;\n        h=content-transfer-encoding:mime-version:message-id:date:subject:cc\n         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;\n        bh=zHrBvnDyQmGN2H5xjBYZYpnknekC9rCkGbvIkvPCYYU=;\n        b=CXISd3ZOjTR0eHrmBwQpPnqqS9RhVQaEgTaAetkBnJ053K4FvYO3KVq0rwK5ecpmIz\n         BrMhDLLACu0gxfF5nQtPVmbn95K5isLL1pMW6rbs3+KsR9JdueB0CAH4xSCngPdAI6+m\n         gfAWjgq0vVlL3l+0MO0l5hB19RaAHJTvwrSDd1/b0tSpvudHXnDtMHe7hYlxPr6fbDuL\n         IsXMYlO2uwVXk9FmgQeGgL0auAInH+fKzDrI0OU7AFZcoSehsXfWSOkWxJkRhx6x16Iu\n         mp6qxXxNKaQ6M9e14XzF2zBe4hq8Vlbo5WV3lrqDsak/4I1hFsvSZKh3a/yvLeJlAfdz\n         OhmA==",
+    "X-Google-DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;\n        d=1e100.net; s=20251104; t=1788520206; x=1789125006;\n        h=content-transfer-encoding:mime-version:message-id:date:subject:cc\n         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date\n         :message-id:reply-to:content-type;\n        bh=zHrBvnDyQmGN2H5xjBYZYpnknekC9rCkGbvIkvPCYYU=;\n        b=p3RFIhhNyw3/Mdwyi3TEroPGxD0nmdpUaLCIKKuhjB5+HTPBU5wYEEAdeKkUwJXmT2\n         VWWG5MQjSLqRSbqzZ3y0vSPloJpYwfaWwRcxQYkxqDy18lZ75OF9u0dLOnVlEgg2g2rR\n         8bCwYHfRHo87Jx0Tgdyev8JpXj1H4VVivkgPGYYX4ifVt1UonJoczF5JMfppbZEqvNj0\n         zdfVhQFEktv3Nl0Ny9OwAzAoDROA2hTFkcIqYwzlvF0z/RPoIrdFR0ETSTyyVJz5bveh\n         Zka3/sDo6SWzDDamh0gJTp7w3k9873gnp+aHQm4Ykku72FLtHNdRCpTuTI2vQMKfkxEF\n         Pjhw==",
+    "X-Forwarded-Encrypted": "i=1;\n AKwUvByMY/hgxgK4QJN/C5vdguZk1kr82PJRoC7S/KXoLsxF30bxpK/9Mdk384ji2jJ+oFu9R56FlQUYKPg=@vger.kernel.org",
+    "X-Gm-Message-State": "AFuF++kxkneV2P96kyb3BWg8VBKy5Fgxi9srLxkt+sGIQWKlnYNHLkn/\n\tIX6fE0BrZrXR7Sw6Do1qJCr0BDcQ2HUdwmwZPRSnm3AHTSDd4v9Bul/z",
+    "X-Gm-Gg": "AYBFou3iLmdY0LU8gv8zxCoUI8B0ZOrzjfNzSOhv4o3vIZ6rFd2363tZzTKJvS+xy21\n\tTH8gnnzUgs4EkUdcbyoyQFWukR1w9NGZvEoyamMvjQKlR1b0SYTAmyZysQBv1iohXFQ84er+Z2F\n\tWHYsxtK/g+rLIHBhIg8Sk0ZV7QOiPTLIVvroECZ1WChzZukOuv/hOMfwLIDrShMy6iDvI1SuYuV\n\tTm39yNMJX2UfQE0gTNxxUAXIGvRVzPPagwz3/hS8RPJ5BshrXiKvS/GZUKLIyxV5abyynoO9FCY\n\twzlzkTeQ+ZetaBMAbvTj3jKLNp+z/yolWqS2TWAcPjhQ76TsrWOBEmCEP4P3p/2zAu0lIIqNkdl\n\tqIPSzFNCQp8xiyH1Qg0IEODmZbFhOMG+e3kztYX0pjChGTQK3OAzXnu//pLJOSem53//EZE6bj+\n\txW3QBMLI8OEcHCdyFlUCTg8va2ztuUK19Eemj2OG8XekA/6YGKjxcFS02xDczX3wEoVZHUjKnTG\n\t0zzBTTVKi8YpGc=",
+    "X-Received": "by 2002:a05:6820:162a:b0:6b3:6444:46e with SMTP id\n 006d021491bc7-6b6facde170mr3834718eaf.8.1788520206216;\n        Fri, 04 Sep 2026 04:10:06 -0700 (PDT)",
+    "From": "Hemanth Selam <hemanth.selam@gmail.com>",
+    "To": "Prashant Gaikwad <pgaikwad@nvidia.com>,\n\tStephen Boyd <sboyd@kernel.org>,\n\tBrian Masney <bmasney+clk@redhat.com>,\n\tJerome Brunet <jbrunet+clk@baylibre.com>,\n\tThierry Reding <thierry.reding@kernel.org>,\n\tJonathan Hunter <jonathanh@nvidia.com>,\n\tTero Kristo <kristo@kernel.org>",
+    "Cc": "linux-kernel@vger.kernel.org,\n\tlinux-clk@vger.kernel.org,\n\tlinux-tegra@vger.kernel.org,\n\tlinux-omap@vger.kernel.org",
+    "Subject": "[PATCH] clk: tegra: fix typos in comments",
+    "Date": "Fri,  4 Sep 2026 16:39:57 +0530",
+    "Message-ID": "<20260904110959.21527-1-hemanth.selam@gmail.com>",
+    "X-Mailer": "git-send-email 2.48.1",
+    "Precedence": "bulk",
+    "X-Mailing-List": "linux-clk@vger.kernel.org",
+    "List-Id": "<linux-clk.vger.kernel.org>",
+    "List-Subscribe": "<mailto:linux-clk+subscribe@vger.kernel.org>",
+    "List-Unsubscribe": "<mailto:linux-clk+unsubscribe@vger.kernel.org>",
+    "MIME-Version": "1.0",
+    "Content-Transfer-Encoding": "8bit"
+  },
+  "content": "Fix typos in comments, reported by scripts/checkpatch.pl using the\nmisspelling list in scripts/spelling.txt.  Only touches comments, no code\nchanges.\n\nAssisted-by: Cursor:claude-opus-5\nSigned-off-by: Hemanth Selam <hemanth.selam@gmail.com>\n---\n drivers/clk/tegra/clk.h | 2 +-\n include/linux/clk/ti.h  | 2 +-\n 2 files changed, 2 insertions(+), 2 deletions(-)",
+  "diff": "diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h\nindex 73efd2ff37c9..afa93ba505ab 100644\n--- a/drivers/clk/tegra/clk.h\n+++ b/drivers/clk/tegra/clk.h\n@@ -255,7 +255,7 @@ struct tegra_clk_pll;\n  * @set_gain:\t\t\tCallback to adjust N div for SDM enabled\n  *\t\t\t\tPLL's based on fractional divider value.\n  * @calc_rate:\t\t\tCallback used to change how out of table\n- *\t\t\t\trates (dividers and multipler) are calculated.\n+ *\t\t\t\trates (dividers and multiplier) are calculated.\n  * @adjust_vco:\t\t\tCallback to adjust the programming range of the\n  *\t\t\t\tdivider range (if SDM is present)\n  * @set_defaults:\t\tCallback which will try to initialize PLL\ndiff --git a/include/linux/clk/ti.h b/include/linux/clk/ti.h\nindex 54a3fa370004..61c4abf19995 100644\n--- a/include/linux/clk/ti.h\n+++ b/include/linux/clk/ti.h\n@@ -51,7 +51,7 @@ struct clk_omap_reg {\n  * @autoidle_mask: mask of the DPLL autoidle mode bitfield in @autoidle_reg\n  * @freqsel_mask: mask of the DPLL jitter correction bitfield in @control_reg\n  * @dcc_mask: mask of the DPLL DCC correction bitfield @mult_div1_reg\n- * @dcc_rate: rate atleast which DCC @dcc_mask must be set\n+ * @dcc_rate: rate at least which DCC @dcc_mask must be set\n  * @idlest_mask: mask of the DPLL idle status bitfield in @idlest_reg\n  * @lpmode_mask: mask of the DPLL low-power mode bitfield in @control_reg\n  * @m4xen_mask: mask of the DPLL M4X multiplier bitfield in @control_reg\n",
+  "prefixes": []
+}

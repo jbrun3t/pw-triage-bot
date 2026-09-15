@@ -1,0 +1,45 @@
+{
+  "id": 1163855,
+  "url": "https://patchwork.kernel.org/api/1.3/series/1163855/",
+  "web_url": "https://patchwork.kernel.org/series/1163855/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "name": "clk: x86: fch: validate registrations and manage their lifetime",
+  "date": "2026-09-13T12:52:39",
+  "submitter": {
+    "id": 224905,
+    "url": "https://patchwork.kernel.org/api/1.3/people/224905/",
+    "name": "Slavin Liu",
+    "email": "bolin.liu@seu.edu.cn"
+  },
+  "version": 1,
+  "total": 1,
+  "received_total": 1,
+  "received_all": true,
+  "mbox": "https://patchwork.kernel.org/series/1163855/mbox/",
+  "cover_letter": null,
+  "patches": [
+    {
+      "id": 14811449,
+      "url": "https://patchwork.kernel.org/api/1.3/patches/14811449/",
+      "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260913125239.110113-1-bolin.liu@seu.edu.cn/",
+      "msgid": "<20260913125239.110113-1-bolin.liu@seu.edu.cn>",
+      "list_archive_url": "https://lore.kernel.org/r/20260913125239.110113-1-bolin.liu@seu.edu.cn",
+      "date": "2026-09-13T12:52:39",
+      "name": "clk: x86: fch: validate registrations and manage their lifetime",
+      "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260913125239.110113-1-bolin.liu@seu.edu.cn/mbox/"
+    }
+  ]
+}

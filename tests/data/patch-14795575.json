@@ -1,0 +1,111 @@
+{
+  "id": 14795575,
+  "url": "https://patchwork.kernel.org/api/1.3/patches/14795575/",
+  "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "msgid": "<20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com>",
+  "list_archive_url": "https://lore.kernel.org/r/20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com",
+  "date": "2026-09-07T08:37:18",
+  "name": "[v5] dt-bindings: mailbox: qcom: Document Maili CPUCP mailbox controller",
+  "commit_ref": null,
+  "pull_url": null,
+  "state": "not-applicable",
+  "archived": false,
+  "hash": "e1caccc47361412f77ca6c910f5cb4445f759f66",
+  "submitter": {
+    "id": 216784,
+    "url": "https://patchwork.kernel.org/api/1.3/people/216784/",
+    "name": "Taniya Das",
+    "email": "taniya.das@oss.qualcomm.com"
+  },
+  "delegate": null,
+  "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com/mbox/",
+  "series": [
+    {
+      "id": 1159548,
+      "url": "https://patchwork.kernel.org/api/1.3/series/1159548/",
+      "web_url": "https://patchwork.kernel.org/series/1159548/",
+      "date": "2026-09-07T08:37:18",
+      "name": "[v5] dt-bindings: mailbox: qcom: Document Maili CPUCP mailbox controller",
+      "version": 5,
+      "mbox": "https://patchwork.kernel.org/series/1159548/mbox/"
+    }
+  ],
+  "comments": "https://patchwork.kernel.org/api/patches/14795575/comments/",
+  "check": "pending",
+  "checks": "https://patchwork.kernel.org/api/patches/14795575/checks/",
+  "tags": {},
+  "related": [],
+  "headers": {
+    "Received": [
+      "from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com\n [205.220.180.131])\n\t(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))\n\t(No client certificate requested)\n\tby smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ECD440A1F\n\tfor <linux-clk@vger.kernel.org>; Mon,  7 Sep 2026 08:37:29 +0000 (UTC)",
+      "from pps.filterd (m0279869.ppops.net [127.0.0.1])\n\tby mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id\n 6878Rl7N3872917\n\tfor <linux-clk@vger.kernel.org>; Mon, 7 Sep 2026 08:37:28 GMT",
+      "from mail-pg1-f199.google.com (mail-pg1-f199.google.com\n [209.85.215.199])\n\tby mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghssg01k7-1\n\t(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)\n\tfor <linux-clk@vger.kernel.org>; Mon, 07 Sep 2026 08:37:28 +0000 (GMT)",
+      "by mail-pg1-f199.google.com with SMTP id\n 41be03b00d2f7-ca8aee88725so5373305a12.3\n        for <linux-clk@vger.kernel.org>; Mon, 07 Sep 2026 01:37:28 -0700 (PDT)",
+      "from hu-tdas-hyd.qualcomm.com ([202.46.22.19])\n        by smtp.gmail.com with ESMTPSA id\n 5a478bee46e88-334fbd5e6f6sm19057078eec.23.2026.09.07.01.37.21\n        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);\n        Mon, 07 Sep 2026 01:37:26 -0700 (PDT)"
+    ],
+    "Authentication-Results": [
+      "smtp.subspace.kernel.org;\n arc=none smtp.client-ip=205.220.180.131",
+      "smtp.subspace.kernel.org;\n dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com",
+      "smtp.subspace.kernel.org;\n spf=pass smtp.mailfrom=oss.qualcomm.com",
+      "smtp.subspace.kernel.org;\n\tdkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com\n header.b=\"kXElBDHr\";\n\tdkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com\n header.b=\"AcN/m2yH\""
+    ],
+    "ARC-Seal": "i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;\n\tt=1788770251; cv=none;\n b=MXdnceP03f1ai9Zz73IzYaL7eO0eJy8wglsiU7L8q4BYISfzjCh3p9iMux6EoBjMWXLSTn9fKUX95gTxEX+qNKN+CbNBHhN466G4lmCbVNhaEsua0Q+el719bdzu9zLYPCDxtAz7NiCXWNVILf8PqtCCGu1ORucOhVcvbo8fB9Q=",
+    "ARC-Message-Signature": "i=1; a=rsa-sha256; d=subspace.kernel.org;\n\ts=arc-20240116; t=1788770251; c=relaxed/simple;\n\tbh=qnytY6z2HDy95k2PwTmM5yjp5P2y6T3afodhcc7jnY0=;\n\th=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc;\n b=QSnt3U7BTeml++HWI/vJZekIovamHDqzwrb8HmxIjLbvjn06mLFiAhT1ndJNzx7I4Xku4g9dwfUXIYC65UiN7+LWqpg5i27HO/xHWkm6+PXn+fr818dmbGKsr7UGNwQ9O2FDYFf5xJzKetOxqvAhyqiwLj1w+bawRfdz59lVIjg=",
+    "ARC-Authentication-Results": "i=1; smtp.subspace.kernel.org;\n dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com;\n spf=pass smtp.mailfrom=oss.qualcomm.com;\n dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com\n header.b=kXElBDHr;\n dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com\n header.b=AcN/m2yH; arc=none smtp.client-ip=205.220.180.131",
+    "DKIM-Signature": [
+      "v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=\n\tcc:content-transfer-encoding:content-type:date:from:message-id\n\t:mime-version:subject:to; s=qcppdkim1; bh=hp43nu0lcflbC1poEHaJtM\n\tiG/tIWITlAFlzgkXo77Ak=; b=kXElBDHrPGDNzQd+sohq6kPXA2jILHe7tUDODN\n\tyaTK92YheKS3jJrqqM3ZBSB3t1AWdObO/J2tYMp+gV5Ah1AaB7aq81gtQtIDWzEb\n\tFIajPkmEZpy8zWTojL7OrZ93Rrj9NTqeFxpfP9VHS+F93YELFnZ/YXjEFj0RkrwP\n\tauHOP3rdDbxf+JKuzXmGbPSHump5WaGEmKDr+CAjPSizWyNNgy8RV+7cmezkvHMJ\n\t4GFmHRNUisUP8bQ464HGXWlQilYH2picoBzfGtrPo/toCszGMPKPIZfBtIz12UaT\n\tFk+k4+/SB8TfFXL7r7iJtGJES8Hs56v1OfFWoxNzh8ZHQwKg==",
+      "v=1; a=rsa-sha256; c=relaxed/relaxed;\n        d=oss.qualcomm.com; s=google; t=1788770248; x=1789375048;\n darn=vger.kernel.org;\n        h=cc:to:message-id:content-transfer-encoding:content-type\n         :mime-version:subject:date:from:from:to:cc:subject:date:message-id\n         :reply-to:content-type;\n        bh=hp43nu0lcflbC1poEHaJtMiG/tIWITlAFlzgkXo77Ak=;\n        b=AcN/m2yHFFF33nC0zzEZCgkse2jgUgaMIAyQnS8dhSyvYBPPx3ficgB9Nurg/UPmiS\n         UNmw7LjKHKhJxzvGC6RkfYoVfQ2P2/1HISo7pmN+RGu1UAqYTH0MTOHqP2GINiVw1jqZ\n         VeAr+7jVRqiFXNb+6BSbqWGogUyxZ9zesrQvxfLDRXyJhYzqZ/5RgW1i4syzSSSxFkyw\n         xDRPrOdtuE1qRCCNskoK4lifXzcRW+F15gALkYEPF/xgM0mBTGNh5ATGP0bpiWhtGoPY\n         pDCSE+6B0TfXLloTCu8MbGyXpkN9KrmUHW9ULGTMOzsYnJScQZBwcGFh8m5dELgIOW/B\n         sq2A=="
+    ],
+    "X-Google-DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;\n        d=1e100.net; s=20251104; t=1788770248; x=1789375048;\n        h=cc:to:message-id:content-transfer-encoding:content-type\n         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to\n         :cc:subject:date:message-id:reply-to:content-type;\n        bh=hp43nu0lcflbC1poEHaJtMiG/tIWITlAFlzgkXo77Ak=;\n        b=jNV2Nd4qkIJMITUzCHTl3ZUnhL5U+B+/hOeeXKe278vrG2aWpw79vCEqQb7GU+DkBx\n         vywPaqhyUITSTPY5Sd2B9dGofauLkw9K43PI2/9RkQoPnTEBGnI5gZo0ZBT3XNgDWyie\n         Ny3RCj6SlU0X2KmYBcbvoaExZGIBLYZP051s3TOs/WW+dFJFaP/yrIKPY2BvKXeMTV0u\n         RGBLZ92Q6L/m1WW5DDXypEIn8kEjhbp2asCQrlDEVizKxFKNHGbCGEJCBbjudCcSriwr\n         CMP8VdvYZdISVUuMt7pbjWb9ug8JjX9+4UQ6HSAPd1WoExfnDj+KTXySUI8k5aKteJ9a\n         Yn7w==",
+    "X-Forwarded-Encrypted": "i=1;\n AKwUvBwyg8fYZcl82+fLrYnhE2P5Vb8NyzhBJDqp47OVleSnwo1nE9YLmL/U25/iuRmO/3LVwo0qP6Dq/cA=@vger.kernel.org",
+    "X-Gm-Message-State": "AFuF++klSmbeSoQVm3GI6ByQgqOBsetGuUub4vo5t681JoDqoIuncSVA\n\tPzXW5/cSZS6zZzslROBtJxq7Qtc67RGMQaiKt7gRbvGabYOr1TkNSOyvYFVSqF9Rv8a4ji3VsJi\n\t48yJ9rKS5xr6ioE8e9Vtnm4Np22lRPvHDV3gG1gH4WQW6tYQlX/fHjb7A7BTmRwc=",
+    "X-Gm-Gg": "AYBFou1enxGd1DdksoyMrgrxnAyj8j3gtmmzTS+jJfmSu/YFUkwgUIMW57ofuyNi26n\n\tsbSTh21u7rKgM3wOH5HYXtO+rzklGlnQsymAUk5F1v0CdMTFhJJRFnrCNc7BbXtrJRncewVig2O\n\tVJT3rl8QjhMKpuszmRB+abvZinonsSK3xUr0cJdfFaOSyI6Ns6vb9W4wNs5aowCdxcpXPPh6fAV\n\td9kRoJb2pAcPmcKfgj7PYqkr+XYdzjgj885UB4PbYi3YY18ghVf/5Zw7MadEOHTa9zzoxHuGpqg\n\t1KfX0f0YBWezPDRL3ojZiT59JgXO7kHYlgl8XNMBdL6yfpGNXFHe1ZmELbSZRmca3CRsUs5krEJ\n\tXJN/BC7Mw6vi6Z3th3xdN/jvr",
+    "X-Received": [
+      "by 2002:a05:6372:a711:b0:3da:5f91:4b37 with SMTP id\n adf61e73a8af0-3da5f914d66mr15341883637.23.1788770247604;\n        Mon, 07 Sep 2026 01:37:27 -0700 (PDT)",
+      "by 2002:a05:6372:a711:b0:3da:5f91:4b37 with SMTP id\n adf61e73a8af0-3da5f914d66mr15341846637.23.1788770247137;\n        Mon, 07 Sep 2026 01:37:27 -0700 (PDT)"
+    ],
+    "From": "Taniya Das <taniya.das@oss.qualcomm.com>",
+    "Date": "Mon, 07 Sep 2026 14:07:18 +0530",
+    "Subject": "[PATCH v5] dt-bindings: mailbox: qcom: Document Maili CPUCP\n mailbox controller",
+    "Precedence": "bulk",
+    "X-Mailing-List": "linux-clk@vger.kernel.org",
+    "List-Id": "<linux-clk.vger.kernel.org>",
+    "List-Subscribe": "<mailto:linux-clk+subscribe@vger.kernel.org>",
+    "List-Unsubscribe": "<mailto:linux-clk+unsubscribe@vger.kernel.org>",
+    "MIME-Version": "1.0",
+    "Content-Type": "text/plain; charset=\"utf-8\"",
+    "Content-Transfer-Encoding": "8bit",
+    "Message-Id": "<20260907-maili_initial_clock-v5-1-e79bb6b93a49@oss.qualcomm.com>",
+    "X-B4-Tracking": "v=1; b=H4sIAL13nmoC/3XN3WrDMAwF4Fcpvp6L/Benvdp7jFIcW1nFkniL2\n 7BR8u5TC2O9cG8ERxx9uoqCM2ER+81VzLhQoTxxcC8bEU9hekdJibPQoBtolJdjoIGONNGZwnC\n MQ44fMnrUnXUGUguCLz9n7On7rr4dOJ+onPP8c3+yqNv2z2ur3qIkyNRgQjBOK2Vecynbr0sYY\n h7HLQ9xYxf9T3ll6pRmyu+cbXvoOtf2TyjzQGlbpwxT1nXOc0PFnXpC2QfKQJ2yTGFyOiTUje2\n hQq3r+gsNCf9fngEAAA==",
+    "X-Change-ID": "20260617-maili_initial_clock-c7e2b4530d80",
+    "To": "Bjorn Andersson <andersson@kernel.org>,\n        Michael Turquette <mturquette@baylibre.com>,\n        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,\n        Rob Herring <robh@kernel.org>,\n        Krzysztof Kozlowski <krzk+dt@kernel.org>,\n        Conor Dooley <conor+dt@kernel.org>,\n        Taniya Das <taniya.das@oss.qualcomm.com>,\n        Vivek Aknurwar <vivek.aknurwar@oss.qualcomm.com>",
+    "Cc": "Ajit Pandey <ajit.pandey@oss.qualcomm.com>,\n        Imran Shaik <imran.shaik@oss.qualcomm.com>,\n        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,\n        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,\n        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,\n        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>",
+    "X-Mailer": "b4 0.15-dev-aa3f6",
+    "X-Proofpoint-Spam-Details-Enc": "AW1haW4tMjYwOTA3MDA5MyBTYWx0ZWRfX+1YeuD1S+SHS\n DNYknT75CWiLPLTsI7ZOUv/hxyN6VMTMfOmUdUmKNAnP7T6EtCK1MZI91ag2BhanwO1GERlLGa3\n 8iOJK2mNAAO8LyLRQo/UOiAwATcFwYIPLx3NU5Al4yDfPME529fnC/qwphQ69wdthu2YhJkDw6O\n krMk5LaUEyT6iXbkAh7CyEa8pHkGF23jeKDhkY2ahWfnJj2LQdA39gNdYJOviJagca5z/vFbxcD\n ZwCKK352VeHOSxJngifZAxYXA5tc9JOqpz3uYSRfN4QPNTItK/P+mk18M9PuqIEcwTyj1fcVFPg\n fNESPWH8dJv+4Fd0p7bUc93NrCayJD/YDJFh6osmc2laeeD3PD+cb5m2PqmrLVXwhKrChBkRhnD\n XWQsSr/xcjG6ZQColYPKLybbk1r/GkIF5zE+yHLncFTN7pk0fDc6a5T45NWyTi3jrhqy/L/YMK6\n qNkTKjwIz9Y0rYL7QSw==",
+    "X-Authority-Analysis": "v=2.4 cv=MrJiLWae c=1 sm=1 tr=0 ts=6a9e77c8 cx=c_pps\n a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17\n a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10\n a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22\n a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=ejcyFZ-kiPiluOC7xQcA:9 a=3ZKOabzyN94A:10\n a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22",
+    "X-Proofpoint-ORIG-GUID": "rm3ATIilLMSi0_g_UdpkYI15vVaovbNf",
+    "X-Proofpoint-Spam-Info": "AW1haW4tMjYwOTA3MDA5MyBTYWx0ZWRfX03XDGPvGu8cO\n QanfD+dKdYk7DaT5ie1yMugS+cQ7YjNguXrD9h5scgdeutVdJQINRBsF+90A1eW1if/fWFzmy1p\n npC+OkBT6E9JQc1XQduM0C7/7e7fOBA=",
+    "X-Proofpoint-GUID": "rm3ATIilLMSi0_g_UdpkYI15vVaovbNf",
+    "X-Proofpoint-Virus-Version": "vendor=baseguard\n engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49\n definitions=2026-09-07_02,2026-09-03_01,2025-10-01_01",
+    "X-Proofpoint-Spam-Details": "rule=outbound_notspam policy=outbound score=0\n lowpriorityscore=0 malwarescore=0 phishscore=0 clxscore=1015\n priorityscore=1501 impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0\n spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound\n adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000\n definitions=main-2609070093"
+  },
+  "content": "Document the CPU Control Processor (CPUCP) mailbox controller for the\nQualcomm Maili SoC. It is software compatible with the X1E80100 CPUCP\nmailbox controller and uses it as a fallback compatible string.\n\nReviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>\nSigned-off-by: Taniya Das <taniya.das@oss.qualcomm.com>\n---\nChanges in v5:\n- The RPMH, TCSR and GCC bindings and the Hawi GCC driver extension\n  were picked up from v4 and merged; only the CPUCP mailbox controller\n  binding remains in this revision.\n- No functional changes to the remaining CPUCP mailbox binding.\n- Link to v4: https://lore.kernel.org/r/20260730-maili_initial_clock-v4-0-ed52ade264f0@oss.qualcomm.com\n\nclk: qcom: Introduce initial clock controllers for Maili SoC\n\nIntroduce the initial set of clock controller bindings and driver\nsupport for the upcoming Qualcomm Maili SoC.\n\nMaili is a new mobile SoC from Qualcomm. It is a derivative of the\nHawi SoC and shares most of its clock topology. Where the hardware is\nidentical, Maili reuses the existing Hawi drivers via fallback\ncompatible strings. Where Maili diverges \u2014 specifically in the Global\nClock Controller (GCC), which carries an additional QUPv3 wrapper\n(WRAP5) \u2014 the Hawi GCC driver is extended to handle both SoCs.\n\nThe series covers the following clock controllers:\n\n  - RPMH clock controller: identical to Hawi; uses qcom,hawi-rpmh-clk\n    as fallback.\n  - TCSR clock controller: identical to Hawi; uses qcom,hawi-tcsrcc\n    as fallback.\n  - Global Clock Controller (GCC): extends the Hawi GCC driver with\n    eight additional QUPV3 WRAP5 clocks present only on Maili.\n  - CPUCP mailbox controller: software-compatible with X1E80100; uses\n    qcom,x1e80100-cpucp-mbox as fallback.\n\nThe devicetree for Maili will be upstreamed later.\n\nChanges in v4:\n  - Rebase the binding of tcsr to linux-next.\n  - Add RB-by from Konrad Dybcio on the GCC driver patch.\n  - Link to v3: https://lore.kernel.org/r/20260724-maili_initial_clock-v3-0-45b577241c91@oss.qualcomm.com\n\nChanges in v3:\n  - Update the comment for extending the array appropriately size.\n  - Add RB-by [Krzysztof] from v2\n  - Link to v2: https://lore.kernel.org/r/20260713-maili_initial_clock-v2-0-79548f0bb58f@oss.qualcomm.com\n\nChanges in v2:\n  - Split the new Maili-only QUPv3 WRAP5 clock IDs out of\n    qcom,hawi-gcc.h into a new qcom,maili-gcc.h header (which includes\n    qcom,hawi-gcc.h), instead of adding them directly to the Hawi\n    header. [Krzysztof]\n  - Update the GCC driver to include the maili-gcc header.\n  - Link to v1: https://lore.kernel.org/r/20260618-maili_initial_clock-v1-0-d6ede0352113@oss.qualcomm.com\n---\n Documentation/devicetree/bindings/mailbox/qcom,cpucp-mbox.yaml | 1 +\n 1 file changed, 1 insertion(+)\n\n\n---\nbase-commit: af5f12805e5cefa4fe68d6127c7e1fb78cd5535c\nchange-id: 20260617-maili_initial_clock-c7e2b4530d80\n\nBest regards,",
+  "diff": "diff --git a/Documentation/devicetree/bindings/mailbox/qcom,cpucp-mbox.yaml b/Documentation/devicetree/bindings/mailbox/qcom,cpucp-mbox.yaml\nindex 03359479d926a623c467f1b8ba857d787366d411..2185920e1b5d2154a23b67905106f35e0b71eee9 100644\n--- a/Documentation/devicetree/bindings/mailbox/qcom,cpucp-mbox.yaml\n+++ b/Documentation/devicetree/bindings/mailbox/qcom,cpucp-mbox.yaml\n@@ -21,6 +21,7 @@ properties:\n               - qcom,glymur-cpucp-mbox\n               - qcom,hawi-cpucp-mbox\n               - qcom,kaanapali-cpucp-mbox\n+              - qcom,maili-cpucp-mbox\n               - qcom,nord-cpucp-mbox\n               - qcom,sm8750-cpucp-mbox\n           - const: qcom,x1e80100-cpucp-mbox\n",
+  "prefixes": [
+    "v5"
+  ]
+}

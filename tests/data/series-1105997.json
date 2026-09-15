@@ -1,0 +1,45 @@
+{
+  "id": 1105997,
+  "url": "https://patchwork.kernel.org/api/1.3/series/1105997/",
+  "web_url": "https://patchwork.kernel.org/series/1105997/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "name": "[v3] clk: imx: Add audio PLL debugfs for K-divider control",
+  "date": "2026-06-04T13:48:01",
+  "submitter": {
+    "id": 149891,
+    "url": "https://patchwork.kernel.org/api/1.3/people/149891/",
+    "name": "Jacky Bai",
+    "email": "ping.bai@nxp.com"
+  },
+  "version": 3,
+  "total": 1,
+  "received_total": 1,
+  "received_all": true,
+  "mbox": "https://patchwork.kernel.org/series/1105997/mbox/",
+  "cover_letter": null,
+  "patches": [
+    {
+      "id": 14611435,
+      "url": "https://patchwork.kernel.org/api/1.3/patches/14611435/",
+      "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com/",
+      "msgid": "<20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com>",
+      "list_archive_url": "https://lore.kernel.org/r/20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com",
+      "date": "2026-06-04T13:48:01",
+      "name": "[v3] clk: imx: Add audio PLL debugfs for K-divider control",
+      "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260604-imx8m_pll_debugfs-v3-1-4e331ebc85d7@nxp.com/mbox/"
+    }
+  ]
+}

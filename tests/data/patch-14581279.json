@@ -1,0 +1,124 @@
+{
+  "id": 14581279,
+  "url": "https://patchwork.kernel.org/api/1.3/patches/14581279/",
+  "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/20260519-imx8m_pll_debugfs-v2-1-20e1d88526b0@nxp.com/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "msgid": "<20260519-imx8m_pll_debugfs-v2-1-20e1d88526b0@nxp.com>",
+  "list_archive_url": "https://lore.kernel.org/r/20260519-imx8m_pll_debugfs-v2-1-20e1d88526b0@nxp.com",
+  "date": "2026-05-19T09:19:18",
+  "name": "[v2] clk: imx: Add audio PLL debugfs for K-divider control",
+  "commit_ref": null,
+  "pull_url": null,
+  "state": "superseded",
+  "archived": false,
+  "hash": "4794f781f15c5bf840dd6ef4650b801a57bfe564",
+  "submitter": {
+    "id": 149891,
+    "url": "https://patchwork.kernel.org/api/1.3/people/149891/",
+    "name": "Jacky Bai",
+    "email": "ping.bai@nxp.com"
+  },
+  "delegate": null,
+  "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/20260519-imx8m_pll_debugfs-v2-1-20e1d88526b0@nxp.com/mbox/",
+  "series": [
+    {
+      "id": 1097210,
+      "url": "https://patchwork.kernel.org/api/1.3/series/1097210/",
+      "web_url": "https://patchwork.kernel.org/series/1097210/",
+      "date": "2026-05-19T09:19:18",
+      "name": "[v2] clk: imx: Add audio PLL debugfs for K-divider control",
+      "version": 2,
+      "mbox": "https://patchwork.kernel.org/series/1097210/mbox/"
+    }
+  ],
+  "comments": "https://patchwork.kernel.org/api/patches/14581279/comments/",
+  "check": "pending",
+  "checks": "https://patchwork.kernel.org/api/patches/14581279/checks/",
+  "tags": {},
+  "related": [],
+  "headers": {
+    "Received": [
+      "from GVXPR05CU001.outbound.protection.outlook.com\n (mail-swedencentralazon11013054.outbound.protection.outlook.com\n [52.101.83.54])\n\t(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))\n\t(No client certificate requested)\n\tby smtp.subspace.kernel.org (Postfix) with ESMTPS id 684C43E0C57\n\tfor <linux-clk@vger.kernel.org>; Tue, 19 May 2026 09:17:06 +0000 (UTC)",
+      "from VI1PR04MB6861.eurprd04.prod.outlook.com (2603:10a6:803:13c::9)\n by AM8PR04MB7475.eurprd04.prod.outlook.com (2603:10a6:20b:1d4::21) with\n Microsoft SMTP Server (version=TLS1_2,\n cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May\n 2026 09:17:03 +0000",
+      "from VI1PR04MB6861.eurprd04.prod.outlook.com\n ([fe80::7f96:4bde:2e55:cd5]) by VI1PR04MB6861.eurprd04.prod.outlook.com\n ([fe80::7f96:4bde:2e55:cd5%6]) with mapi id 15.21.0048.013; Tue, 19 May 2026\n 09:17:03 +0000"
+    ],
+    "Authentication-Results": [
+      "smtp.subspace.kernel.org;\n arc=fail smtp.client-ip=52.101.83.54",
+      "smtp.subspace.kernel.org;\n dmarc=pass (p=none dis=none) header.from=nxp.com",
+      "smtp.subspace.kernel.org;\n spf=pass smtp.mailfrom=nxp.com",
+      "smtp.subspace.kernel.org;\n\tdkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com\n header.b=\"cRADPzuU\"",
+      "dkim=none (message not signed)\n header.d=none;dmarc=none action=none header.from=nxp.com;"
+    ],
+    "ARC-Seal": [
+      "i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;\n\tt=1779182228; cv=fail;\n b=Sg10IfmZMOVb0eRyskV+9RGdVMwCBtSB5Lt7YQmmpQ6LDmX72E0LdnFkhYaCWEthXBxcvzParybOoav1qaI7uJt+05WsLzLYfA9VRodwywDYOLTr8S5PdBfofJld/s8NT8ZTbQSUylmwiVSVb+20se4lUXmxvVNO5ViocycpNQI=",
+      "i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;\n b=kzgkReqWbPmWSdvqOkVdfX5wvuuSSRycyHUNvUIu6hLzu0WhcJclpCQbDZVQpMzHbNaZl/DDcz/z/F6MqD24ds+2NiPw00tl6zyL3g3tcvFxKmPoVSnKLZCI6Pn0CbfmAqFgEvDeJZ5q/QzOiYrvxamxFoy6aXnhNJGIXRUl28k2G2oFtobdD4HVX3wYIVrH4lSOqw2e0yrzV40gxAZiOb44zd/7xjGA+skUs9IxcbYI2/WPd/ha/z23Nt5Y7uPyl1wwAPx4SU6ZnlsHHSU52DtVC5vNMKTh/xeNI2Mz2jUBafdBT6kW+LPpieI6glP7rgLqcUpS0IEy89ESUr++Nw=="
+    ],
+    "ARC-Message-Signature": [
+      "i=2; a=rsa-sha256; d=subspace.kernel.org;\n\ts=arc-20240116; t=1779182228; c=relaxed/simple;\n\tbh=j9ylyrWJorSM9if96OTFkI6gxqHLqmxq/5hPUIOvt0s=;\n\th=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version;\n b=HyKyQr3lccAY5ixgKTk7wcjwBCBp9KVUsLyp+bs9CG677PypDDUZWfKPUYqrId29N+sg0TiAx+kBJS0RRGawOdSiGAP34Q7tK6dlk21AWkZn5Dq9ojdJvmBaPWOjBJJ+Ef9vtkhh8ZOXwbUCtFuTaNSFC0ihpDec1BJUhIH8Obo=",
+      "i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;\n s=arcselector10001;\n h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;\n bh=g0kkTptQexzAPoXWTkOTOvi7rZoHtCxRdSTU+/xBQzY=;\n b=XEx94bjZnGtj2b7ZnhZO4xOTPl+yekK7VhxCFP7+FKD4iQf0SVD6brVjahknzl/U1369SZOE71/CpLDHVBPK+UA5tDIl42DwEo1QnFFvrv/s0xx6AgEM992FHQ/titnUbVYO6qaAcyPhzqahePguY+HCNOoKnBRtqlk2igijbLoxXW/OBaslVa/OLzGLld1cqevnAH9jWfizNmgZxoLmcqInoKEczwCSXyizKzn/2ylLE0QjTh6qvT2VNucSs/vRiQJrRAXx+HHKcToH6fi8gtvvnqohUQ9KUDg2ungpWihN9vtyoft9+vg6WN2f/FvwdKKYYW+QTtz1Cf/tDev8BQ=="
+    ],
+    "ARC-Authentication-Results": [
+      "i=2; smtp.subspace.kernel.org;\n dmarc=pass (p=none dis=none) header.from=nxp.com;\n spf=pass smtp.mailfrom=nxp.com;\n dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com\n header.b=cRADPzuU; arc=fail smtp.client-ip=52.101.83.54",
+      "i=1; mx.microsoft.com 1; spf=pass\n smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass\n header.d=nxp.com; arc=none"
+    ],
+    "DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;\n h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;\n bh=g0kkTptQexzAPoXWTkOTOvi7rZoHtCxRdSTU+/xBQzY=;\n b=cRADPzuUdHjjz6txiQ29B9JO3l8V3a0dAwPpfpi1WYLfSgDi4NqjcXhhzq/VDg4gONag9ex8kodk6jJasUy1VBPdI9LGsvEfS8R5IGFbMlEk5n1y8wFe6Y+zUSRlEd9lbcdRK382AiBzkuiHAmf0qPGWm9wb42e/QFOOuVDEUbp2OMkk5AeRjqyCAuRy62zjaj4KxwG5/DkVGeaM9ajeS7+SgZqIt6P67D10yvWZmSIe46uqCiC5SheQlHNiML7uvSwOwwey+pUDQtiLsKtF5XxlkPLFc2GpVOpSYmg/esaKCd4zQYgAFvqJB+HdaPGNVK7VtUptzcfA++6ajwRaBA==",
+    "From": "Jacky Bai <ping.bai@nxp.com>",
+    "Date": "Tue, 19 May 2026 17:19:18 +0800",
+    "Subject": "[PATCH v2] clk: imx: Add audio PLL debugfs for K-divider control",
+    "Content-Type": "text/plain; charset=\"utf-8\"",
+    "Content-Transfer-Encoding": "7bit",
+    "Message-Id": "<20260519-imx8m_pll_debugfs-v2-1-20e1d88526b0@nxp.com>",
+    "X-B4-Tracking": "v=1; b=H4sIABUrDGoC/22NywqDMBBFf0Vm3ZTMkNrHyv8oIo2OOuCLpA0Wy\n b83tdsuz4F77gaenbCHW7aB4yBe5ikBHTKo+8fUsZImMZCmXBtCJeN6GatlGKqG7atrvSKTN7q\n 11uZ4hrRbHLey7s17mbgX/5zde78I+LW/2gnpTy2gQsXIxlhCy1ddTOtyrOcRyhjjB1d5NWawA\n AAA",
+    "X-Change-ID": "20260421-imx8m_pll_debugfs-246d0fbbb617",
+    "To": "Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,\n Michael Turquette <mturquette@baylibre.com>,\n Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,\n Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,\n Pengutronix Kernel Team <kernel@pengutronix.de>,\n Fabio Estevam <festevam@gmail.com>",
+    "Cc": "linux-clk@vger.kernel.org, imx@lists.linux.dev,\n linux-arm-kernel@lists.infradead.org, Jacky Bai <ping.bai@nxp.com>",
+    "X-Mailer": "b4 0.14.2",
+    "X-Developer-Signature": "v=1; a=ed25519-sha256; t=1779182399; l=7846;\n i=ping.bai@nxp.com; s=20250804; h=from:subject:message-id;\n bh=j9ylyrWJorSM9if96OTFkI6gxqHLqmxq/5hPUIOvt0s=;\n b=LQUwpsonM7p7+BA5BdQIQzRE+ryNI/rE8JmFhmyPmjnp+6qOIw2m1+JrlwAc1Kcpkm5jgSqLW\n OwpmGKR3KL1AlSeTp+a8xn8s3cQB1kT/V4SqroRKP6vDxpqQfsT3Ub7",
+    "X-Developer-Key": "i=ping.bai@nxp.com; a=ed25519;\n pk=ckFjCfRynXBjQGmSmzOVI5hggMD9XnnNlwj/jcO/j1U=",
+    "X-ClientProxiedBy": "MA5PR01CA0015.INDPRD01.PROD.OUTLOOK.COM\n (2603:1096:a01:177::8) To AM7PR04MB6853.eurprd04.prod.outlook.com\n (2603:10a6:20b:107::18)",
+    "Precedence": "bulk",
+    "X-Mailing-List": "linux-clk@vger.kernel.org",
+    "List-Id": "<linux-clk.vger.kernel.org>",
+    "List-Subscribe": "<mailto:linux-clk+subscribe@vger.kernel.org>",
+    "List-Unsubscribe": "<mailto:linux-clk+unsubscribe@vger.kernel.org>",
+    "MIME-Version": "1.0",
+    "X-MS-PublicTrafficType": "Email",
+    "X-MS-TrafficTypeDiagnostic": "VI1PR04MB6861:EE_|AM8PR04MB7475:EE_",
+    "X-MS-Office365-Filtering-Correlation-Id": "29ec65b1-9a77-4cb6-1238-08deb5876389",
+    "X-MS-Exchange-SenderADCheck": "1",
+    "X-MS-Exchange-AntiSpam-Relay": "0",
+    "X-Microsoft-Antispam": "BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|52116014|18002099003|56012099003|11063799006|38350700014;",
+    "X-Microsoft-Antispam-Message-Info": "sajWqcFY6btsX7EeP5gaeRZ7HRJ+HQNYbbaZO4e0kc0TDiOcbyJtain7Xwu+7yKbX1GzSDy4Phs5OGUCjbqNGzP2i3LBYWAy+djfs4l7LDvAkMPSWvORj8d4kiWR0xQarH9ffA+jxe0hN7WF2ugAZMf6tr2jyjBQ+ZKNfFtKatuvuikJvNgVZPL33/INdIkqxOgU0UnhOASGavIsI8EzZ16itsotbV9SoGu2Hb7SgHQJotvfYQY6ul/ozUe1cXme5WxbUHoL2jkVfflbmIsWfRExK9ae9+GX3OVTBB6pRHJfNBjiCgT6IqumJwSYeauxkNDLI5ItfivHkysXZ1EVNSjO/x8bjPgRji2bK4gAPI76u8Uki0FZmVL32xt/vf2AABoZDSjZlb4/jbTndYgnw0zzz8r1htemKK/LqRZiXH24gUca/K02hUfS0pwh10lHqaKEhteJNKrrKWbydyJMBgfl9BA1bdidGEl3/4OOaYE/uPjMKGkTii0pGZGMA2P4O9NRkPfWWBTlzELm1KicvnX4jNXsSe+Ksvbgc34aBZXo7G3Ty3o7bUn1k3lp2WySGRy3f2vp8IqHzg/a99gvPEJM/rngEroHR2IAKNUNzHQYs0pOKgnBxEFCEdH9sjgoBdpxKk+fJg8s07z1GYvSEZf/uzWxElPXKq/PZkm88DF8/BG+h+wyRWjhsUrQ+tim/HNv/bXorKBmLJ9fZ3GqvfLj0QGAQaKELDuzWnJb38WmR+kQEmdauzAiA2tmRm76",
+    "X-Forefront-Antispam-Report": "CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB6861.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(52116014)(18002099003)(56012099003)(11063799006)(38350700014);DIR:OUT;SFP:1101;",
+    "X-MS-Exchange-AntiSpam-MessageData-ChunkCount": "1",
+    "X-MS-Exchange-AntiSpam-MessageData-0": "=?utf-8?q?UZj1tNz7qZbgG+6+91T0YbXZ6pAq?=\n\t=?utf-8?q?f+5Pf6R7mfMRk4u7Yabu2MSbgf8B2UOY8zozUWlfAAU4QZG0MEl5w5mdrjiJStuMt?=\n\t=?utf-8?q?RYyqhu4dn20FuavXiJLk1Fk/63GtbRnwDT70a/Jy7rpr5LixZMq6diM/k6FIWtw0d?=\n\t=?utf-8?q?XeKEx7jB7/PlkI4OkVsLvTxD3DNVwTHEz0ps/vArZ8Sw0rKIP1jp8QO9nid6+dGa9?=\n\t=?utf-8?q?nASHw5wzD1UU3Ncn9rMBzf92aHAWUldOYAkDdSl5SetQqSrXADZ28PgOI5yZTE3he?=\n\t=?utf-8?q?RG3dhIwq6x694CGYjB/YaHxsuXGtVnDlPYc7dQgzsdvBDdfPfDn9fqnB9vjwy1k1M?=\n\t=?utf-8?q?RLERlSAze5Q4cMmxBkNXR0Fr6HagKpLoSzvtKuK5xjghGdZlJYJC2v3LlZNw3E7wJ?=\n\t=?utf-8?q?x+NUDbSWFiWNZN1LWOOHIDroH/n5dMX/ppo9xqqmz/RN/R22ABxAMYXiYc5ACQu2J?=\n\t=?utf-8?q?Wbrp2sih5gMKg9jZoD6s0+dbJC57LU/T4vbyIW0tEldSv6mc0g+Wn5zVNRXv2vb6k?=\n\t=?utf-8?q?MsjmYvnYPO3RmAO8MiepQ+Tu7JfdSVBys/p06MTNja2LUH4mAGwtNaHKSmRJr9QMv?=\n\t=?utf-8?q?55a9ORNM7BCrk+z9u6XXBP1SB8MIuAakpjU4waS4HW/e1FLZPHTzZsmSg7b9jQi2r?=\n\t=?utf-8?q?9N8h/HkP2O6kVOpu5d0S2/6JFG7B/9SgqnewVuDTnGuU8oouY3lPhW9zD3mSeizv7?=\n\t=?utf-8?q?oGSAvAn0kshg9vlTby8P8s429zSJPN0z4+Tr+hwnZ2N8Ha6J1zCWZeYwbL5g+oAw5?=\n\t=?utf-8?q?qSLkDiNmQyeoXaa4y32WcE5mxJEYoWf2+nJbLHPrKco0fUxz+Qc+ZV58YUc73HfW8?=\n\t=?utf-8?q?vFhpPAS89jJIB+cmUeNNUjoqGiUxeZ1b+ce1M/RY6uqsj5Z3hsqXhDiPwaH0qEw9b?=\n\t=?utf-8?q?qHJaDq5g7HduG4Aqo1L6F7l2P0Hi1WcZgxaZ2dtv4R9n1dQiY+7tG5rTo3bSsI89z?=\n\t=?utf-8?q?6H71N1BjjeEoi/ZwPov/vVDsBgCSzWqyzf+UrmvCwbPvHB8tMNUolWpOXfIF0Aw1y?=\n\t=?utf-8?q?GyQgYBNZ6LjxgBRGp7lWvg/eYQ2LnpPaFX9mhYHuLu9IP7drssIjJY/LpjtSNgYNu?=\n\t=?utf-8?q?YyTsep3AP8LNr+CM9TjNBl4QXPtO5Lg4cLQY0oJ55RY2UyFXeMA63MemsaeImAsn3?=\n\t=?utf-8?q?JjSpIA5mYqKuOjNnAAaDtxUPvoDZLZj3pNUaORoFhvZ2xVGIbIfpykMbZR1Y/OqI8?=\n\t=?utf-8?q?zXfi6EAccayRKcHFtQFPY1AUzMvFFRbF+/DYKELJXVe51S1wF/hxt3qo4mBqFhfVs?=\n\t=?utf-8?q?004weTsUGlbrkyeBNgVHXe5ih838LgmXUArmWOAMsburfvYAgcZpWiP5gJlKRrKeX?=\n\t=?utf-8?q?LIKTo8IqbLTMLvJGOiGUKYGqEhP2lfRfh/5n9LsPp6rHLSroKEYVkSOGQHaSt3H81?=\n\t=?utf-8?q?tT12N5/x9SSkCxbpBKY4x6bkf8ZKP5JqbM90VDDp686CjoHJi5zXvtjjdcIIUPTro?=\n\t=?utf-8?q?w+kbrBg9d5nzCU4NqG7JTHC5oEu/DPmwKF6zd8LC4XFezfE85b6hsLVfGCm7NIXdp?=\n\t=?utf-8?q?eDqocFs3xZOMVn2UZShCDNncnhJfl2Dut3K3EjW6lgYR45AMd/48LWrZArdMx0zvH?=\n\t=?utf-8?q?y/ufSAjiGhdYEEbz0FKpOtpRujvwfp42d0M1lErwgKCacLrQR+m5OXR9mi9ClA4bU?=\n\t=?utf-8?q?q3SsRbFMWg?=",
+    "X-OriginatorOrg": "nxp.com",
+    "X-MS-Exchange-CrossTenant-Network-Message-Id": "29ec65b1-9a77-4cb6-1238-08deb5876389",
+    "X-MS-Exchange-CrossTenant-AuthSource": "AM7PR04MB6853.eurprd04.prod.outlook.com",
+    "X-MS-Exchange-CrossTenant-AuthAs": "Internal",
+    "X-MS-Exchange-CrossTenant-OriginalArrivalTime": "19 May 2026 09:17:03.4114\n (UTC)",
+    "X-MS-Exchange-CrossTenant-FromEntityHeader": "Hosted",
+    "X-MS-Exchange-CrossTenant-Id": "686ea1d3-bc2b-4c6f-a92c-d99c5c301635",
+    "X-MS-Exchange-CrossTenant-MailboxType": "HOSTED",
+    "X-MS-Exchange-CrossTenant-UserPrincipalName": "xqBd2pscpbjK3mNqGoamRpiTOdi4GBXjYfyaY2UjMASUzEXiWRMqdKl+OcUKBy6wCNfiurhWz4jJdeTQN2TIUg==",
+    "X-MS-Exchange-Transport-CrossTenantHeadersStamped": "AM8PR04MB7475"
+  },
+  "content": "Add debugfs support for runtime tuning of the audio PLL K divider,\nwhich enables fine-grained frequency adjustments for audio PLL.\nThis is used for:\n  - Audio clock calibration and testing\n  - Debugging audio synchronization issues\n\nTwo debug interfaces are exported to userspace:\n  - delta_k: It is used to adjust the K divider in PLL based on small\n    steps\n  - pll_parameter: It is used for get PLL's current M-divider,\n    P-divider, S-divider & K-divider setting in PLL register\n\nSigned-off-by: Jacky Bai <ping.bai@nxp.com>\n---\nChanges in v2:\n- remove the examples from commit log.\n- refine the comments blocks\n- add delta_k read back support\n- resolve the comments from Sashiko AI\n- add prefix to audio_pll_debug_init API\n- Link to v1: https://lore.kernel.org/r/20260512-imx8m_pll_debugfs-v1-1-e1e44b21be90@nxp.com\n---\n drivers/clk/imx/clk-imx8mm.c  |   6 +++\n drivers/clk/imx/clk-pll14xx.c | 107 ++++++++++++++++++++++++++++++++++++++++++\n drivers/clk/imx/clk.h         |   1 +\n 3 files changed, 114 insertions(+)\n\n\n---\nbase-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83\nchange-id: 20260421-imx8m_pll_debugfs-246d0fbbb617\n\nBest regards,",
+  "diff": "diff --git a/drivers/clk/imx/clk-imx8mm.c b/drivers/clk/imx/clk-imx8mm.c\nindex 319af4deec01c188524807d39dff92bbd08f3601..f080a4dcead359f9494b289ebd277ef2dfdf72cd 100644\n--- a/drivers/clk/imx/clk-imx8mm.c\n+++ b/drivers/clk/imx/clk-imx8mm.c\n@@ -298,6 +298,7 @@ static struct clk_hw **hws;\n \n static int imx8mm_clocks_probe(struct platform_device *pdev)\n {\n+\tstruct clk_hw *audio_pll_hws[2];\n \tstruct device *dev = &pdev->dev;\n \tstruct device_node *np = dev->of_node;\n \tvoid __iomem *base;\n@@ -610,6 +611,11 @@ static int imx8mm_clocks_probe(struct platform_device *pdev)\n \n \timx_register_uart_clocks();\n \n+\t/* Add debug interface for audio PLLs */\n+\taudio_pll_hws[0] = hws[IMX8MM_AUDIO_PLL1];\n+\taudio_pll_hws[1] = hws[IMX8MM_AUDIO_PLL2];\n+\timx_audio_pll_debug_init(audio_pll_hws, ARRAY_SIZE(audio_pll_hws));\n+\n \treturn 0;\n \n unregister_hws:\ndiff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c\nindex 39600ee22be3066683b562aa6f2a8b750d19c4cc..b00529cb196a22ad0444b1efdbc3b53d0e11c20b 100644\n--- a/drivers/clk/imx/clk-pll14xx.c\n+++ b/drivers/clk/imx/clk-pll14xx.c\n@@ -8,11 +8,13 @@\n #include <linux/bitfield.h>\n #include <linux/bits.h>\n #include <linux/clk-provider.h>\n+#include <linux/debugfs.h>\n #include <linux/err.h>\n #include <linux/export.h>\n #include <linux/io.h>\n #include <linux/iopoll.h>\n #include <linux/slab.h>\n+#include <linux/spinlock.h>\n #include <linux/jiffies.h>\n \n #include \"clk.h\"\n@@ -40,6 +42,8 @@ struct clk_pll14xx {\n \tenum imx_pll14xx_type\t\ttype;\n \tconst struct imx_pll14xx_rate_table *rate_table;\n \tint rate_count;\n+\ts16 delta_k;\n+\tspinlock_t lock;\n };\n \n #define to_clk_pll14xx(_hw) container_of(_hw, struct clk_pll14xx, hw)\n@@ -361,6 +365,7 @@ static int clk_pll1443x_set_rate(struct clk_hw *hw, unsigned long drate,\n {\n \tstruct clk_pll14xx *pll = to_clk_pll14xx(hw);\n \tstruct imx_pll14xx_rate_table rate;\n+\tunsigned long flags;\n \tu32 gnrl_ctl, div_ctl0;\n \tint ret;\n \n@@ -374,9 +379,13 @@ static int clk_pll1443x_set_rate(struct clk_hw *hw, unsigned long drate,\n \t\tdiv_ctl0 |= FIELD_PREP(SDIV_MASK, rate.sdiv);\n \t\twritel_relaxed(div_ctl0, pll->base + DIV_CTL0);\n \n+\t\tspin_lock_irqsave(&pll->lock, flags);\n+\n \t\twritel_relaxed(FIELD_PREP(KDIV_MASK, rate.kdiv),\n \t\t\t       pll->base + DIV_CTL1);\n \n+\t\tspin_unlock_irqrestore(&pll->lock, flags);\n+\n \t\treturn 0;\n \t}\n \n@@ -394,8 +403,12 @@ static int clk_pll1443x_set_rate(struct clk_hw *hw, unsigned long drate,\n \t\t   FIELD_PREP(SDIV_MASK, rate.sdiv);\n \twritel_relaxed(div_ctl0, pll->base + DIV_CTL0);\n \n+\tspin_lock_irqsave(&pll->lock, flags);\n+\n \twritel_relaxed(FIELD_PREP(KDIV_MASK, rate.kdiv), pll->base + DIV_CTL1);\n \n+\tspin_unlock_irqrestore(&pll->lock, flags);\n+\n \t/*\n \t * According to SPEC, t3 - t2 need to be greater than\n \t * 1us and 1/FREF, respectively.\n@@ -508,6 +521,8 @@ struct clk_hw *imx_dev_clk_hw_pll14xx(struct device *dev, const char *name,\n \tif (!pll)\n \t\treturn ERR_PTR(-ENOMEM);\n \n+\tspin_lock_init(&pll->lock);\n+\n \tinit.name = name;\n \tinit.flags = pll_clk->flags;\n \tinit.parent_names = &parent_name;\n@@ -551,3 +566,95 @@ struct clk_hw *imx_dev_clk_hw_pll14xx(struct device *dev, const char *name,\n \treturn hw;\n }\n EXPORT_SYMBOL_GPL(imx_dev_clk_hw_pll14xx);\n+\n+/*\n+ * Debugfs interface for Audio PLL runtime monitoring and control\n+ *\n+ * This interface allows dynamic adjustment of the Audio PLL\n+ * K-divider for precise frequency tuning, particularly useful\n+ * for audio applications.\n+ *\n+ * examples for the usage of the two interfaces:\n+ *   1): Get the current PLL setting of dividers\n+ *     cat /sys/kernel/debug/audio_pll_monitor/audio_pll1/pll_parameter\n+ *\n+ *   2): Adjust the K-divider by a small delta_k\n+ *     echo 1 > /sys/kernel/debug/audio_pll_monitor/audio_pll1/delta_k;\n+ */\n+#ifdef CONFIG_DEBUG_FS\n+static int pll_delta_k_get(void *data, u64 *val)\n+{\n+\tstruct clk_pll14xx *pll = to_clk_pll14xx(data);\n+\t*val = pll->delta_k;\n+\treturn 0;\n+}\n+\n+static int pll_delta_k_set(void *data, u64 val)\n+{\n+\tstruct clk_pll14xx *pll = to_clk_pll14xx(data);\n+\tunsigned long flags;\n+\tu32 div_ctl1;\n+\ts16 kdiv, delta_k;\n+\n+\tdelta_k = (s16)clamp_t(long, val, KDIV_MIN, KDIV_MAX);\n+\tpll->delta_k = delta_k;\n+\n+\tspin_lock_irqsave(&pll->lock, flags);\n+\n+\tdiv_ctl1 = readl_relaxed(pll->base + DIV_CTL1);\n+\tkdiv = (s16)FIELD_GET(KDIV_MASK, div_ctl1);\n+\tkdiv = (s16)clamp_t(s32, (s32)kdiv + delta_k, KDIV_MIN, KDIV_MAX);\n+\twritel_relaxed(FIELD_PREP(KDIV_MASK, kdiv), pll->base + DIV_CTL1);\n+\n+\tspin_unlock_irqrestore(&pll->lock, flags);\n+\n+\treturn 0;\n+}\n+DEFINE_DEBUGFS_ATTRIBUTE_SIGNED(delta_k_fops, pll_delta_k_get, pll_delta_k_set, \"%lld\\n\");\n+\n+static int pll_setting_show(struct seq_file *s, void *data)\n+{\n+\tstruct clk_pll14xx *pll = to_clk_pll14xx(s->private);\n+\tu32 div_ctl0, div_ctl1;\n+\tu32 mdiv, pdiv, sdiv, kdiv;\n+\n+\tdiv_ctl0 = readl_relaxed(pll->base + DIV_CTL0);\n+\tdiv_ctl1 = readl_relaxed(pll->base + DIV_CTL1);\n+\n+\tmdiv = FIELD_GET(MDIV_MASK, div_ctl0);\n+\tpdiv = FIELD_GET(PDIV_MASK, div_ctl0);\n+\tsdiv = FIELD_GET(SDIV_MASK, div_ctl0);\n+\tkdiv = FIELD_GET(KDIV_MASK, div_ctl1);\n+\n+\tseq_printf(s, \"Mdiv: 0x%x; Pdiv: 0x%x; Sdiv: 0x%x; Kdiv: 0x%x\\n\",\n+\t\t   mdiv, pdiv, sdiv, kdiv);\n+\n+\treturn 0;\n+}\n+DEFINE_SHOW_ATTRIBUTE(pll_setting);\n+\n+void imx_audio_pll_debug_init(struct clk_hw *hws[], unsigned int num_plls)\n+{\n+\tstruct dentry *rootdir, *audio_pll_dir;\n+\tconst char *pll_name;\n+\tint i;\n+\n+\trootdir = debugfs_create_dir(\"audio_pll_monitor\", NULL);\n+\n+\tfor (i = 0; i < num_plls; i++) {\n+\t\tif (!IS_ERR_OR_NULL(hws[i])) {\n+\t\t\tpll_name = clk_hw_get_name(hws[i]);\n+\t\t\taudio_pll_dir = debugfs_create_dir(pll_name, rootdir);\n+\t\t\tdebugfs_create_file_unsafe(\"delta_k\", 0600, audio_pll_dir,\n+\t\t\t\t\thws[i], &delta_k_fops);\n+\t\t\tdebugfs_create_file(\"pll_parameter\", 0444, audio_pll_dir,\n+\t\t\t\t\thws[i], &pll_setting_fops);\n+\t\t}\n+\t}\n+}\n+#else /* !CONFIG_DEBUG_FS */\n+void imx_audio_pll_debug_init(struct clk_hw *hws[], unsigned int num_plls)\n+{\n+}\n+#endif /* CONFIG_DEBUG_FS */\n+EXPORT_SYMBOL_GPL(imx_audio_pll_debug_init);\ndiff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h\nindex aa5202f284f3d1b7c1b4bf65e2329831832b43a5..16e0bafa0c9b99cb4eee37a216e0a274d27f11fc 100644\n--- a/drivers/clk/imx/clk.h\n+++ b/drivers/clk/imx/clk.h\n@@ -487,4 +487,5 @@ struct clk_hw *imx_clk_gpr_mux(const char *name, const char *compatible,\n \t\t\t       u32 reg, const char **parent_names,\n \t\t\t       u8 num_parents, const u32 *mux_table, u32 mask);\n \n+void imx_audio_pll_debug_init(struct clk_hw **hws, unsigned int num_plls);\n #endif\n",
+  "prefixes": [
+    "v2"
+  ]
+}

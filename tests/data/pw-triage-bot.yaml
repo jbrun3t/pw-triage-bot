@@ -1,0 +1,37 @@
+# Trimmed from the project's own configuration to the paths the served series
+# touch. Core is given a state it can actually write: the project leaves core
+# at new, which is where patches already are.
+core:
+  paths:
+    - drivers/clk/
+    - include/linux/clk/
+    - Documentation/devicetree/bindings/clock/
+  state: under-review
+  # Records the series document it is handed, one line per firing.
+  hook: jq -c . "$PW_TRIAGE_BOT_JSON" >> hook.log
+
+# Anything touching none of the above.
+foreign:
+  state: not-applicable
+
+delegates:
+  default:
+    state: awaiting-upstream
+    hook: jq -c . "$PW_TRIAGE_BOT_JSON" >> hook.log
+  imx:
+    paths: [drivers/clk/imx/]
+  tegra:
+    paths: [drivers/clk/tegra/]
+
+patchwork:
+  url: https://patchwork.kernel.org/api/1.3
+  project: linux-clk
+
+# Every state a section writes needs a target of its own, or nothing it asks
+# for is ever written; every run recognises revisions, so superseded names a
+# way in from each of them.
+transitions:
+  under-review: [new]
+  awaiting-upstream: [new]
+  not-applicable: [new]
+  superseded: [new, under-review, awaiting-upstream, not-applicable]
