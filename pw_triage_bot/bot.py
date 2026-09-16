@@ -242,6 +242,7 @@ class PatchworkBot:
     def _database_prepare(self) -> None:
         """Create and stamp a new store; refuse one written by another schema version."""
         try:
+            self.store.parent.mkdir(parents=True, exist_ok=True)
             version = self._database.pragma("user_version")
             if version != self.DB_SCHEMA_VERSION and (version or self._database.get_tables()):
                 raise StoreError(
@@ -250,7 +251,7 @@ class PatchworkBot:
                 )
             self._database.create_tables(MODELS)
             self._database.pragma("user_version", self.DB_SCHEMA_VERSION)
-        except peewee.PeeweeException as e:
+        except (OSError, peewee.PeeweeException) as e:
             raise StoreError(f"{self.store}: {e}") from e
 
     @contextlib.contextmanager

@@ -12,6 +12,7 @@ requires-python = ">=3.11"
 dependencies = [
     "click",
     "pathspec",
+    "platformdirs",
     "pydantic",
     "peewee",
     "pyyaml",

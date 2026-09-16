@@ -10,12 +10,16 @@ import tempfile
 from pathlib import Path
 
 import click
+import platformdirs
 
-from . import Error
+from . import NAME, Error
 from .bot import PatchworkBot, Series
 from .config import FOREIGN, SUPERSEDED, Config, Handling
 from .patchwork import DiffError
 from .time import now
+
+CONFIG = Path(platformdirs.user_config_dir(NAME), f"{NAME}.yaml")
+STORE = Path(platformdirs.user_state_dir(NAME), f"{NAME}.db")
 
 
 def failed(reason: object) -> SystemExit:
@@ -116,7 +120,7 @@ def supersede(series: Series, by: Series) -> None:
 @click.option(
     "--config",
     "config_path",
-    default="pw-triage-bot.yaml",
+    default=CONFIG,
     show_default=True,
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     help="Configuration file.",
@@ -124,10 +128,18 @@ def supersede(series: Series, by: Series) -> None:
 @click.option(
     "--store",
     "store_path",
-    default="pw-triage-bot.db",
+    default=STORE,
     show_default=True,
     type=click.Path(dir_okay=False, path_type=Path),
     help="Store to read and write.",
+)
+@click.option(
+    "--token",
+    "token_path",
+    default=TOKEN,
+    show_default=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help=f"File holding the patchwork API token; ${TOKEN_ENV} if there is none.",
 )
 @click.option(
     "-n",
