@@ -14,11 +14,12 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
-from . import Error
+from . import NAME, VERSION, Error
 from .config import Patchwork
 
 RETRY = Retry(connect=3, backoff_factor=0.5)
-USER_AGENT = f"pw-triage-bot/{version('pw-triage-bot')}"
+USER_AGENT = f"{NAME}/{VERSION}"
+TOKEN_ENV = "PW_TRIAGE_BOT_TOKEN"
 DEV_NULL = "/dev/null"
 DEFAULT_PER_PAGE = 100
 DEFAULT_TIMEOUT = 30
