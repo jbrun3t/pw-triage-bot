@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 from functools import cached_property
 from pathlib import Path
 from typing import Annotated, Literal
@@ -44,7 +43,6 @@ State = Literal[
 
 NEW = "new"
 SUPERSEDED = "superseded"
-TOKEN_ENV = "PW_TRIAGE_BOT_TOKEN"
 
 Text = Annotated[str, StringConstraints(min_length=1)]
 
@@ -68,7 +66,6 @@ class Patchwork(Strict):
 
     url: Text
     project: Text
-    token: Text | None = Field(default_factory=lambda: os.environ.get(TOKEN_ENV) or None)
 
     @field_validator("url")
     @classmethod

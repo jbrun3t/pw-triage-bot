@@ -30,7 +30,7 @@ from pw_triage_bot.patchwork import DiffError, PwError
 def run(tmp_path, client, monkeypatch):
     """Invoke a command in tmp_path, against the fake patchwork and a store of its own."""
 
-    def build(config, *, dry_run=False):
+    def build(config, *, token=None, dry_run=False):
         client.dry_run = dry_run
         return client
 

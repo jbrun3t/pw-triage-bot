@@ -47,7 +47,6 @@ Run `pw-triage-bot COMMAND --help` for each command's options (`--force`,
 patchwork:
   url: https://patchwork.kernel.org/api/1.3
   project: linux-clk
-  # token: ...            # otherwise taken from $PW_TRIAGE_BOT_TOKEN
 
 core:
   paths: [drivers/clk/, include/linux/clk*.h]
@@ -72,8 +71,9 @@ transitions:               # every state the tool may write, and from where
 ```
 
 - **`patchwork`**: `url` and `project` (the link name, `linux-clk` in
-  `patchwork.kernel.org/project/linux-clk/`) locate the instance; `token` (or
-  `$PW_TRIAGE_BOT_TOKEN`) authenticates writes.
+  `patchwork.kernel.org/project/linux-clk/`) locate the instance. The token
+  authenticating writes is kept out of the file: it is read from the `--token`
+  file, or `$PW_TRIAGE_BOT_TOKEN` when there is none.
 - **`core`, `foreign`, `delegates.<name>`**: each names the `paths` it owns
   (gitignore patterns; `foreign` and `delegates.default` own none), the `state`
   a triage writes on its patches, and an optional `hook` run once its series is

@@ -1,7 +1,6 @@
 patchwork:
   url: https://patchwork.kernel.org/api/1.3
   project: linux-clk
-  # token: ...   # otherwise taken from $PW_TRIAGE_BOT_TOKEN
 
 core:
   # Paths are gitignore patterns

@@ -15,11 +15,12 @@ import platformdirs
 from . import NAME, Error
 from .bot import PatchworkBot, Series
 from .config import FOREIGN, SUPERSEDED, Config, Handling
-from .patchwork import DiffError
+from .patchwork import TOKEN_ENV, DiffError, token
 from .time import now
 
 CONFIG = Path(platformdirs.user_config_dir(NAME), f"{NAME}.yaml")
 STORE = Path(platformdirs.user_state_dir(NAME), f"{NAME}.db")
+TOKEN = Path(platformdirs.user_config_dir(NAME), f"{NAME}.token")
 
 
 def failed(reason: object) -> SystemExit:
@@ -36,6 +37,7 @@ class Main(click.Group):
             with PatchworkBot(
                 Config.load(ctx.params["config_path"]),
                 ctx.params["store_path"],
+                token=token(ctx.params["token_path"]),
                 dry_run=ctx.params["dry_run"],
                 no_hook=ctx.params["no_hook"],
             ) as bot:
@@ -148,7 +150,9 @@ def supersede(series: Series, by: Series) -> None:
     help="Report what would be written, to patchwork and to the store, and write nothing.",
 )
 @click.option("--no-hook", is_flag=True, help="Hold every hook back, and run as usual otherwise.")
-def main(config_path: Path, store_path: Path, dry_run: bool, no_hook: bool) -> None:
+def main(
+    config_path: Path, store_path: Path, token_path: Path, dry_run: bool, no_hook: bool
+) -> None:
     """Triage and housekeeping for a patchwork project."""
 
 

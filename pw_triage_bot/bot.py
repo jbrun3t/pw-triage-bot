@@ -215,13 +215,19 @@ class PatchworkBot:
     DB_SCHEMA_VERSION = 2
 
     def __init__(
-        self, config: Config, store: Path, *, dry_run: bool = False, no_hook: bool = False
+        self,
+        config: Config,
+        store: Path,
+        *,
+        token: str | None = None,
+        dry_run: bool = False,
+        no_hook: bool = False,
     ) -> None:
         self.config = config
         self.store = store
         self.dry_run = dry_run
         self.no_hook = no_hook
-        self.client = Client(config.patchwork, dry_run=dry_run)
+        self.client = Client(config.patchwork, token=token, dry_run=dry_run)
 
     def __enter__(self) -> Self:
         with contextlib.ExitStack() as opening:

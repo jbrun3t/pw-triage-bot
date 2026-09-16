@@ -6,8 +6,9 @@ See https://patchwork.readthedocs.io/en/stable/api/rest/
 from __future__ import annotations
 
 import datetime
+import os
 from collections.abc import Iterator
-from importlib.metadata import version
+from pathlib import Path
 from urllib.parse import urlencode
 
 import requests
@@ -25,6 +26,13 @@ DEFAULT_PER_PAGE = 100
 DEFAULT_TIMEOUT = 30
 
 
+def token(path: Path) -> str | None:
+    """The token authenticating writes: the file at `path` if it is there, else the environment."""
+    if path.is_file():
+        return path.read_text().strip() or None
+    return os.environ.get(TOKEN_ENV) or None
+
+
 class DiffError(Error):
     """A diff could not be parsed."""
 
@@ -40,6 +48,7 @@ class Client:
         self,
         config: Patchwork,
         *,
+        token: str | None = None,
         dry_run: bool = False,
     ) -> None:
         self._dry_run = dry_run
@@ -50,8 +59,8 @@ class Client:
         self._session.headers["User-Agent"] = USER_AGENT
         self._session.mount("https://", HTTPAdapter(max_retries=RETRY))
 
-        if config.token:
-            self._session.headers["Authorization"] = f"Token {config.token}"
+        if token:
+            self._session.headers["Authorization"] = f"Token {token}"
 
     @staticmethod
     def _decode(response: requests.Response, url: str) -> dict | list:
