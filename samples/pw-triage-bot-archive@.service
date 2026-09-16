@@ -1,0 +1,11 @@
+# Sample systemd --user unit for `pw-triage-bot archive`.
+
+[Unit]
+Description=pw-triage-bot archive (%i)
+
+[Service]
+Type=oneshot
+ConfigurationDirectory=pw-triage-bot
+StateDirectory=pw-triage-bot
+LoadCredentialEncrypted=%i.token:%E/pw-triage-bot/%i.token
+ExecStart=/usr/bin/flock %t/pw-triage-bot-%i.lock pw-triage-bot --config %E/pw-triage-bot/%i.yaml --store %S/pw-triage-bot/%i.db --token %d/%i.token archive 180

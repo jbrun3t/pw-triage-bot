@@ -1,0 +1,11 @@
+[Unit]
+Description=Run pw-triage-bot sync (%i) every 15 minutes
+
+[Timer]
+OnBootSec=0
+OnUnitActiveSec=15min
+RandomizedDelaySec=60
+Persistent=true
+
+[Install]
+WantedBy=timers.target

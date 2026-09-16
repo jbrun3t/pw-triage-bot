@@ -1,0 +1,19 @@
+# Sample systemd --user unit for `pw-triage-bot sync`.
+#
+# The instance is the project: `pw-triage-bot-sync@linux-clk.timer` syncs the
+# project described by linux-clk.yaml. Put that config and its encrypted token
+# in the directory ConfigurationDirectory= creates:
+#   linux-clk.yaml  - the project config
+#   linux-clk.token - the patchwork token, from
+#       echo -n "$TOKEN" | systemd-creds encrypt --user - linux-clk.token
+# Encrypting a credential for a --user unit needs systemd >= 256.
+
+[Unit]
+Description=pw-triage-bot sync (%i)
+
+[Service]
+Type=oneshot
+ConfigurationDirectory=pw-triage-bot
+StateDirectory=pw-triage-bot
+LoadCredentialEncrypted=%i.token:%E/pw-triage-bot/%i.token
+ExecStart=/usr/bin/flock %t/pw-triage-bot-%i.lock pw-triage-bot --config %E/pw-triage-bot/%i.yaml --store %S/pw-triage-bot/%i.db --token %d/%i.token sync
