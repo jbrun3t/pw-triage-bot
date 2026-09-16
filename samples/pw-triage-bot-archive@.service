@@ -6,6 +6,8 @@ Description=pw-triage-bot archive (%i)
 [Service]
 Type=oneshot
 ConfigurationDirectory=pw-triage-bot
-StateDirectory=pw-triage-bot
+# Not pw-triage-bot: systemd links a state directory to the configuration
+# directory of the same name when that one already exists.
+StateDirectory=pw-triage-bot-state
 LoadCredentialEncrypted=%i.token:%E/pw-triage-bot/%i.token
-ExecStart=/usr/bin/flock %t/pw-triage-bot-%i.lock pw-triage-bot --config %E/pw-triage-bot/%i.yaml --store %S/pw-triage-bot/%i.db --token %d/%i.token archive 180
+ExecStart=/usr/bin/flock %t/pw-triage-bot-%i.lock pw-triage-bot --config %E/pw-triage-bot/%i.yaml --store %S/pw-triage-bot-state/%i.db --token %d/%i.token archive 180

@@ -6,7 +6,16 @@
 #   linux-clk.yaml  - the project config
 #   linux-clk.token - the patchwork token, from
 #       echo -n "$TOKEN" | systemd-creds encrypt --user - linux-clk.token
-# Encrypting a credential for a --user unit needs systemd >= 256.
+# The unit asks for the credential under the file's own name, so nothing has
+# to be passed to --name.
+#
+# A user service decrypting its own credential needs systemd >= 258. Before
+# that, only system services could, and the unit fails at step CREDENTIALS
+# however well the token decrypts by hand. Keep the token in plain text then,
+# readable by nobody else, drop LoadCredentialEncrypted= and read the file
+# where it lies:
+#   chmod 600 linux-clk.token
+#   --token %E/pw-triage-bot/%i.token
 
 [Unit]
 Description=pw-triage-bot sync (%i)
@@ -14,6 +23,8 @@ Description=pw-triage-bot sync (%i)
 [Service]
 Type=oneshot
 ConfigurationDirectory=pw-triage-bot
-StateDirectory=pw-triage-bot
+# Not pw-triage-bot: systemd links a state directory to the configuration
+# directory of the same name when that one already exists.
+StateDirectory=pw-triage-bot-state
 LoadCredentialEncrypted=%i.token:%E/pw-triage-bot/%i.token
-ExecStart=/usr/bin/flock %t/pw-triage-bot-%i.lock pw-triage-bot --config %E/pw-triage-bot/%i.yaml --store %S/pw-triage-bot/%i.db --token %d/%i.token sync
+ExecStart=/usr/bin/flock %t/pw-triage-bot-%i.lock pw-triage-bot --config %E/pw-triage-bot/%i.yaml --store %S/pw-triage-bot-state/%i.db --token %d/%i.token sync
