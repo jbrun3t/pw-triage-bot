@@ -3,7 +3,8 @@
 Triage and housekeeping for a patchwork project: works out which section (a
 maintainer's `core`, or an upstream) owns each incoming patch and series, writes
 the state its owner names, and runs the owner's hook. It also recognises a
-series a later posting replaced, and archives what has gone quiet. Everything
+series a later posting replaced, handing the patchwork delegate of the old one
+to the new one when it has none, and archives what has gone quiet. Everything
 is read and written over patchwork's REST API, cached locally in sqlite.
 
 ## Known limitations

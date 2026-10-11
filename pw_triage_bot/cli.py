@@ -103,9 +103,11 @@ def triage_series(bot: PatchworkBot, series: Series, *, force: bool = False) -> 
 
         series.patches_set_triaged()
 
-        for posting in series.replaced():
-            if posting.superseded_by_id is None:
-                supersede(posting, series)
+        replaced = [s for s in series.replaced() if s.superseded_by_id is None]
+        for posting in replaced:
+            supersede(posting, series)
+        if replaced:
+            inherit_delegate(series, replaced[-1])
 
     except DiffError as e:
         click.echo(f"series #{series.id}: cannot be read: {e}", err=True)
@@ -123,6 +125,20 @@ def supersede(series: Series, by: Series) -> None:
             click.echo(f"triage: superseded: patch #{patch.id}  {before} -> {SUPERSEDED}")
     series.replaced_by(by)
     click.echo(f"triage: superseded: series #{series.id} => {by.id}")
+
+
+def inherit_delegate(series: Series, previous: Series) -> None:
+    """Delegate `series` as `previous`, the posting it replaced, was, unless it already is.
+
+    A superseded posting drops out of view, and its delegate would go with it.
+    An older posting is not looked at: a delegate gone from `previous` may have
+    dropped the job.
+    """
+    if series.delegate or not (user := previous.delegate):
+        return
+    for patch in series.patches:
+        patch.set_delegate(user)
+        click.echo(f"triage: delegate: patch #{patch.id} -> {user['username']}")
 
 
 @click.group(cls=Main)

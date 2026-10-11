@@ -105,6 +105,11 @@ class Series(PwBotBaseModel):
         """Every section the patches of this series belong to."""
         return {owner for patch in self.patches for owner in patch.owners}
 
+    @property
+    def delegate(self) -> dict | None:
+        """The patchwork user the first delegated patch is delegated to, or None."""
+        return next((d for patch in self.patches if (d := patch.delegate)), None)
+
     def document(self, handler: str) -> dict:
         """Patchwork's series document plus `handler` and `owners`, for hooks."""
         return self.data | {"handler": handler, "owners": sorted(self.owners)}
@@ -158,6 +163,11 @@ class Patch(PwBotBaseModel):
         return self.data.get("state") or ""
 
     @property
+    def delegate(self) -> dict | None:
+        """The patchwork user the patch is delegated to, or None."""
+        return self.data.get("delegate")
+
+    @property
     def last_event(self) -> datetime.datetime | None:
         """When anything last happened to this patch, or None; per-patch since comment events name no series."""
         events = self.bot.client.events(patch=self.id, order="-date", per_page=1)
@@ -189,6 +199,10 @@ class Patch(PwBotBaseModel):
             return False
         self.bot.client.update_patch(id=self.id, state=state)
         return True
+
+    def set_delegate(self, user: dict) -> None:
+        """Delegate the patch to `user`, a patchwork user document."""
+        self.bot.client.update_patch(id=self.id, delegate=user["id"])
 
     def archive(self) -> None:
         """Archive the patch in patchwork, then drop it from the store."""

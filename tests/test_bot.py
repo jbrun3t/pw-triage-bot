@@ -244,6 +244,26 @@ def test_sync_supersedes_earlier(run, client, serve):
     assert client.asked == [third, second], "the posting already replaced is not read again"
 
 
+def test_sync_supersede_inherits_delegate(run, client, serve):
+    """A posting nobody is delegated keeps the delegate of the one it replaced; one delegated keeps its own."""
+    serve(UPSTREAM_ONLY)
+    serve(UPSTREAM_ONLY_V2)
+    (first,) = patch_ids(client, UPSTREAM_ONLY)
+    (second,) = patch_ids(client, UPSTREAM_ONLY_V2)
+    owner = {"id": 2, "username": "b"}
+    client.patch_docs[first]["delegate"] = {"id": 1, "username": "a"}
+    client.patch_docs[second]["delegate"] = owner
+    run("sync")
+
+    serve(UPSTREAM_ONLY_V3)
+    result = run("sync")
+
+    (third,) = patch_ids(client, UPSTREAM_ONLY_V3)
+    assert result.exit_code == 0
+    assert client.patch_docs[second]["delegate"] == owner
+    assert client.patch_docs[third]["delegate"] == owner["id"]
+
+
 def test_sync_writes_only_what_arrived(run, client, serve):
     """The mark is the newest patch read, so only what is newer is written."""
     serve(UPSTREAM_ONLY)
