@@ -1,0 +1,89 @@
+{
+  "id": 14801502,
+  "url": "https://patchwork.kernel.org/api/1.3/patches/14801502/",
+  "web_url": "https://patchwork.kernel.org/project/linux-clk/patch/tencent_0D58C9974B2D7889109BACF393650FFD8706@qq.com/",
+  "project": {
+    "id": 331,
+    "url": "https://patchwork.kernel.org/api/1.3/projects/331/",
+    "name": "Linux Clock framework",
+    "link_name": "linux-clk",
+    "list_id": "linux-clk.vger.kernel.org",
+    "list_email": "linux-clk@vger.kernel.org",
+    "web_url": "http://vger.kernel.org/vger-lists.html#linux-clk",
+    "scm_url": "",
+    "webscm_url": "",
+    "list_archive_url": "",
+    "list_archive_url_format": "https://lore.kernel.org/r/{}",
+    "commit_url_format": ""
+  },
+  "msgid": "<tencent_0D58C9974B2D7889109BACF393650FFD8706@qq.com>",
+  "list_archive_url": "https://lore.kernel.org/r/tencent_0D58C9974B2D7889109BACF393650FFD8706@qq.com",
+  "date": "2026-09-09T04:43:31",
+  "name": "clk: starfive: jh7110: Fix clk reference leak for pll0_out in jh7110_syscrg_probe()",
+  "commit_ref": null,
+  "pull_url": null,
+  "state": "changes-requested",
+  "archived": false,
+  "hash": "65ba5b4723d788ecd11df0940cdbd19bb2ab48b3",
+  "submitter": {
+    "id": 224818,
+    "url": "https://patchwork.kernel.org/api/1.3/people/224818/",
+    "name": "blaze",
+    "email": "1466528493@qq.com"
+  },
+  "delegate": null,
+  "mbox": "https://patchwork.kernel.org/project/linux-clk/patch/tencent_0D58C9974B2D7889109BACF393650FFD8706@qq.com/mbox/",
+  "series": [
+    {
+      "id": 1160994,
+      "url": "https://patchwork.kernel.org/api/1.3/series/1160994/",
+      "web_url": "https://patchwork.kernel.org/series/1160994/",
+      "date": "2026-09-09T04:43:31",
+      "name": "clk: starfive: jh7110: Fix clk reference leak for pll0_out in jh7110_syscrg_probe()",
+      "version": 1,
+      "mbox": "https://patchwork.kernel.org/series/1160994/mbox/"
+    }
+  ],
+  "comments": "https://patchwork.kernel.org/api/patches/14801502/comments/",
+  "check": "pending",
+  "checks": "https://patchwork.kernel.org/api/patches/14801502/checks/",
+  "tags": {},
+  "related": [],
+  "headers": {
+    "Received": [
+      "from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com\n [203.205.221.192])\n\t(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))\n\t(No client certificate requested)\n\tby smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDA739E176;\n\tWed,  9 Sep 2026 04:43:48 +0000 (UTC)",
+      "from LAPTOP-7R15B00L ([183.220.99.26])\n\tby newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP\n\tid AE60008D; Wed, 09 Sep 2026 12:43:38 +0800"
+    ],
+    "Authentication-Results": [
+      "smtp.subspace.kernel.org;\n arc=none smtp.client-ip=203.205.221.192",
+      "smtp.subspace.kernel.org;\n dmarc=pass (p=quarantine dis=none) header.from=qq.com",
+      "smtp.subspace.kernel.org;\n spf=pass smtp.mailfrom=qq.com",
+      "smtp.subspace.kernel.org;\n\tdkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=\"uWUi+q+Y\""
+    ],
+    "ARC-Seal": "i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;\n\tt=1788929033; cv=none;\n b=ZAzb2dpnCV8S/hdS2emZabu0lWMQ+HzeumaRyFalxcFoEIWbZ3n8mgUmFr759od8r0jPW8i8RYTHzuwyrBNrNoychjxdGJy0LK5uqEzW6FD+F1GG/kApjQfrQttLyMtZ7TFCB/YcYOIkhBVM9f+NxcjX1rX2A5tD+hv9HD5s4Fc=",
+    "ARC-Message-Signature": "i=1; a=rsa-sha256; d=subspace.kernel.org;\n\ts=arc-20240116; t=1788929033; c=relaxed/simple;\n\tbh=yxAt3PlSqUlQiqn+8k0QYBuAiGauP/Zz/z6EAf3ppgk=;\n\th=Message-ID:From:To:Cc:Subject:Date:MIME-Version;\n b=XO62RVoPwOKtFZ6mUKFq0cODKMAMD4mxwYhOQfQorSrDEdOtqNFw1wAS/TAtq8N6TQBepbKG8dpmms7YjXBM7dO+A6Mnxvw8SdRf3qbITudobvV6/T2FH3dacZhRVOZBCYoayhUOSTMeAV7BBZSoq2FgV872CSUHiiu8RKAq+WE=",
+    "ARC-Authentication-Results": "i=1; smtp.subspace.kernel.org;\n dmarc=pass (p=quarantine dis=none) header.from=qq.com;\n spf=pass smtp.mailfrom=qq.com;\n dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=uWUi+q+Y;\n arc=none smtp.client-ip=203.205.221.192",
+    "DKIM-Signature": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;\n\tt=1788929021; bh=NN8Zs7o+RVvMVzRrD4E/zEGWsMyj2EFFgU9lxKlMsKE=;\n\th=From:To:Cc:Subject:Date;\n\tb=uWUi+q+YJq6Q9yuM7kDX+mgVU7YN7fVu/MrFxHt2fB/trEnjqAD+QsqTSsA4QceTx\n\t 4V0f+SalTn3KCAnUfF7/h/sjl6P7c78rUOSy9ziH02Mx74fcHTxBpBMJBE7Gb5lx2X\n\t D3RgpWAR49TR0CjyEYj1bwdKoTKHZ7uCGP/xeSBo=",
+    "X-QQ-mid": "xmsmtpt1788929018txsas71sy",
+    "Message-ID": "<tencent_0D58C9974B2D7889109BACF393650FFD8706@qq.com>",
+    "X-QQ-XMAILINFO": "NhsePn6g3vMqfRExNpLZnAjNn8F6qIabxPPXtvvG08qkt/0dxTDvrxFkH+njUO\n\t Y7gjJwbl+Oye/NnnsZ2DbRC6OKEsmSz4H7+xgif1i3wcFanV1hrb+k2TlkP0ftD7FimChyL+zQpC\n\t si/Geeo2mjyZs0WxBH6FWqQ4JLcsgUnOoE9B8fvpC3YLa9TaGyyuhSX7ybi9j7a+gq1jRe4hyjz+\n\t z0zoShdfCxZj6X7N7HjjqQWol+lquPsV0ryfuQhhTk6cZY8Zi2fXnqyHqAQNWXEDsJDgMYHpUjsY\n\t YI6mJdXr6LqWb9ki/a0X5Ppaphkb4z6Jk+g9hiXNBrqvSVpGPGizLLZ8L89DokpqfG7naiNDyB5Y\n\t M6FL8SBTXLDNYtoEn9BdwpvHZPULL8pV2ssC5OM+gNrjhZpsltEVD3dlCLAdLKtM1Ut5fvouRC2v\n\t KU+/CsEoLkfeWTI1hG5b33E7ZzZL4E/3KsoNSGwU3JIYjyhbPRPM6tbI7JKmZCL/hhu83IsGZRQ4\n\t crm6CaJgqhjVUaQ9vE3NT3Vrxt/rzUA5B17cPFfs2K9h7v/kIKllD7TTnQTOWEcCg+GjyD385/G2\n\t SHUiXvrS3PHqJjnobtWLQBmkIJXDEwSgKQJiw8FHrY/8hc93HSBi7emaRlF0own9v2PMfEByHQDv\n\t TGgqXAukomiPBkbTXHeoChLhbE7P+X42g5D19V5ViQma2P7XlLvLssrbncbQPdvwznXKtTjpyhdl\n\t zVUQLhbjeCC4KlAlUlVeNA4TD05JdoIkUR+5TwgTJ9iFy66SFIxgwF9gQ0K1Oyhk2u167KI/Kvz0\n\t S3vQpCn+XfjhgLU4IqtqP0dkt2evWaKi5so4bvJZJ4JiE7MbROAB0t5APVsU9LbibmJrUwtOz4uI\n\t eYDlRL5pqmHvNfjlWbqPTg3XlaSlR+S6DgtGIBi/LQ9xjaJ9/ipnvLPfVD9mkR/3z0LDy00ut43n\n\t BzddKH/8EfomYut1C7sVDl31bLZAb3C1EocoEpN19nI3MmbvrapOuyBu9AK0pcrwo103Gt/WBKGE\n\t XRQAkFcANFsGgArTVvLvxPGUrxBhAPIZUIOV7D47lqYpAWKAHWY2VSCSxGWBsFYzXxUEKkXw==",
+    "X-QQ-XMRINFO": "OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==",
+    "From": "blaze <1466528493@qq.com>",
+    "To": "kernel@esmil.dk,\n\thal.feng@starfivetech.com",
+    "Cc": "linux-clk@vger.kernel.org,\n\tlinux-kernel@vger.kernel.org,\n\tblaze <1466528493@qq.com>",
+    "Subject": "[PATCH] clk: starfive: jh7110: Fix clk reference leak for pll0_out in\n jh7110_syscrg_probe()",
+    "Date": "Wed,  9 Sep 2026 12:43:31 +0800",
+    "X-OQ-MSGID": "<20260909044331.579-1-1466528493@qq.com>",
+    "X-Mailer": "git-send-email 2.53.0.windows.1",
+    "Precedence": "bulk",
+    "X-Mailing-List": "linux-clk@vger.kernel.org",
+    "List-Id": "<linux-clk.vger.kernel.org>",
+    "List-Subscribe": "<mailto:linux-clk+subscribe@vger.kernel.org>",
+    "List-Unsubscribe": "<mailto:linux-clk+unsubscribe@vger.kernel.org>",
+    "MIME-Version": "1.0",
+    "Content-Transfer-Encoding": "8bit"
+  },
+  "content": "In jh7110_syscrg_probe(), the handling of the three PLL clock outputs\n(pll0_out, pll1_out, pll2_out) follows the same pattern: clk_get() is\ncalled, and on success clk_put() is called before setting the pll entry\nto NULL. However, the pll0_out branch is missing clk_put(), unlike\npll1_out and pll2_out which correctly call clk_put(pllclk).\n\nAdditionally, when clk_notifier_register() fails, the error path returns\nwithout releasing the clock reference, leaking it.\n\nFix this by calling clk_put(pllclk) after clk_notifier_register(),\nmatching the pattern used for pll1_out and pll2_out. Placing clk_put()\nbefore the error check covers both the success and error paths.\n\nFixes: cc46f7c9edc4 (\"clk: starfive: jh7110: Add PLL clock source support\")\nSigned-off-by: blaze <1466528493@qq.com>\n---\n drivers/clk/starfive/clk-starfive-jh7110-sys.c | 1 +\n 1 file changed, 1 insertion(+)",
+  "diff": "diff --git a/drivers/clk/starfive/clk-starfive-jh7110-sys.c b/drivers/clk/starfive/clk-starfive-jh7110-sys.c\nindex 0000000..1111111 100644\n--- a/drivers/clk/starfive/clk-starfive-jh7110-sys.c\n+++ b/drivers/clk/starfive/clk-starfive-jh7110-sys.c\n@@ -432,6 +432,7 @@ static int __init jh7110_syscrg_probe(struct platform_device *pdev)\n \t\tpriv->pll_clk_nb.notifier_call = jh7110_pll0_clk_notifier_cb;\n \t\tret = clk_notifier_register(pllclk, &priv->pll_clk_nb);\n+\t\tclk_put(pllclk);\n \t\tif (ret)\n \t\t\treturn ret;\n \t\tpriv->pll[0] = NULL;\n--\n2.43.0\n",
+  "prefixes": []
+}

@@ -16,6 +16,7 @@ from conftest import (
     UPSTREAM_ONLY_V2,
     UPSTREAM_ONLY_V3,
     days_ago,
+    document,
     patch_ids,
 )
 from pwlite import PwError
@@ -54,8 +55,9 @@ def fired(tmp_path) -> list[dict]:
     return [json.loads(line) for line in log.read_text().splitlines()] if log.exists() else []
 
 
-# A diff unidiff will not parse; it quotes the offending line back with its newline.
-MALFORMED = "diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1,2 +1,2 @@\n context\n2.43.0\n"
+# A diff patchwork served with its hunk a line short: unidiff takes the "--" of
+# the signature for a removed line, then quotes "2.43.0" back with its newline.
+MALFORMED = document("patch-14801502")["diff"]
 
 
 def states(client):
