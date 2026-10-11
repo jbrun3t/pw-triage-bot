@@ -119,7 +119,7 @@ class Config(Strict):
 
     core: Section = Section()
     foreign: Handling = Handling()
-    delegates: dict[str, Section] = {}
+    upstream: dict[str, Section] = {}
     patchwork: Patchwork
     transitions: Transitions
 
@@ -139,44 +139,44 @@ class Config(Strict):
     @model_validator(mode="before")
     @classmethod
     def _inherit(cls, raw: object) -> object:
-        """Fold ``delegates.default`` into each delegate, the delegate's own keys winning."""
-        if not isinstance(raw, dict) or not isinstance(raw.get("delegates"), dict):
+        """Fold ``upstream.default`` into each upstream, the upstream's own keys winning."""
+        if not isinstance(raw, dict) or not isinstance(raw.get("upstream"), dict):
             return raw
 
-        delegates = dict(raw["delegates"])
+        upstream = dict(raw["upstream"])
         try:
-            default = Handling.model_validate(delegates.pop(DEFAULT, None) or {})
+            default = Handling.model_validate(upstream.pop(DEFAULT, None) or {})
         except ValidationError as e:
-            raise ValueError(f"delegates.{DEFAULT}: {_faults(e)}") from e
-        if reserved := sorted({CORE, FOREIGN} & set(delegates)):
-            raise ValueError(f"{reserved} is reserved and cannot name a delegate")
+            raise ValueError(f"upstream.{DEFAULT}: {_faults(e)}") from e
+        if reserved := sorted({CORE, FOREIGN} & set(upstream)):
+            raise ValueError(f"{reserved} is reserved and cannot name an upstream")
 
         shared = default.model_dump(exclude_none=True)
-        return raw | {"delegates": {name: shared | (d or {}) for name, d in delegates.items()}}
+        return raw | {"upstream": {name: shared | (d or {}) for name, d in upstream.items()}}
 
     @model_validator(mode="after")
     def _named(self) -> Config:
         """Give every section the key it was read from, for the messages that name it."""
         self.core._name = CORE
         self.foreign._name = FOREIGN
-        for name, delegate in self.delegates.items():
-            delegate._name = name
+        for name, section in self.upstream.items():
+            section._name = name
         return self
 
     def section_of(self, path: str) -> str | None:
-        """Return the section a path belongs to: a delegate, core, or nobody."""
+        """Return the section a path belongs to: an upstream, core, or nobody."""
         if not self.core.matches(path):
             return None
 
-        for delegate in self.delegates.values():
-            if delegate.matches(path):
-                return delegate.name
+        for section in self.upstream.values():
+            if section.matches(path):
+                return section.name
         return CORE
 
     @cached_property
     def sections(self) -> dict[str, Handling]:
-        """Return every section by name: `core`, `foreign`, then each delegate."""
-        return {s.name: s for s in (self.core, self.foreign, *self.delegates.values())}
+        """Return every section by name: `core`, `foreign`, then each upstream."""
+        return {s.name: s for s in (self.core, self.foreign, *self.upstream.values())}
 
 
 # Prefixes what a validator raised as `ValueError`; the message alone reads better.

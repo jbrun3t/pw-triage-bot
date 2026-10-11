@@ -173,7 +173,7 @@ def main(
 @click.argument("series_id", type=int)
 @click.pass_obj
 def triage(bot: PatchworkBot, force: bool, series_id: int) -> None:
-    """Triage one patchwork series against maintained and delegated paths."""
+    """Triage one patchwork series against maintained and upstream paths."""
     series = bot.series_get(series_id)
     if not triage_series(bot, series, force=force):
         raise failed(f"series #{series.id} failed")

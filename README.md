@@ -1,7 +1,7 @@
 # pw-triage-bot
 
 Triage and housekeeping for a patchwork project: works out which section (a
-maintainer's `core`, or a delegate) owns each incoming patch and series, writes
+maintainer's `core`, or an upstream) owns each incoming patch and series, writes
 the state its owner names, and runs the owner's hook. It also recognises a
 series a later posting replaced, and archives what has gone quiet. Everything
 is read and written over patchwork's REST API, cached locally in sqlite.
@@ -19,7 +19,7 @@ first `sync` with triage.
 
 ```
 export PW_TRIAGE_BOT_TOKEN=...
-# create/edit patchwork.project, paths, delegates
+# create/edit patchwork.project, paths, upstream
 pw-triage-bot --config myproject.yaml sync
 ```
 
@@ -56,8 +56,8 @@ core:
 foreign:                   # owns no paths: it is what is left
   state: not-applicable
 
-delegates:
-  default:                 # backs every delegate that leaves a setting out
+upstream:
+  default:                 # backs every upstream that leaves a setting out
     state: awaiting-upstream
     hook: forward-to.sh
   foo:
@@ -74,14 +74,14 @@ transitions:               # every state the tool may write, and from where
   `patchwork.kernel.org/project/linux-clk/`) locate the instance. The token
   authenticating writes is kept out of the file: it is read from the `--token`
   file, or `$PW_TRIAGE_BOT_TOKEN` when there is none.
-- **`core`, `foreign`, `delegates.<name>`**: each names the `paths` it owns
-  (gitignore patterns; `foreign` and `delegates.default` own none), the `state`
+- **`core`, `foreign`, `upstream.<name>`**: each names the `paths` it owns
+  (gitignore patterns; `foreign` and `upstream.default` own none), the `state`
   a triage writes on its patches, and an optional `hook` run once its series is
   triaged, passed the series document (plus `handler`/`owners`) via
-  `$PW_TRIAGE_BOT_JSON`. A path belongs to whichever delegate's patterns cover
+  `$PW_TRIAGE_BOT_JSON`. A path belongs to whichever upstream's patterns cover
   it, or to `core` otherwise; a series touching more than one section, or
-  touching core paths no delegate claims, belongs to `core`. `delegates.default`
-  supplies `state`/`hook` for a delegate that leaves them unset.
+  touching core paths no upstream claims, belongs to `core`. `upstream.default`
+  supplies `state`/`hook` for an upstream that leaves them unset.
 - **`transitions`**: the only states the tool may write, and per state, the
   states it may be written from. A state left out as a target — `accepted`,
   say — is never written over, whatever a section's `state` asks for. A

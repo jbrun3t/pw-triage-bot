@@ -23,13 +23,13 @@ core:
 foreign:
   state: not-applicable
 
-delegates:
+upstream:
   default:
     state: awaiting-upstream
 
   # Subtrees of core handed over to someone else. A patch confined to one
-  # delegate is theirs; one crossing delegates, or also touching core files no
-  # delegate claims, is core's. A series holding anything of core's is core's
+  # upstream is theirs; one crossing upstreams, or also touching core files no
+  # upstream claims, is core's. A series holding anything of core's is core's
   # throughout.
   amlogic:
     paths:

@@ -8,13 +8,13 @@ import pytest
 from click.testing import CliRunner
 from conftest import (
     CONFIG,
-    CORE_AND_DELEGATE,
+    CORE_AND_UPSTREAM,
     CORE_ONLY,
-    DELEGATE_ONLY,
-    DELEGATE_ONLY_V2,
-    DELEGATE_ONLY_V3,
     FOREIGN_MIXED,
     FOREIGN_ONLY,
+    UPSTREAM_ONLY,
+    UPSTREAM_ONLY_V2,
+    UPSTREAM_ONLY_V3,
     days_ago,
     patch_ids,
 )
@@ -66,12 +66,12 @@ def states(client):
 
 
 def test_triage_owner_state(run, client, serve):
-    """Core's tree, a delegate's subtree of it, and a series touching neither."""
+    """Core's tree, an upstream's subtree of it, and a series touching neither."""
     serve(CORE_ONLY)
-    serve(DELEGATE_ONLY)
+    serve(UPSTREAM_ONLY)
     serve(FOREIGN_ONLY)
     (core,) = patch_ids(client, CORE_ONLY)
-    (delegate,) = patch_ids(client, DELEGATE_ONLY)
+    (upstream,) = patch_ids(client, UPSTREAM_ONLY)
     (foreign,) = patch_ids(client, FOREIGN_ONLY)
 
     result = run("sync")
@@ -79,17 +79,17 @@ def test_triage_owner_state(run, client, serve):
     assert result.exit_code == 0
     assert states(client) == {
         core: "under-review",
-        delegate: "awaiting-upstream",
+        upstream: "awaiting-upstream",
         foreign: "not-applicable",
     }
 
 
 def test_triage_core_takes_back(run, client, serve):
-    """A patch crossing a delegate's subtree and core's own tree is core's."""
-    serve(CORE_AND_DELEGATE)
-    (patch,) = patch_ids(client, CORE_AND_DELEGATE)
+    """A patch crossing an upstream's subtree and core's own tree is core's."""
+    serve(CORE_AND_UPSTREAM)
+    (patch,) = patch_ids(client, CORE_AND_UPSTREAM)
 
-    run("triage", CORE_AND_DELEGATE)
+    run("triage", CORE_AND_UPSTREAM)
 
     assert states(client) == {patch: "under-review"}
 
@@ -157,10 +157,10 @@ def test_triage_dry_run(run, client, serve):
 
 
 def test_triage_hook_handler_only(run, serve, tmp_path):
-    """The series is core's, so the delegate it was taken back off hears nothing."""
-    serve(CORE_AND_DELEGATE)
+    """The series is core's, so the upstream it was taken back off hears nothing."""
+    serve(CORE_AND_UPSTREAM)
 
-    run("triage", CORE_AND_DELEGATE)
+    run("triage", CORE_AND_UPSTREAM)
 
     assert [document["handler"] for document in fired(tmp_path)] == ["core"]
 
@@ -223,18 +223,18 @@ def test_sync_triages_what_arrives(run, client, serve):
 
 def test_sync_supersedes_earlier(run, client, serve):
     """A posting replaces the one before it, and one already replaced is left alone."""
-    serve(DELEGATE_ONLY)
-    serve(DELEGATE_ONLY_V2)
+    serve(UPSTREAM_ONLY)
+    serve(UPSTREAM_ONLY_V2)
     run("sync")
     client.written.clear()
     client.asked.clear()
 
-    serve(DELEGATE_ONLY_V3)
+    serve(UPSTREAM_ONLY_V3)
     run("sync")
 
-    (first,) = patch_ids(client, DELEGATE_ONLY)
-    (second,) = patch_ids(client, DELEGATE_ONLY_V2)
-    (third,) = patch_ids(client, DELEGATE_ONLY_V3)
+    (first,) = patch_ids(client, UPSTREAM_ONLY)
+    (second,) = patch_ids(client, UPSTREAM_ONLY_V2)
+    (third,) = patch_ids(client, UPSTREAM_ONLY_V3)
     assert states(client) == {
         first: "superseded",
         second: "superseded",
@@ -246,7 +246,7 @@ def test_sync_supersedes_earlier(run, client, serve):
 
 def test_sync_writes_only_what_arrived(run, client, serve):
     """The mark is the newest patch read, so only what is newer is written."""
-    serve(DELEGATE_ONLY)
+    serve(UPSTREAM_ONLY)
     run("sync")
     client.written.clear()
 
@@ -259,8 +259,8 @@ def test_sync_writes_only_what_arrived(run, client, serve):
 
 def test_sync_skips_archived(run, client, serve):
     serve(CORE_ONLY, archived=True)
-    serve(DELEGATE_ONLY)
-    (live,) = patch_ids(client, DELEGATE_ONLY)
+    serve(UPSTREAM_ONLY)
+    (live,) = patch_ids(client, UPSTREAM_ONLY)
 
     run("sync")
 
@@ -283,9 +283,9 @@ def test_sync_no_triage(run, client, serve):
 def test_sync_bad_series_does_not_block(run, client, serve):
     """It is stepped over, and reported once in all rather than once a run."""
     serve(CORE_ONLY)
-    serve(DELEGATE_ONLY)
+    serve(UPSTREAM_ONLY)
     (broken,) = patch_ids(client, CORE_ONLY)
-    (fine,) = patch_ids(client, DELEGATE_ONLY)
+    (fine,) = patch_ids(client, UPSTREAM_ONLY)
     client.patch_docs[broken]["diff"] = MALFORMED
 
     result = run("sync")
@@ -314,9 +314,9 @@ def test_archive_idle_series(run, client, serve):
 def test_archive_activity_saves_a_series(run, client, serve):
     """A reply after the timer keeps the series; one from before it changes nothing."""
     serve(CORE_ONLY, ages=[200])
-    serve(DELEGATE_ONLY, ages=[200])
+    serve(UPSTREAM_ONLY, ages=[200])
     (replied,) = patch_ids(client, CORE_ONLY)
-    (stale,) = patch_ids(client, DELEGATE_ONLY)
+    (stale,) = patch_ids(client, UPSTREAM_ONLY)
     run("sync", "--no-triage")
     client.event_docs = [
         {"id": 1, "date": days_ago(3), "payload": {"patch": {"id": replied}}},
@@ -407,9 +407,9 @@ def test_split_keeps_the_name():
 # -- the configuration file ------------------------------------------------
 
 
-def test_config_delegate_default(load_config):
+def test_config_upstream_default(load_config):
     config = load_config(
-        "delegates:\n"
+        "upstream:\n"
         "  default: {state: awaiting-upstream, hook: shared.sh}\n"
         "  imx: {paths: [drivers/clk/imx/], state: not-applicable}\n"
         "  tegra: {paths: [drivers/clk/tegra/]}\n"

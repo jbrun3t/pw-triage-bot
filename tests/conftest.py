@@ -19,12 +19,12 @@ CONFIG = DATA / "pw-triage-bot.yaml"
 
 # Series dumped from linux-clk, named for what each one is to data/pw-triage-bot.yaml.
 CORE_ONLY = 1163855  # drivers/clk/x86/
-DELEGATE_ONLY = 1093397  # drivers/clk/imx/
-DELEGATE_ONLY_V2 = 1097210  # the same series posted again
-DELEGATE_ONLY_V3 = 1105997  # and once more, so one posting is replaced twice over
-CORE_AND_DELEGATE = 1157898  # drivers/clk/tegra/ and include/linux/clk/
+UPSTREAM_ONLY = 1093397  # drivers/clk/imx/
+UPSTREAM_ONLY_V2 = 1097210  # the same series posted again
+UPSTREAM_ONLY_V3 = 1105997  # and once more, so one posting is replaced twice over
+CORE_AND_UPSTREAM = 1157898  # drivers/clk/tegra/ and include/linux/clk/
 FOREIGN_ONLY = 1159548  # a mailbox binding, which the configuration claims nowhere
-FOREIGN_MIXED = 1162185  # two patches, one a delegate's and one nobody's
+FOREIGN_MIXED = 1162185  # two patches, one an upstream's and one nobody's
 
 
 def document(name: str) -> dict:
