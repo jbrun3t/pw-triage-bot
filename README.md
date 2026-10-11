@@ -45,7 +45,7 @@ Run `pw-triage-bot COMMAND --help` for each command's options (`--force`,
 
 ```yaml
 patchwork:
-  url: https://patchwork.kernel.org/api/1.3
+  url: https://patchwork.kernel.org
   project: linux-clk
 
 core:

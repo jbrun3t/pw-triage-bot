@@ -12,11 +12,13 @@ from typing import ClassVar, Self
 
 import peewee
 import unidiff
+from pwlite import Client
 
-from . import Error
+from . import NAME, VERSION, Error
 from .config import CORE, NEW, Config
-from .patchwork import DEV_NULL, Client, DiffError
 from .time import now, stamp
+
+DEV_NULL = "/dev/null"
 
 # A bracketed subject prefix, e.g. [PATCH v2 3/7], [RFC], [v5].
 PREFIX = re.compile(r"^\s*\[[^]]*]\s*")
@@ -24,6 +26,10 @@ PREFIX = re.compile(r"^\s*\[[^]]*]\s*")
 
 class StoreError(Error):
     """The store could not be opened, read, or written."""
+
+
+class DiffError(Error):
+    """A diff could not be parsed."""
 
 
 class PwBotBaseModel(peewee.Model):
@@ -68,7 +74,7 @@ class Series(PwBotBaseModel):
     @functools.cached_property
     def data(self) -> dict:
         """Patchwork's document for this series, fetched on first use."""
-        return self.bot.client.series_data(self.id)
+        return self.bot.client.series(id=self.id)
 
     # Cached so callers get the same Patch objects; the peewee backref does not.
     @functools.cached_property
@@ -144,7 +150,7 @@ class Patch(PwBotBaseModel):
     @functools.cached_property
     def data(self) -> dict:
         """Patchwork's detail document (mail and diff), fetched on first use."""
-        return self.bot.client.patch_data(self.id)
+        return self.bot.client.patch(id=self.id)
 
     @property
     def state(self) -> str:
@@ -154,7 +160,7 @@ class Patch(PwBotBaseModel):
     @property
     def last_event(self) -> datetime.datetime | None:
         """When anything last happened to this patch, or None; per-patch since comment events name no series."""
-        events = self.bot.client.event_list(patch=self.id, order="-date", per_page=1)
+        events = self.bot.client.events(patch=self.id, order="-date", per_page=1)
         return stamp(next(events, {}).get("date"))
 
     def paths(self) -> list[str]:
@@ -181,12 +187,12 @@ class Patch(PwBotBaseModel):
         """Write `state` if the transitions table allows it; return whether it did."""
         if not self.bot.config.transitions.allows(self.state, state):
             return False
-        self.bot.client.update(self.id, state=state)
+        self.bot.client.update_patch(id=self.id, state=state)
         return True
 
     def archive(self) -> None:
         """Archive the patch in patchwork, then drop it from the store."""
-        self.bot.client.update(self.id, archived=True)
+        self.bot.client.update_patch(id=self.id, archived=True)
         self.delete_instance()
 
     def touch(self, when: datetime.datetime) -> None:
@@ -227,7 +233,13 @@ class PatchworkBot:
         self.store = store
         self.dry_run = dry_run
         self.no_hook = no_hook
-        self.client = Client(config.patchwork, token=token, dry_run=dry_run)
+        self.client = Client(
+            config.patchwork.url,
+            config.patchwork.project,
+            token=token,
+            user_agent=f"{NAME}/{VERSION}",
+            dry_run=dry_run,
+        )
 
     def __enter__(self) -> Self:
         with contextlib.ExitStack() as opening:
@@ -276,7 +288,7 @@ class PatchworkBot:
         if (held := Patch.get_or_none(Patch.id == patch_id)) is not None:
             return held
 
-        document = self.client.patch_data(patch_id)
+        document = self.client.patch(id=patch_id)
         fresh = self.patch_record(document)
         fresh.data = document
         return fresh
@@ -319,7 +331,7 @@ class PatchworkBot:
         if (held := Series.get_or_none(Series.id == series_id)) is not None:
             return held
 
-        document = self.client.series_data(series_id)
+        document = self.client.series(id=series_id)
         fresh = self.series_record(document)
         fresh.data = document
 
@@ -368,7 +380,7 @@ class PatchworkBot:
             id = 0
             params["per_page"] = 250  # Nothing read yet: page for the whole project.
 
-        patches = self.client.patch_list(**params)
+        patches = self.client.patches(**params)
         entries = list(takewhile(lambda entry: entry["id"] > id, patches))
 
         with self.atomic():

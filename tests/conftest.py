@@ -8,10 +8,10 @@ from pathlib import Path
 
 import pytest
 import yaml
+from pwlite import PwError
 
 from pw_triage_bot.bot import PatchworkBot
 from pw_triage_bot.config import Config
-from pw_triage_bot.patchwork import PwError
 from pw_triage_bot.time import now
 
 DATA = Path(__file__).parent / "data"
@@ -34,7 +34,7 @@ def document(name: str) -> dict:
 
 def patch_ids(client, series_id: int) -> list[int]:
     """The patches the served series holds, in the order it names them."""
-    return [entry["id"] for entry in client.series[series_id]["patches"]]
+    return [entry["id"] for entry in client.series_docs[series_id]["patches"]]
 
 
 def days_ago(days: int) -> str:
@@ -46,45 +46,40 @@ class FakeClient:
 
     def __init__(self, *, dry_run: bool = False) -> None:
         self.dry_run = dry_run
-        self.patches: dict[int, dict] = {}
-        self.series: dict[int, dict] = {}
-        self.events: list[dict] = []
+        self.patch_docs: dict[int, dict] = {}
+        self.series_docs: dict[int, dict] = {}
+        self.event_docs: list[dict] = []
         self.written: list[tuple[int, str | None, bool | None]] = []  # as the real client PATCHes
         self.asked: list[int] = []  # every patch document fetched, so a test can price a run
 
-    def patch_data(self, patch_id: int) -> dict:
-        self.asked.append(patch_id)
-        if patch_id not in self.patches:
-            raise PwError(f"patches/{patch_id}: no such patch")
-        return self.patches[patch_id]
+    def patch(self, *, id: int) -> dict:
+        self.asked.append(id)
+        if id not in self.patch_docs:
+            raise PwError(f"patches/{id}: no such patch")
+        return self.patch_docs[id]
 
-    def series_data(self, series_id: int) -> dict:
-        if series_id not in self.series:
-            raise PwError(f"series/{series_id}: no such series")
-        return self.series[series_id]
+    def series(self, *, id: int) -> dict:
+        if id not in self.series_docs:
+            raise PwError(f"series/{id}: no such series")
+        return self.series_docs[id]
 
-    def patch_list(self, **params: object):
-        entries = list(self.patches.values())
+    def patches(self, **params: object):
+        entries = list(self.patch_docs.values())
         if params.get("archived") is False:
             entries = [e for e in entries if not e.get("archived")]
         order = str(params.get("order") or "id")
         return iter(sorted(entries, key=lambda e: e["id"], reverse=order.startswith("-")))
 
-    def event_list(self, **params: object):
+    def events(self, **params: object):
         patch_id = params.get("patch")
-        found = [e for e in self.events if e["payload"]["patch"]["id"] == patch_id]
+        found = [e for e in self.event_docs if e["payload"]["patch"]["id"] == patch_id]
         return iter(sorted(found, key=lambda e: e["date"], reverse=True))
 
-    def update(self, patch_id: int, *, state: str | None = None, archived: bool | None = None):
-        if state is None and archived is None:
-            return
+    def update_patch(self, *, id: int, **fields: object) -> None:
         if self.dry_run:
             return
-        self.written.append((patch_id, state, archived))
-        if state is not None:
-            self.patches[patch_id]["state"] = state
-        if archived is not None:
-            self.patches[patch_id]["archived"] = archived
+        self.written.append((id, fields.get("state"), fields.get("archived")))
+        self.patch_docs[id] |= fields
 
 
 @pytest.fixture
@@ -110,8 +105,8 @@ def serve(client):
             patch["archived"] = archived
             if ages is not None:
                 patch["date"] = entry["date"] = days_ago(ages[number])
-            client.patches[patch["id"]] = patch
-        client.series[series_id] = series
+            client.patch_docs[patch["id"]] = patch
+        client.series_docs[series_id] = series
         return series_id
 
     return make

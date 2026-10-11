@@ -18,19 +18,19 @@ from conftest import (
     days_ago,
     patch_ids,
 )
+from pwlite import PwError
 
 from pw_triage_bot import bot as bot_module
 from pw_triage_bot import cli
-from pw_triage_bot.bot import Series
+from pw_triage_bot.bot import DiffError, Series
 from pw_triage_bot.config import ConfigError
-from pw_triage_bot.patchwork import DiffError, PwError
 
 
 @pytest.fixture
 def run(tmp_path, client, monkeypatch):
     """Invoke a command in tmp_path, against the fake patchwork and a store of its own."""
 
-    def build(config, *, token=None, dry_run=False):
+    def build(url, project, *, dry_run=False, **settings):
         client.dry_run = dry_run
         return client
 
@@ -59,7 +59,7 @@ MALFORMED = "diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1,2 +1,2 @@\n context\n2.
 
 
 def states(client):
-    return {pid: doc["state"] for pid, doc in client.patches.items()}
+    return {pid: doc["state"] for pid, doc in client.patch_docs.items()}
 
 
 # -- triage ----------------------------------------------------------------
@@ -131,7 +131,7 @@ def test_triage_malformed_diff(run, client, serve, tmp_path):
     """Ownership is settled before anything is written, so one bad diff costs the series."""
     serve(FOREIGN_MIXED)
     _, stranger = patch_ids(client, FOREIGN_MIXED)
-    client.patches[stranger]["diff"] = MALFORMED
+    client.patch_docs[stranger]["diff"] = MALFORMED
 
     result = run("triage", FOREIGN_MIXED)
 
@@ -286,7 +286,7 @@ def test_sync_bad_series_does_not_block(run, client, serve):
     serve(DELEGATE_ONLY)
     (broken,) = patch_ids(client, CORE_ONLY)
     (fine,) = patch_ids(client, DELEGATE_ONLY)
-    client.patches[broken]["diff"] = MALFORMED
+    client.patch_docs[broken]["diff"] = MALFORMED
 
     result = run("sync")
 
@@ -318,7 +318,7 @@ def test_archive_activity_saves_a_series(run, client, serve):
     (replied,) = patch_ids(client, CORE_ONLY)
     (stale,) = patch_ids(client, DELEGATE_ONLY)
     run("sync", "--no-triage")
-    client.events = [
+    client.event_docs = [
         {"id": 1, "date": days_ago(3), "payload": {"patch": {"id": replied}}},
         {"id": 2, "date": days_ago(300), "payload": {"patch": {"id": stale}}},
     ]
@@ -333,7 +333,7 @@ def test_archive_force_skips_events(run, client, serve):
     serve(CORE_ONLY, ages=[200])
     (patch,) = patch_ids(client, CORE_ONLY)
     run("sync", "--no-triage")
-    client.events = [{"id": 1, "date": days_ago(3), "payload": {"patch": {"id": patch}}}]
+    client.event_docs = [{"id": 1, "date": days_ago(3), "payload": {"patch": {"id": patch}}}]
 
     run("archive", "--force", 180)
 
@@ -346,13 +346,13 @@ def test_archive_write_refused(run, client, serve):
     (patch,) = patch_ids(client, CORE_ONLY)
     run("sync", "--no-triage")
 
-    def refuse(patch_id, **settings):
+    def refuse(**fields):
         raise PwError("patchwork is down")
 
-    held, client.update = client.update, refuse
+    held, client.update_patch = client.update_patch, refuse
     assert run("archive", 180).exit_code == 1
 
-    client.update = held
+    client.update_patch = held
     run("archive", 180)
 
     assert client.written == [(patch, None, True)]
@@ -377,7 +377,7 @@ def test_paths_malformed_diff(bot, client, serve):
     """The line unidiff quotes keeps its newline, which must not reach the message."""
     serve(CORE_ONLY)
     (patch,) = patch_ids(client, CORE_ONLY)
-    client.patches[patch]["diff"] = MALFORMED
+    client.patch_docs[patch]["diff"] = MALFORMED
 
     with pytest.raises(DiffError) as raised:
         bot.patch_get(patch).paths()
@@ -423,6 +423,4 @@ def test_config_delegate_default(load_config):
 def test_config_error_names_the_key(load_config):
     """The message names the key that was wrong."""
     with pytest.raises(ConfigError, match=r"patchwork\.url: must be https"):
-        load_config(
-            "patchwork:\n  url: http://patchwork.kernel.org/api/1.3\n  project: linux-clk\n"
-        )
+        load_config("patchwork:\n  url: http://patchwork.kernel.org\n  project: linux-clk\n")

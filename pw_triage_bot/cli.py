@@ -11,16 +11,24 @@ from pathlib import Path
 
 import click
 import platformdirs
+from pwlite import PwError
 
 from . import NAME, Error
-from .bot import PatchworkBot, Series
+from .bot import DiffError, PatchworkBot, Series
 from .config import FOREIGN, SUPERSEDED, Config, Handling
-from .patchwork import TOKEN_ENV, DiffError, token
 from .time import now
 
 CONFIG = Path(platformdirs.user_config_dir(NAME), f"{NAME}.yaml")
 STORE = Path(platformdirs.user_state_dir(NAME), f"{NAME}.db")
 TOKEN = Path(platformdirs.user_config_dir(NAME), f"{NAME}.token")
+TOKEN_ENV = "PW_TRIAGE_BOT_TOKEN"
+
+
+def token(path: Path) -> str | None:
+    """The token authenticating writes: the file at `path` if it is there, else the environment."""
+    if path.is_file():
+        return path.read_text().strip() or None
+    return os.environ.get(TOKEN_ENV) or None
 
 
 def failed(reason: object) -> SystemExit:
@@ -43,7 +51,7 @@ class Main(click.Group):
             ) as bot:
                 ctx.obj = bot
                 return super().invoke(ctx)
-        except Error as e:
+        except (Error, PwError) as e:
             raise failed(e) from e
 
 

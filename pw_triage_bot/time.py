@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import datetime
 
-from .patchwork import PwError
+from pwlite import PwError
 
 
 def stamp(value: str | None) -> datetime.datetime | None:
