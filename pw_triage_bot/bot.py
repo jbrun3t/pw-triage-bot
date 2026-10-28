@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import datetime
+import fcntl
 import functools
 import re
 from itertools import takewhile
@@ -274,7 +275,11 @@ MODELS = [Patch, Series, Tracker]
 
 
 class PatchworkBot:
-    """One run against one patchwork project."""
+    """One run against one patchwork project.
+
+    Runs on the same store take turns; a `shared` one, which only reads the
+    store, waits for the others but not for its kind.
+    """
 
     DB_SCHEMA_VERSION = 3
 
@@ -286,11 +291,13 @@ class PatchworkBot:
         token: str | None = None,
         dry_run: bool = False,
         no_hook: bool = False,
+        shared: bool = False,
     ) -> None:
         self.config = config
         self.store = store
         self.dry_run = dry_run
         self.no_hook = no_hook
+        self.shared = shared
         self.client = Client(
             config.patchwork.url,
             config.patchwork.project,
@@ -301,6 +308,15 @@ class PatchworkBot:
 
     def __enter__(self) -> Self:
         with contextlib.ExitStack() as opening:
+            try:
+                self.store.parent.mkdir(parents=True, exist_ok=True)
+                lock = opening.enter_context(
+                    self.store.with_name(f"{self.store.name}.lock").open("a")
+                )
+                # flock(2), not lockf(3): the lock flock(1) takes, so a deploy can wait on a run.
+                fcntl.flock(lock, fcntl.LOCK_SH if self.shared else fcntl.LOCK_EX)
+            except OSError as e:
+                raise StoreError(f"{self.store}: {e}") from e
             self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
             opening.enter_context(self._database.bind_ctx(MODELS))
             opening.callback(self._database.close)
@@ -318,7 +334,6 @@ class PatchworkBot:
     def _database_prepare(self) -> None:
         """Create and stamp a new store; refuse one written by another schema version."""
         try:
-            self.store.parent.mkdir(parents=True, exist_ok=True)
             version = self._database.pragma("user_version")
             if version != self.DB_SCHEMA_VERSION and (version or self._database.get_tables()):
                 raise StoreError(

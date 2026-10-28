@@ -27,7 +27,8 @@ pw-triage-bot --config myproject.yaml sync
 `sync` fills the store on its first run and triages what it finds; run it again
 on a timer afterward, e.g. from cron. `-n`/`--dry-run` reports what a run would
 do without writing anything; like `--config` and `--store`, it goes before the
-command.
+command. Runs on the same store wait for each other, through `<store>.lock`;
+`pw-check` runs only wait for `pw-triage-bot` ones.
 
 ## Commands
 

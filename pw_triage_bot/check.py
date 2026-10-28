@@ -43,7 +43,7 @@ def main(
 ) -> None:
     """Upload a check against the patch, or series, the mail MSGID is held for."""
     msgid = msgid.strip("<>")
-    with opened(config_path, store_path, token_path, dry_run) as bot:
+    with opened(config_path, store_path, token_path, dry_run, shared=True) as bot:
         if whole:
             if (series := bot.series_find(msgid)) is None:
                 raise failed(f"{msgid}: no series known by this message-id")
