@@ -46,7 +46,6 @@ def opened(
     token_path: Path,
     dry_run: bool,
     no_hook: bool = False,
-    shared: bool = False,
 ) -> Iterator[PatchworkBot]:
     """Build the handler for one run, and end the run on `Error`."""
     try:
@@ -56,7 +55,6 @@ def opened(
             token=token(token_path),
             dry_run=dry_run,
             no_hook=no_hook,
-            shared=shared,
         ) as bot:
             yield bot
     except (Error, PwError) as e:

@@ -46,21 +46,28 @@ Run `pw-triage-bot COMMAND --help` for each command's options (`--force`,
 ## pw-check
 
 ```
-pw-check --series --state fail --context my-ci --description "rebuild" MSGID
+echo '{"msgid": "<MSGID>", "series": true, "checks": [{"context": "my-ci", "state": "fail"}]}' | pw-check
 ```
 
-`pw-check` reports a CI result to patchwork as a check, against the mail the CI
+`pw-check` reports CI results to patchwork as checks, against the mail the CI
 ran on. It takes the same `--config`, `--store`, `--token` and `-n` as
-`pw-triage-bot`, and looks MSGID (with or without `<>`) up. An MSGID the store
-does not know fails the run.
+`pw-triage-bot`, reads one request, a JSON document, on stdin, and answers one
+on stdout.
 
-- Without `--series`, MSGID is a patch's, and that patch gets the check.
-- With `--series`, MSGID is the series' cover letter or any of its patches, and
-  every patch of the series gets the check, its context prefixed with
-  `series-`.
-- `--state` is one of `pending`, `success`, `warning` or `fail`; `--context`
-  (letters, digits, `-` and `_`) tells the check from other testing systems';
-  `--description` and `--url` are optional.
+The request:
+
+- `msgid` (with or without `<>`) is looked up in the store. Without `series`,
+  it is a patch's, and that patch gets the checks. With `"series": true`, it
+  is the series' cover letter or any of its patches, and every patch of the
+  series gets each check, its context prefixed with `series-`.
+- `checks` lists the checks to upload. Each has a `state`, one of `pending`,
+  `success`, `warning` or `fail`, and a `context` (letters, digits, `-` and
+  `_`) telling it from other testing systems'; `description` and `url` are
+  optional. An empty list uploads nothing, and `msgid` is then not looked up.
+
+The whole request is checked before anything is uploaded. The answer lists
+the checks `uploaded`, as `{"patch", "context", "state"}`, and on failure
+holds the `error` that stopped the rest; the run then exits 1.
 
 ## Configuration
 

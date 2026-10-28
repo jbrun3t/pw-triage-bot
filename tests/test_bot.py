@@ -38,13 +38,13 @@ def run(tmp_path, client, monkeypatch):
     monkeypatch.setattr(bot_module, "Client", build)
     monkeypatch.chdir(tmp_path)
 
-    def make(*args, dry_run=False, no_hook=False, entry=cli.main):
+    def make(*args, dry_run=False, no_hook=False, entry=cli.main, input=None):
         line = ["--config", str(CONFIG), "--store", str(tmp_path / "store.db")]
         if dry_run:
             line.append("-n")
         if no_hook:
             line.append("--no-hook")
-        return CliRunner().invoke(entry, [*line, *[str(a) for a in args]])
+        return CliRunner().invoke(entry, [*line, *[str(a) for a in args]], input=input)
 
     return make
 
@@ -382,7 +382,12 @@ def test_archive_write_refused(run, client, serve):
 
 # -- check ---------------------------------------------------------------
 
-CHECK = ["--state", "success", "--context", "build", "--description", "ok", "--url", "https://ci"]
+CHECK = {"context": "build", "state": "success", "description": "ok", "url": "https://ci"}
+
+
+def request(msgid: str, *checks: dict, series: bool = False) -> str:
+    """A pw-check request, uploading CHECK unless given its own checks."""
+    return json.dumps({"msgid": msgid, "series": series, "checks": list(checks) or [CHECK]})
 
 
 def checked(context: str = "build") -> dict:
@@ -400,7 +405,7 @@ def test_check_patch(run, client, serve):
     (patch,) = patch_ids(client, CORE_ONLY)
     run("sync")
 
-    result = run(*CHECK, client.patch_docs[patch]["msgid"], entry=check.main)
+    result = run(entry=check.main, input=request(client.patch_docs[patch]["msgid"]))
 
     assert result.exit_code == 0
     assert client.checks == [(patch, checked())]
@@ -412,7 +417,7 @@ def test_check_series_cover_letter(run, client, serve):
     run("sync")
     cover = client.series_docs[FOREIGN_MIXED]["cover_letter"]["msgid"]
 
-    result = run("--series", *CHECK, cover, entry=check.main)
+    result = run(entry=check.main, input=request(cover, series=True))
 
     assert result.exit_code == 0
     assert sorted(client.checks) == [
@@ -426,7 +431,7 @@ def test_check_series_from_patch(run, client, serve):
     _, second = patch_ids(client, FOREIGN_MIXED)
     run("sync", "--no-triage")
 
-    result = run("--series", *CHECK, client.patch_docs[second]["msgid"], entry=check.main)
+    result = run(entry=check.main, input=request(client.patch_docs[second]["msgid"], series=True))
 
     assert result.exit_code == 0
     assert sorted(client.checks) == [
@@ -438,9 +443,36 @@ def test_check_unknown_msgid(run, client, serve):
     serve(CORE_ONLY)
     run("sync")
 
-    result = run("--series", *CHECK, "nobody@example.com", entry=check.main)
+    result = run(entry=check.main, input=request("nobody@example.com", series=True))
 
     assert result.exit_code == 1
+    assert client.checks == []
+
+
+def test_check_invalid_request(run, client, serve):
+    """One check patchwork would refuse holds back the others."""
+    serve(CORE_ONLY)
+    (patch,) = patch_ids(client, CORE_ONLY)
+    run("sync")
+
+    bad = CHECK | {"context": "build arm64"}
+    result = run(entry=check.main, input=request(client.patch_docs[patch]["msgid"], CHECK, bad))
+
+    assert result.exit_code == 1
+    assert client.checks == []
+
+
+def test_check_no_checks(run, client, serve):
+    """A run that reports nothing names a mail all the same; it is not looked up."""
+    serve(CORE_ONLY)
+    run("sync")
+
+    result = run(
+        entry=check.main,
+        input=json.dumps({"msgid": "nobody@example.com", "checks": []}),
+    )
+
+    assert result.exit_code == 0
     assert client.checks == []
 
 
