@@ -403,10 +403,10 @@ def test_series_msgid(bot, serve):
     serve(FOREIGN_MIXED)
     serve(CORE_ONLY)
 
-    assert bot.series_get(FOREIGN_MIXED).msgid_get() == (
+    assert bot.series_get(FOREIGN_MIXED).msgid == (
         "20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de"
     )
-    assert bot.series_get(CORE_ONLY).msgid_get() == "20260913125239.110113-1-bolin.liu@seu.edu.cn"
+    assert bot.series_get(CORE_ONLY).msgid == "20260913125239.110113-1-bolin.liu@seu.edu.cn"
 
 
 def test_paths_malformed_diff(bot, client, serve):

@@ -43,7 +43,6 @@ class Series(PwBotBaseModel):
     `subject` is the chain key (case-insensitive); `prefix` is the bracketed
     run patchwork stacks in front of it. `superseded_by` names the posting
     that replaced this one; whether a series was looked at lives on its patches.
-    `msgid` is the thread root's, held once read from the series document.
     """
 
     id = peewee.IntegerField(primary_key=True)
@@ -54,7 +53,35 @@ class Series(PwBotBaseModel):
     superseded_by = peewee.ForeignKeyField(
         "self", null=True, backref="supersedes", on_delete="SET NULL"
     )
-    msgid = peewee.CharField(null=True)
+    _msgid = peewee.CharField(null=True, column_name="msgid")
+
+    @classmethod
+    def get_or_create(cls, **kwargs) -> tuple[Series, bool]:
+        """Peewee's, except that a series not held and given no defaults is read from patchwork."""
+        defaults = kwargs.pop("defaults", None)
+        if (held := cls.get_or_none(**kwargs)) is not None:
+            return held, False
+        document = None
+        if not defaults:
+            document = cls.bot.client.series(id=kwargs["id"])
+            defaults = cls.columns(document)
+        series = cls.create(**kwargs, **defaults)
+        if document is not None:
+            series.data = document
+        return series, True
+
+    @staticmethod
+    def columns(data: dict) -> dict:
+        """Row values from a series document or listing summary; only a document names the thread root."""
+        prefix, subject = Series.split(data.get("name"))
+        root = data.get("cover_letter") or next(iter(data.get("patches") or []), {})
+        return {
+            "prefix": prefix,
+            "subject": subject,
+            "version": 1 if data.get("version") is None else data["version"],
+            "date": stamp(data.get("date")) or now(),
+            "_msgid": (root.get("msgid") or "").strip("<>") or None,
+        }
 
     @staticmethod
     def split(name: str | None) -> tuple[str, str]:
@@ -76,17 +103,18 @@ class Series(PwBotBaseModel):
     @functools.cached_property
     def data(self) -> dict:
         """Patchwork's document for this series, fetched on first use."""
-        return self.bot.client.series(id=self.id)
-
-    def msgid_get(self) -> str:
-        """The thread root's message-id: the cover letter's, else the first patch's."""
-        if self.msgid is None:
-            root = self.data.get("cover_letter")
-            if root is None:
-                root = (self.data.get("patches") or [{}])[0]
-            self.msgid = (root.get("msgid") or "").strip("<>")
+        document = self.bot.client.series(id=self.id)
+        if self._msgid is None and (msgid := self.columns(document)["_msgid"]):
+            self._msgid = msgid
             self.save()
-        return self.msgid
+        return document
+
+    @property
+    def msgid(self) -> str | None:
+        """The message-id rooting the series thread: the cover letter's, else the first patch's."""
+        if self._msgid is None:
+            self.data  # noqa: B018 -- reading the document fills it
+        return self._msgid
 
     # Cached so callers get the same Patch objects; the peewee backref does not.
     @functools.cached_property
@@ -354,31 +382,16 @@ class PatchworkBot:
 
     def series_get(self, series_id: int) -> Series:
         """Return the series and its patches, reading them in if not held yet; raises for an id patchwork won't serve."""
-        if (held := Series.get_or_none(Series.id == series_id)) is not None:
-            return held
-
-        document = self.client.series(id=series_id)
-        fresh = self.series_record(document)
-        fresh.data = document
-
-        for entry in document.get("patches") or []:
-            self.patch_record(entry, series_id=fresh.id)
-
-        return fresh
+        series, created = Series.get_or_create(id=series_id)
+        if created:
+            for entry in series.data.get("patches") or []:
+                self.patch_record(entry, series_id=series.id)
+        return series
 
     @staticmethod
     def series_record(data: dict) -> Series:
         """Store one series, if not held already, and return it."""
-        prefix, subject = Series.split(data.get("name"))
-        series, _ = Series.get_or_create(
-            id=data["id"],
-            defaults={
-                "prefix": prefix,
-                "subject": subject,
-                "version": 1 if data.get("version") is None else data["version"],
-                "date": stamp(data.get("date")) or now(),
-            },
-        )
+        series, _ = Series.get_or_create(id=data["id"], defaults=Series.columns(data))
         return series
 
     @staticmethod
