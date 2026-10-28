@@ -277,8 +277,7 @@ MODELS = [Patch, Series, Tracker]
 class PatchworkBot:
     """One run against one patchwork project.
 
-    Runs on the same store take turns; a `shared` one, which only reads the
-    store, waits for the others but not for its kind.
+    Runs on the same store take turns.
     """
 
     DB_SCHEMA_VERSION = 3
@@ -291,13 +290,11 @@ class PatchworkBot:
         token: str | None = None,
         dry_run: bool = False,
         no_hook: bool = False,
-        shared: bool = False,
     ) -> None:
         self.config = config
         self.store = store
         self.dry_run = dry_run
         self.no_hook = no_hook
-        self.shared = shared
         self.client = Client(
             config.patchwork.url,
             config.patchwork.project,
@@ -314,7 +311,7 @@ class PatchworkBot:
                     self.store.with_name(f"{self.store.name}.lock").open("a")
                 )
                 # flock(2), not lockf(3): the lock flock(1) takes, so a deploy can wait on a run.
-                fcntl.flock(lock, fcntl.LOCK_SH if self.shared else fcntl.LOCK_EX)
+                fcntl.flock(lock, fcntl.LOCK_EX)
             except OSError as e:
                 raise StoreError(f"{self.store}: {e}") from e
             self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
