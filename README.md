@@ -55,8 +55,8 @@ does not know fails the run.
 
 - Without `--series`, MSGID is a patch's, and that patch gets the check.
 - With `--series`, MSGID is the series' cover letter or any of its patches, and
-  every patch of the series gets the check, its description prefixed with
-  `series`.
+  every patch of the series gets the check, its context prefixed with
+  `series-`.
 - `--state` is one of `pending`, `success`, `warning` or `fail`; `--context`
   (letters, digits, `-` and `_`) tells the check from other testing systems';
   `--description` and `--url` are optional.

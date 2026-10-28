@@ -48,7 +48,7 @@ def main(
             if (series := bot.series_find(msgid)) is None:
                 raise failed(f"{msgid}: no series known by this message-id")
             patches = series.patches
-            description = f"series: {description}" if description else "series"
+            context = f"series-{context}"
         else:
             if (patch := bot.patch_find(msgid)) is None:
                 raise failed(f"{msgid}: no patch known by this message-id")

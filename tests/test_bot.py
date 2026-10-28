@@ -385,12 +385,12 @@ def test_archive_write_refused(run, client, serve):
 CHECK = ["--state", "success", "--context", "build", "--description", "ok", "--url", "https://ci"]
 
 
-def checked(description: str = "ok") -> dict:
+def checked(context: str = "build") -> dict:
     """The fields a check uploads, as patchwork spells them."""
     return {
         "state": "success",
-        "context": "build",
-        "description": description,
+        "context": context,
+        "description": "ok",
         "target_url": "https://ci",
     }
 
@@ -416,7 +416,7 @@ def test_check_series_cover_letter(run, client, serve):
 
     assert result.exit_code == 0
     assert sorted(client.checks) == [
-        (patch, checked("series: ok")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
+        (patch, checked("series-build")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
     ]
 
 
@@ -430,7 +430,7 @@ def test_check_series_from_patch(run, client, serve):
 
     assert result.exit_code == 0
     assert sorted(client.checks) == [
-        (patch, checked("series: ok")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
+        (patch, checked("series-build")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
     ]
 
 
