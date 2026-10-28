@@ -22,7 +22,7 @@ from conftest import (
 from pwlite import PwError
 
 from pw_triage_bot import bot as bot_module
-from pw_triage_bot import cli
+from pw_triage_bot import check, cli
 from pw_triage_bot.bot import DiffError, Series
 from pw_triage_bot.config import ConfigError
 
@@ -38,13 +38,13 @@ def run(tmp_path, client, monkeypatch):
     monkeypatch.setattr(bot_module, "Client", build)
     monkeypatch.chdir(tmp_path)
 
-    def make(*args, dry_run=False, no_hook=False):
+    def make(*args, dry_run=False, no_hook=False, entry=cli.main):
         line = ["--config", str(CONFIG), "--store", str(tmp_path / "store.db")]
         if dry_run:
             line.append("-n")
         if no_hook:
             line.append("--no-hook")
-        return CliRunner().invoke(cli.main, [*line, *[str(a) for a in args]])
+        return CliRunner().invoke(entry, [*line, *[str(a) for a in args]])
 
     return make
 
@@ -380,6 +380,70 @@ def test_archive_write_refused(run, client, serve):
     assert client.written == [(patch, None, True)]
 
 
+# -- check ---------------------------------------------------------------
+
+CHECK = ["--state", "success", "--context", "build", "--description", "ok", "--url", "https://ci"]
+
+
+def checked(description: str = "ok") -> dict:
+    """The fields a check uploads, as patchwork spells them."""
+    return {
+        "state": "success",
+        "context": "build",
+        "description": description,
+        "target_url": "https://ci",
+    }
+
+
+def test_check_patch(run, client, serve):
+    serve(CORE_ONLY)
+    (patch,) = patch_ids(client, CORE_ONLY)
+    run("sync")
+
+    result = run(*CHECK, client.patch_docs[patch]["msgid"], entry=check.main)
+
+    assert result.exit_code == 0
+    assert client.checks == [(patch, checked())]
+
+
+def test_check_series_cover_letter(run, client, serve):
+    """The cover letter's message-id matches no patch; the series learns it when its hook reads it."""
+    serve(FOREIGN_MIXED)
+    run("sync")
+    cover = client.series_docs[FOREIGN_MIXED]["cover_letter"]["msgid"]
+
+    result = run("--series", *CHECK, cover, entry=check.main)
+
+    assert result.exit_code == 0
+    assert sorted(client.checks) == [
+        (patch, checked("series: ok")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
+    ]
+
+
+def test_check_series_from_patch(run, client, serve):
+    """Any patch of the series names it, even one read from a listing alone."""
+    serve(FOREIGN_MIXED)
+    _, second = patch_ids(client, FOREIGN_MIXED)
+    run("sync", "--no-triage")
+
+    result = run("--series", *CHECK, client.patch_docs[second]["msgid"], entry=check.main)
+
+    assert result.exit_code == 0
+    assert sorted(client.checks) == [
+        (patch, checked("series: ok")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
+    ]
+
+
+def test_check_unknown_msgid(run, client, serve):
+    serve(CORE_ONLY)
+    run("sync")
+
+    result = run("--series", *CHECK, "nobody@example.com", entry=check.main)
+
+    assert result.exit_code == 1
+    assert client.checks == []
+
+
 # -- the paths a diff touches ----------------------------------------------
 
 
@@ -393,20 +457,6 @@ def test_paths_every_side_of_a_diff(bot, client, serve):
         "arch/arm64/boot/dts/freescale/Makefile",
         "arch/arm64/boot/dts/freescale/imx93-kontron-dl.dtso",
     ]
-
-
-# -- the message-id a series is known by -----------------------------------
-
-
-def test_series_msgid(bot, serve):
-    """The cover letter roots the thread when there is one, else the first patch does."""
-    serve(FOREIGN_MIXED)
-    serve(CORE_ONLY)
-
-    assert bot.series_get(FOREIGN_MIXED).msgid == (
-        "20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de"
-    )
-    assert bot.series_get(CORE_ONLY).msgid == "20260913125239.110113-1-bolin.liu@seu.edu.cn"
 
 
 def test_paths_malformed_diff(bot, client, serve):

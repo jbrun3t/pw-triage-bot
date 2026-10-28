@@ -15,7 +15,7 @@ dependencies = [
     "platformdirs",
     "pydantic",
     "peewee",
-    "pwlite @ git+https://github.com/jbrun3t/pwlite.git@v0.2.0",
+    "pwlite @ git+https://github.com/jbrun3t/pwlite.git@v0.2.1",
     "pyyaml",
     "unidiff",
 ]
@@ -25,6 +25,7 @@ dev = ["pytest", "ruff~=0.16.0"]
 
 [project.scripts]
 pw-triage-bot = "pw_triage_bot.cli:main"
+pw-check = "pw_triage_bot.check:main"
 
 [tool.hatch.metadata]
 allow-direct-references = true

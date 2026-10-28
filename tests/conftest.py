@@ -51,6 +51,7 @@ class FakeClient:
         self.event_docs: list[dict] = []
         self.written: list[tuple[int, str | None, bool | None]] = []  # as the real client PATCHes
         self.asked: list[int] = []  # every patch document fetched, so a test can price a run
+        self.checks: list[tuple[int, dict]] = []  # as the real client POSTs them
 
     def patch(self, *, id: int) -> dict:
         self.asked.append(id)
@@ -80,6 +81,11 @@ class FakeClient:
             return
         self.written.append((id, fields.get("state"), fields.get("archived")))
         self.patch_docs[id] |= fields
+
+    def create_check(self, *, id: int, **fields: object) -> None:
+        if self.dry_run:
+            return
+        self.checks.append((id, fields))
 
 
 @pytest.fixture

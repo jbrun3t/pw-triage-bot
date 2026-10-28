@@ -42,6 +42,25 @@ Run `pw-triage-bot COMMAND --help` for each command's options (`--force`,
 `--no-triage`), and `pw-triage-bot --help` for the ones the whole run takes
 (`--dry-run`, `--no-hook`, ...).
 
+## pw-check
+
+```
+pw-check --series --state fail --context my-ci --description "rebuild" MSGID
+```
+
+`pw-check` reports a CI result to patchwork as a check, against the mail the CI
+ran on. It takes the same `--config`, `--store`, `--token` and `-n` as
+`pw-triage-bot`, and looks MSGID (with or without `<>`) up. An MSGID the store
+does not know fails the run.
+
+- Without `--series`, MSGID is a patch's, and that patch gets the check.
+- With `--series`, MSGID is the series' cover letter or any of its patches, and
+  every patch of the series gets the check, its description prefixed with
+  `series`.
+- `--state` is one of `pending`, `success`, `warning` or `fail`; `--context`
+  (letters, digits, `-` and `_`) tells the check from other testing systems';
+  `--description` and `--url` are optional.
+
 ## Configuration
 
 ```yaml

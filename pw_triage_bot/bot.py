@@ -244,6 +244,10 @@ class Patch(PwBotBaseModel):
         """Delegate the patch to `user`, a patchwork user document."""
         self.bot.client.update_patch(id=self.id, delegate=user["id"])
 
+    def add_check(self, **fields: object) -> None:
+        """Add a check to the patch; `fields` as patchwork spells them."""
+        self.bot.client.create_check(id=self.id, **fields)
+
     def archive(self) -> None:
         """Archive the patch in patchwork, then drop it from the store."""
         self.bot.client.update_patch(id=self.id, archived=True)
@@ -365,6 +369,11 @@ class PatchworkBot:
         return patch
 
     @staticmethod
+    def patch_find(msgid: str) -> Patch | None:
+        """The held patch with this message-id."""
+        return Patch.get_or_none(Patch.msgid == msgid)
+
+    @staticmethod
     def patch_idle(cutoff: datetime.datetime) -> peewee.ModelSelect:
         """Return the patches of every series quiet since `cutoff` (every patch of the series, not just one)."""
         alive = Patch.alias()
@@ -387,6 +396,12 @@ class PatchworkBot:
             for entry in series.data.get("patches") or []:
                 self.patch_record(entry, series_id=series.id)
         return series
+
+    def series_find(self, msgid: str) -> Series | None:
+        """The held series rooted at this message-id, else the one holding the patch that has it."""
+        if (series := Series.get_or_none(Series._msgid == msgid)) is not None:
+            return series
+        return patch.series if (patch := self.patch_find(msgid)) else None
 
     @staticmethod
     def series_record(data: dict) -> Series:

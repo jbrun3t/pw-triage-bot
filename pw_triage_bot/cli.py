@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import contextlib
 import datetime
 import json
 import os
 import subprocess
 import tempfile
+from collections.abc import Callable, Iterator
 from pathlib import Path
 
 import click
@@ -37,22 +39,75 @@ def failed(reason: object) -> SystemExit:
     return SystemExit(1)
 
 
+@contextlib.contextmanager
+def opened(
+    config_path: Path,
+    store_path: Path,
+    token_path: Path,
+    dry_run: bool,
+    no_hook: bool = False,
+) -> Iterator[PatchworkBot]:
+    """Build the handler for one run, and end the run on `Error`."""
+    try:
+        with PatchworkBot(
+            Config.load(config_path),
+            store_path,
+            token=token(token_path),
+            dry_run=dry_run,
+            no_hook=no_hook,
+        ) as bot:
+            yield bot
+    except (Error, PwError) as e:
+        raise failed(e) from e
+
+
+def run_options(command: Callable) -> Callable:
+    """The options every script takes: the configuration, store and token, and the dry run."""
+    for option in reversed(
+        [
+            click.option(
+                "--config",
+                "config_path",
+                default=CONFIG,
+                show_default=True,
+                type=click.Path(exists=True, dir_okay=False, path_type=Path),
+                help="Configuration file.",
+            ),
+            click.option(
+                "--store",
+                "store_path",
+                default=STORE,
+                show_default=True,
+                type=click.Path(dir_okay=False, path_type=Path),
+                help="Store to read and write.",
+            ),
+            click.option(
+                "--token",
+                "token_path",
+                default=TOKEN,
+                show_default=True,
+                type=click.Path(dir_okay=False, path_type=Path),
+                help=f"File holding the patchwork API token; ${TOKEN_ENV} if there is none.",
+            ),
+            click.option(
+                "-n",
+                "--dry-run",
+                is_flag=True,
+                help="Report what would be written, to patchwork and to the store, and write nothing.",
+            ),
+        ]
+    ):
+        command = option(command)
+    return command
+
+
 class Main(click.Group):
-    """The command group: builds the handler and ends the run on `Error`."""
+    """The command group: builds the handler its commands run against."""
 
     def invoke(self, ctx: click.Context) -> object:
-        try:
-            with PatchworkBot(
-                Config.load(ctx.params["config_path"]),
-                ctx.params["store_path"],
-                token=token(ctx.params["token_path"]),
-                dry_run=ctx.params["dry_run"],
-                no_hook=ctx.params["no_hook"],
-            ) as bot:
-                ctx.obj = bot
-                return super().invoke(ctx)
-        except (Error, PwError) as e:
-            raise failed(e) from e
+        with opened(**ctx.params) as bot:
+            ctx.obj = bot
+            return super().invoke(ctx)
 
 
 def fire(bot: PatchworkBot, section: Handling, series: Series) -> bool:
@@ -143,36 +198,7 @@ def inherit_delegate(series: Series, previous: Series) -> None:
 
 @click.group(cls=Main)
 @click.version_option()
-@click.option(
-    "--config",
-    "config_path",
-    default=CONFIG,
-    show_default=True,
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
-    help="Configuration file.",
-)
-@click.option(
-    "--store",
-    "store_path",
-    default=STORE,
-    show_default=True,
-    type=click.Path(dir_okay=False, path_type=Path),
-    help="Store to read and write.",
-)
-@click.option(
-    "--token",
-    "token_path",
-    default=TOKEN,
-    show_default=True,
-    type=click.Path(dir_okay=False, path_type=Path),
-    help=f"File holding the patchwork API token; ${TOKEN_ENV} if there is none.",
-)
-@click.option(
-    "-n",
-    "--dry-run",
-    is_flag=True,
-    help="Report what would be written, to patchwork and to the store, and write nothing.",
-)
+@run_options
 @click.option("--no-hook", is_flag=True, help="Hold every hook back, and run as usual otherwise.")
 def main(
     config_path: Path, store_path: Path, token_path: Path, dry_run: bool, no_hook: bool

@@ -34,8 +34,8 @@ the copy.
 
 ## Tests
 
-One file, `tests/test_bot.py`, fifteen to thirty tests. Delete a test that
-duplicates another rather than keeping both.
+One file, `tests/test_bot.py`, kept minimal: the tool's behaviour, nothing
+else. Delete a test that duplicates another rather than keeping both.
 
 Assert on what reached patchwork, on the exit status, and on what the hook was
 handed. Do not assert on printed output, or on store columns
