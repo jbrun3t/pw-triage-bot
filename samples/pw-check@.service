@@ -1,0 +1,17 @@
+# Sample systemd --user unit for `pw-check`, run once per connection to
+# pw-check.socket: the request is read from the connection, and the answer
+# written back to it. Configuration, store and token are the ones
+# pw-triage-bot-sync@linux-foo.service uses; see there for the token.
+
+[Unit]
+Description=pw-check (linux-foo)
+CollectMode=inactive-or-failed
+
+[Service]
+StandardInput=socket
+# The answer alone goes back to the client; anything else to the journal.
+StandardError=journal
+ConfigurationDirectory=pw-triage-bot
+StateDirectory=pw-triage-bot-state
+LoadCredentialEncrypted=linux-foo.token:%E/pw-triage-bot/linux-foo.token
+ExecStart=/usr/bin/env pw-check --config %E/pw-triage-bot/linux-foo.yaml --store %S/pw-triage-bot-state/linux-foo.db --token %d/linux-foo.token

@@ -69,6 +69,10 @@ The whole request is checked before anything is uploaded. The answer lists
 the checks `uploaded`, as `{"patch", "context", "state"}`, and on failure
 holds the `error` that stopped the rest; the run then exits 1.
 
+`samples/pw-check.socket` serves it on a socket only its user may
+reach, one `pw-check` per connection: a client writes its request, shuts its
+side down, and reads the answer.
+
 ## Configuration
 
 ```yaml

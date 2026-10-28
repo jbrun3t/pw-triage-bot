@@ -1,0 +1,22 @@
+# Sample systemd --user socket for `pw-check`: a CI writes a request on it, and
+# reads pw-check's answer back. See README.md.
+#
+# The project is linux-foo. With Accept=yes, each connection runs an instance
+# of pw-check@.service named for the connection, so a templated socket could
+# not pass the project on: for another project, copy both units under its name,
+# e.g. pw-check-linux-bar.socket and pw-check-linux-bar@.service, and replace
+# linux-foo in them.
+#
+# Only this user may connect, and every connection uploads with the project's
+# token.
+
+[Unit]
+Description=pw-check (linux-foo)
+
+[Socket]
+ListenStream=%t/pw-check/linux-foo.sock
+SocketMode=0600
+Accept=yes
+
+[Install]
+WantedBy=sockets.target
