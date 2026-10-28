@@ -277,7 +277,8 @@ MODELS = [Patch, Series, Tracker]
 class PatchworkBot:
     """One run against one patchwork project.
 
-    Runs on the same store take turns.
+    Runs on the same store take turns. A `readonly` one writes nothing to the
+    store, and refuses one `sync` has not filled.
     """
 
     DB_SCHEMA_VERSION = 3
@@ -290,11 +291,13 @@ class PatchworkBot:
         token: str | None = None,
         dry_run: bool = False,
         no_hook: bool = False,
+        readonly: bool = False,
     ) -> None:
         self.config = config
         self.store = store
         self.dry_run = dry_run
         self.no_hook = no_hook
+        self.readonly = readonly
         self.client = Client(
             config.patchwork.url,
             config.patchwork.project,
@@ -306,7 +309,8 @@ class PatchworkBot:
     def __enter__(self) -> Self:
         with contextlib.ExitStack() as opening:
             try:
-                self.store.parent.mkdir(parents=True, exist_ok=True)
+                if not self.readonly:
+                    self.store.parent.mkdir(parents=True, exist_ok=True)
                 lock = opening.enter_context(
                     self.store.with_name(f"{self.store.name}.lock").open("a")
                 )
@@ -314,7 +318,15 @@ class PatchworkBot:
                 fcntl.flock(lock, fcntl.LOCK_EX)
             except OSError as e:
                 raise StoreError(f"{self.store}: {e}") from e
-            self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
+            if self.readonly:
+                # SQLite itself refuses a write, and a missing store fails to open.
+                self._database = peewee.SqliteDatabase(
+                    f"{self.store.resolve().as_uri()}?mode=ro",
+                    uri=True,
+                    pragmas={"foreign_keys": 1},
+                )
+            else:
+                self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
             opening.enter_context(self._database.bind_ctx(MODELS))
             opening.callback(self._database.close)
             self._database_prepare()
@@ -329,9 +341,17 @@ class PatchworkBot:
         self._open.__exit__(*exc)
 
     def _database_prepare(self) -> None:
-        """Create and stamp a new store; refuse one written by another schema version."""
+        """Create and stamp a new store, unless readonly; refuse one written by another schema version."""
         try:
             version = self._database.pragma("user_version")
+            if self.readonly:
+                if not version:
+                    raise StoreError(f"{self.store}: empty; run pw-triage-bot sync first")
+                if version != self.DB_SCHEMA_VERSION:
+                    raise StoreError(
+                        f"{self.store}: holds version {version}, not {self.DB_SCHEMA_VERSION}"
+                    )
+                return
             if version != self.DB_SCHEMA_VERSION and (version or self._database.get_tables()):
                 raise StoreError(
                     f"{self.store}: holds version {version}, not {self.DB_SCHEMA_VERSION}; "

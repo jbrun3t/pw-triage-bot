@@ -52,7 +52,7 @@ echo '{"msgid": "<MSGID>", "series": true, "checks": [{"context": "my-ci", "stat
 `pw-check` reports CI results to patchwork as checks, against the mail the CI
 ran on. It takes the same `--config`, `--store`, `--token` and `-n` as
 `pw-triage-bot`, reads one request, a JSON document, on stdin, and answers one
-on stdout.
+on stdout. It only reads the store, and needs one `sync` has filled.
 
 The request:
 

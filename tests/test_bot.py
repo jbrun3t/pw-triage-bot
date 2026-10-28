@@ -476,6 +476,16 @@ def test_check_no_checks(run, client, serve):
     assert client.checks == []
 
 
+def test_check_no_store(run, client, serve):
+    serve(CORE_ONLY)
+    (patch,) = patch_ids(client, CORE_ONLY)
+
+    result = run(entry=check.main, input=request(client.patch_docs[patch]["msgid"]))
+
+    assert result.exit_code == 1
+    assert client.checks == []
+
+
 # -- the paths a diff touches ----------------------------------------------
 
 

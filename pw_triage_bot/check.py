@@ -83,6 +83,7 @@ def main(config_path: Path, store_path: Path, token_path: Path, dry_run: bool) -
                 store_path,
                 token=token(token_path),
                 dry_run=dry_run,
+                readonly=True,
             ) as bot:
                 upload(bot, request, reply["uploaded"])
     except (Error, PwError, ValidationError) as e:
