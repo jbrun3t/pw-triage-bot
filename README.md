@@ -118,4 +118,3 @@ transitions:               # every state the tool may write, and from where
   states it may be written from. A state left out as a target — `accepted`,
   say — is never written over, whatever a section's `state` asks for. A
   `superseded` target is required.
-</content>
