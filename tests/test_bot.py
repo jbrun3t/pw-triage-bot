@@ -395,6 +395,20 @@ def test_paths_every_side_of_a_diff(bot, client, serve):
     ]
 
 
+# -- the message-id a series is known by -----------------------------------
+
+
+def test_series_msgid(bot, serve):
+    """The cover letter roots the thread when there is one, else the first patch does."""
+    serve(FOREIGN_MIXED)
+    serve(CORE_ONLY)
+
+    assert bot.series_get(FOREIGN_MIXED).msgid_get() == (
+        "20260910-upstreaming-v7-3-imx93-displayline-v1-0-bb9446e6ed6e@kontron.de"
+    )
+    assert bot.series_get(CORE_ONLY).msgid_get() == "20260913125239.110113-1-bolin.liu@seu.edu.cn"
+
+
 def test_paths_malformed_diff(bot, client, serve):
     """The line unidiff quotes keeps its newline, which must not reach the message."""
     serve(CORE_ONLY)

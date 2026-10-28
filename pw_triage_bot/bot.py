@@ -43,6 +43,7 @@ class Series(PwBotBaseModel):
     `subject` is the chain key (case-insensitive); `prefix` is the bracketed
     run patchwork stacks in front of it. `superseded_by` names the posting
     that replaced this one; whether a series was looked at lives on its patches.
+    `msgid` is the thread root's, held once read from the series document.
     """
 
     id = peewee.IntegerField(primary_key=True)
@@ -53,6 +54,7 @@ class Series(PwBotBaseModel):
     superseded_by = peewee.ForeignKeyField(
         "self", null=True, backref="supersedes", on_delete="SET NULL"
     )
+    msgid = peewee.CharField(null=True)
 
     @staticmethod
     def split(name: str | None) -> tuple[str, str]:
@@ -75,6 +77,16 @@ class Series(PwBotBaseModel):
     def data(self) -> dict:
         """Patchwork's document for this series, fetched on first use."""
         return self.bot.client.series(id=self.id)
+
+    def msgid_get(self) -> str:
+        """The thread root's message-id: the cover letter's, else the first patch's."""
+        if self.msgid is None:
+            root = self.data.get("cover_letter")
+            if root is None:
+                root = (self.data.get("patches") or [{}])[0]
+            self.msgid = (root.get("msgid") or "").strip("<>")
+            self.save()
+        return self.msgid
 
     # Cached so callers get the same Patch objects; the peewee backref does not.
     @functools.cached_property
@@ -232,7 +244,7 @@ MODELS = [Patch, Series, Tracker]
 class PatchworkBot:
     """One run against one patchwork project."""
 
-    DB_SCHEMA_VERSION = 2
+    DB_SCHEMA_VERSION = 3
 
     def __init__(
         self,
