@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
+import sqlite3
 
 import pytest
 from click.testing import CliRunner
@@ -484,6 +486,31 @@ def test_check_no_store(run, client, serve):
 
     assert result.exit_code == 1
     assert client.checks == []
+
+
+# -- check-db ----------------------------------------------------------------
+
+
+def test_check_db_fits(run, serve):
+    serve(CORE_ONLY)
+    run("sync")
+
+    assert run("check-db").exit_code == 0
+
+
+def test_check_db_other_version(run, tmp_path):
+    """A store this version refuses, which a deploy reads back from patchwork."""
+    with contextlib.closing(sqlite3.connect(tmp_path / "store.db")) as db:
+        db.execute("pragma user_version = 1")
+
+    assert run("check-db").exit_code == 1
+
+
+def test_check_db_unreadable(run, tmp_path):
+    """Not a store at all: a deploy must leave it alone."""
+    (tmp_path / "store.db").write_text("not a database\n" * 10)
+
+    assert run("check-db").exit_code == 2
 
 
 # -- the paths a diff touches ----------------------------------------------

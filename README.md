@@ -38,6 +38,9 @@ other, through `<store>.lock`.
   first if it isn't held yet. Skips a series already fully decided about.
 - **`archive DAYS`** — archives every patch whose whole series has been quiet
   for at least DAYS, and drops it from the store.
+- **`check-db`** — exits 0 if this version can use the store, 1 if the store is
+  missing or of another schema version (delete it and `sync` again), 2 if it
+  cannot be read.
 
 Run `pw-triage-bot COMMAND --help` for each command's options (`--force`,
 `--no-triage`), and `pw-triage-bot --help` for the ones the whole run takes

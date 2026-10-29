@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import contextlib
 import datetime
+import functools
 import json
 import os
+import sqlite3
 import subprocess
 import tempfile
 from collections.abc import Callable, Iterator
@@ -101,13 +103,16 @@ def run_options(command: Callable) -> Callable:
     return command
 
 
-class Main(click.Group):
-    """The command group: builds the handler its commands run against."""
+def pass_bot(command: Callable) -> Callable:
+    """Run `command` against the handler the group's options build."""
 
-    def invoke(self, ctx: click.Context) -> object:
-        with opened(**ctx.params) as bot:
-            ctx.obj = bot
-            return super().invoke(ctx)
+    @functools.wraps(command)
+    @click.pass_context
+    def run(ctx: click.Context, *args: object, **kwargs: object) -> object:
+        with opened(**ctx.parent.params) as bot:
+            return command(bot, *args, **kwargs)
+
+    return run
 
 
 def fire(bot: PatchworkBot, section: Handling, series: Series) -> bool:
@@ -196,7 +201,7 @@ def inherit_delegate(series: Series, previous: Series) -> None:
         click.echo(f"triage: delegate: patch #{patch.id} -> {user['username']}")
 
 
-@click.group(cls=Main)
+@click.group()
 @click.version_option()
 @run_options
 @click.option("--no-hook", is_flag=True, help="Hold every hook back, and run as usual otherwise.")
@@ -213,7 +218,7 @@ def main(
     help="Triage the series named even if the store has already decided about it.",
 )
 @click.argument("series_id", type=int)
-@click.pass_obj
+@pass_bot
 def triage(bot: PatchworkBot, force: bool, series_id: int) -> None:
     """Triage one patchwork series against maintained and upstream paths."""
     series = bot.series_get(series_id)
@@ -223,7 +228,7 @@ def triage(bot: PatchworkBot, force: bool, series_id: int) -> None:
 
 @main.command()
 @click.option("--no-triage", is_flag=True, help="Fill the store and triage nothing it turns up.")
-@click.pass_obj
+@pass_bot
 def sync(bot: PatchworkBot, no_triage: bool) -> None:
     """Read what has arrived into the store, and triage what nobody has looked at."""
     bot.sync()
@@ -242,7 +247,7 @@ def sync(bot: PatchworkBot, no_triage: bool) -> None:
     help="Archive on the recorded timers alone, without asking patchwork for fresh activity.",
 )
 @click.argument("days", type=click.IntRange(min=1))
-@click.pass_obj
+@pass_bot
 def archive(bot: PatchworkBot, force: bool, days: int) -> None:
     """Archive patches quiet for DAYS; this is also how the tool forgets one."""
     cutoff = now() - datetime.timedelta(days=days)
@@ -258,3 +263,23 @@ def archive(bot: PatchworkBot, force: bool, days: int) -> None:
 
     for series in list(bot.series_empty()):
         series.delete_instance()
+
+
+@main.command("check-db")
+@click.pass_context
+def check_db(ctx: click.Context) -> None:
+    """Exit 0 if this version can use the store, 1 if it is missing or of another
+    schema version, 2 if it cannot be read."""
+    store = ctx.parent.params["store_path"]
+    if not store.is_file():
+        raise failed(f"{store}: missing")
+    try:
+        with contextlib.closing(
+            sqlite3.connect(f"{store.resolve().as_uri()}?mode=ro", uri=True)
+        ) as db:
+            version = db.execute("pragma user_version").fetchone()[0]
+    except sqlite3.Error as e:
+        click.echo(f"{store}: {e}", err=True)
+        raise SystemExit(2) from e
+    if version != PatchworkBot.DB_SCHEMA_VERSION:
+        raise failed(f"{store}: holds version {version}, not {PatchworkBot.DB_SCHEMA_VERSION}")
