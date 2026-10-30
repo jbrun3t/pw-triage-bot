@@ -68,8 +68,21 @@ class FakeClient:
         entries = list(self.patch_docs.values())
         if params.get("archived") is False:
             entries = [e for e in entries if not e.get("archived")]
+        if msgid := params.get("msgid"):
+            entries = [e for e in entries if e["msgid"].strip("<>") == msgid]
         order = str(params.get("order") or "id")
         return iter(sorted(entries, key=lambda e: e["id"], reverse=order.startswith("-")))
+
+    def covers(self, **params: object):
+        """The cover letters of the served series, as patchwork lists them."""
+        entries = [
+            series["cover_letter"] | {"series": [{"id": series["id"]}]}
+            for series in self.series_docs.values()
+            if series.get("cover_letter")
+        ]
+        if msgid := params.get("msgid"):
+            entries = [e for e in entries if e["msgid"].strip("<>") == msgid]
+        return iter(entries)
 
     def events(self, **params: object):
         patch_id = params.get("patch")

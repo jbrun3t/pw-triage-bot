@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pw-triage-bot"
-version = "0.6.0"
+version = "0.6.1"
 description = "Triage and housekeeping for a patchwork project"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -15,7 +15,7 @@ dependencies = [
     "platformdirs",
     "pydantic",
     "peewee",
-    "pwlite @ git+https://github.com/jbrun3t/pwlite.git@v0.2.1",
+    "pwlite @ git+https://github.com/jbrun3t/pwlite.git@v0.2.2",
     "pyyaml",
     "unidiff",
 ]

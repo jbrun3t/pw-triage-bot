@@ -55,14 +55,15 @@ echo '{"msgid": "<MSGID>", "series": true, "checks": [{"context": "my-ci", "stat
 `pw-check` reports CI results to patchwork as checks, against the mail the CI
 ran on. It takes the same `--config`, `--store`, `--token` and `-n` as
 `pw-triage-bot`, reads one request, a JSON document, on stdin, and answers one
-on stdout. It only reads the store, and needs one `sync` has filled.
+on stdout. It records in the store what it had to read from patchwork.
 
 The request:
 
-- `msgid` (with or without `<>`) is looked up in the store. Without `series`,
-  it is a patch's, and that patch gets the checks. With `"series": true`, it
-  is the series' cover letter or any of its patches, and every patch of the
-  series gets each check, its context prefixed with `series-`.
+- `msgid` (with or without `<>`) is looked up in the store, else on patchwork,
+  a cover letter first. Without `series`, it is a patch's, and that patch gets
+  the checks. With `"series": true`, it is the series' cover letter or any of
+  its patches, and every patch of the series gets each check, its context
+  prefixed with `series-`.
 - `checks` lists the checks to upload. Each has a `state`, one of `pending`,
   `success`, `warning` or `fail`, and a `context` (letters, digits, `-` and
   `_`) telling it from other testing systems'; `description` and `url` are

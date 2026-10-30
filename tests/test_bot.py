@@ -441,6 +441,20 @@ def test_check_series_from_patch(run, client, serve):
     ]
 
 
+def test_check_series_cover_letter_no_msgid(run, client, serve):
+    """A series read from listings alone learns its cover letter from patchwork."""
+    serve(FOREIGN_MIXED)
+    run("sync", "--no-triage")
+    cover = client.series_docs[FOREIGN_MIXED]["cover_letter"]["msgid"]
+
+    result = run(entry=check.main, input=request(cover, series=True))
+
+    assert result.exit_code == 0
+    assert sorted(client.checks) == [
+        (patch, checked("series-build")) for patch in sorted(patch_ids(client, FOREIGN_MIXED))
+    ]
+
+
 def test_check_unknown_msgid(run, client, serve):
     serve(CORE_ONLY)
     run("sync")
@@ -475,16 +489,6 @@ def test_check_no_checks(run, client, serve):
     )
 
     assert result.exit_code == 0
-    assert client.checks == []
-
-
-def test_check_no_store(run, client, serve):
-    serve(CORE_ONLY)
-    (patch,) = patch_ids(client, CORE_ONLY)
-
-    result = run(entry=check.main, input=request(client.patch_docs[patch]["msgid"]))
-
-    assert result.exit_code == 1
     assert client.checks == []
 
 

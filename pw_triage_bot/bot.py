@@ -277,8 +277,7 @@ MODELS = [Patch, Series, Tracker]
 class PatchworkBot:
     """One run against one patchwork project.
 
-    Runs on the same store take turns. A `readonly` one writes nothing to the
-    store, and refuses one `sync` has not filled.
+    Runs on the same store take turns.
     """
 
     DB_SCHEMA_VERSION = 3
@@ -291,13 +290,11 @@ class PatchworkBot:
         token: str | None = None,
         dry_run: bool = False,
         no_hook: bool = False,
-        readonly: bool = False,
     ) -> None:
         self.config = config
         self.store = store
         self.dry_run = dry_run
         self.no_hook = no_hook
-        self.readonly = readonly
         self.client = Client(
             config.patchwork.url,
             config.patchwork.project,
@@ -309,8 +306,7 @@ class PatchworkBot:
     def __enter__(self) -> Self:
         with contextlib.ExitStack() as opening:
             try:
-                if not self.readonly:
-                    self.store.parent.mkdir(parents=True, exist_ok=True)
+                self.store.parent.mkdir(parents=True, exist_ok=True)
                 lock = opening.enter_context(
                     self.store.with_name(f"{self.store.name}.lock").open("a")
                 )
@@ -318,15 +314,7 @@ class PatchworkBot:
                 fcntl.flock(lock, fcntl.LOCK_EX)
             except OSError as e:
                 raise StoreError(f"{self.store}: {e}") from e
-            if self.readonly:
-                # SQLite itself refuses a write, and a missing store fails to open.
-                self._database = peewee.SqliteDatabase(
-                    f"{self.store.resolve().as_uri()}?mode=ro",
-                    uri=True,
-                    pragmas={"foreign_keys": 1},
-                )
-            else:
-                self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
+            self._database = peewee.SqliteDatabase(self.store, pragmas={"foreign_keys": 1})
             opening.enter_context(self._database.bind_ctx(MODELS))
             opening.callback(self._database.close)
             self._database_prepare()
@@ -341,17 +329,9 @@ class PatchworkBot:
         self._open.__exit__(*exc)
 
     def _database_prepare(self) -> None:
-        """Create and stamp a new store, unless readonly; refuse one written by another schema version."""
+        """Create and stamp a new store; refuse one written by another schema version."""
         try:
             version = self._database.pragma("user_version")
-            if self.readonly:
-                if not version:
-                    raise StoreError(f"{self.store}: empty; run pw-triage-bot sync first")
-                if version != self.DB_SCHEMA_VERSION:
-                    raise StoreError(
-                        f"{self.store}: holds version {version}, not {self.DB_SCHEMA_VERSION}"
-                    )
-                return
             if version != self.DB_SCHEMA_VERSION and (version or self._database.get_tables()):
                 raise StoreError(
                     f"{self.store}: holds version {version}, not {self.DB_SCHEMA_VERSION}; "
@@ -400,10 +380,17 @@ class PatchworkBot:
             )
         return patch
 
-    @staticmethod
-    def patch_find(msgid: str) -> Patch | None:
-        """The held patch with this message-id."""
-        return Patch.get_or_none(Patch.msgid == msgid)
+    def patch_find(self, msgid: str) -> Patch | None:
+        """The patch with this message-id, reading it into the store if it is not held yet."""
+        if (held := Patch.get_or_none(Patch.msgid == msgid)) is not None:
+            return held
+        entry = self._find("patches", msgid)
+        return self.patch_record(entry) if entry else None
+
+    def _find(self, kind: str, msgid: str) -> dict | None:
+        """Patchwork's entry for the mail of this message-id, of `kind` `patches` or `covers`."""
+        # A message-id names one mail of a project: one entry is all a first page needs.
+        return next(getattr(self.client, kind)(msgid=msgid, per_page=1), None)
 
     @staticmethod
     def patch_idle(cutoff: datetime.datetime) -> peewee.ModelSelect:
@@ -430,10 +417,20 @@ class PatchworkBot:
         return series
 
     def series_find(self, msgid: str) -> Series | None:
-        """The held series rooted at this message-id, else the one holding the patch that has it."""
+        """The series rooted at this message-id, else the one holding the patch that has it;
+        read into the store, with all its patches, if not held yet."""
         if (series := Series.get_or_none(Series._msgid == msgid)) is not None:
             return series
-        return patch.series if (patch := self.patch_find(msgid)) else None
+        if (patch := Patch.get_or_none(Patch.msgid == msgid)) is not None:
+            return patch.series
+        # A series is more often rooted at a cover letter than at a patch.
+        entry = self._find("covers", msgid) or self._find("patches", msgid)
+        if not entry or not entry.get("series"):
+            return None
+        series, _ = Series.get_or_create(id=entry["series"][0]["id"])
+        for patch in series.data.get("patches") or []:
+            self.patch_record(patch, series_id=series.id)
+        return series
 
     @staticmethod
     def series_record(data: dict) -> Series:
