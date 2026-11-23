@@ -1,0 +1,19 @@
+FROM docker.io/library/debian:trixie-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python3-venv git ca-certificates socat curl jq \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.2.45/supercronic-linux-amd64
+ARG SUPERCRONIC_SHA1=e894b193bea75a5ee644e700c59e30eedc804cf7
+ADD $SUPERCRONIC_URL /usr/local/bin/supercronic
+RUN echo "$SUPERCRONIC_SHA1  /usr/local/bin/supercronic" | sha1sum -c - \
+    && chmod 755 /usr/local/bin/supercronic
+
+COPY pyproject.toml LICENSE /tmp/src/
+COPY pw_triage_bot /tmp/src/pw_triage_bot
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir /tmp/src \
+    && rm -rf /tmp/src
+COPY crontab /etc/crontab
+ENV PATH=/opt/venv/bin:$PATH
+CMD ["supercronic", "/etc/crontab"]

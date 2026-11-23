@@ -1,0 +1,6 @@
+*
+!LICENSE
+!pyproject.toml
+!crontab
+!pw_triage_bot/
+pw_triage_bot/__pycache__/

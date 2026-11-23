@@ -1,0 +1,2 @@
+*/15 * * * * pw-triage-bot sync; echo $? > /root/.local/state/pw-triage-bot/sync.status
+7 12 * * 0   pw-triage-bot archive 180; echo $? > /root/.local/state/pw-triage-bot/archive.status
