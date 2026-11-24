@@ -1,124 +1,69 @@
 # pw-triage-bot
 
-Triage and housekeeping for a patchwork project: works out which section (a
-maintainer's `core`, or an upstream) owns each incoming patch and series, writes
-the state its owner names, and runs the owner's hook. It also recognises a
-series a later posting replaced, handing the patchwork delegate of the old one
-to the new one when it has none, and archives what has gone quiet. Everything
-is read and written over patchwork's REST API, cached locally in sqlite.
+Automatically triage incoming Patchwork series for one project. The bot uses
+the files a series touches to choose a section, applies your Patchwork state
+rules, and can run a hook to start CI. It can also mark replaced series as
+superseded and archive inactive ones.
 
-## Known limitations
+## Configure and preview
 
-Patchwork served no `series` for patches from before 2018, and served cover
-letters as patches of their own before April 2025. The tool assumes every patch
-belongs to a series and every series patch is a real patch, and trips on
-either. On a project with history that old, archive everything from before
-those dates first — e.g. `archive --force` on a large enough DAYS — before the
-first `sync` with triage.
+Copy [the sample configuration](samples/linux-clk.yaml) and edit it for your
+project. Set `patchwork.url` and `patchwork.project`, then review which paths
+each section owns and which state transitions the bot may make. Keep the token
+out of the YAML and use a Patchwork API token for an account allowed to make
+those changes.
 
-## Quick start
+From the checkout, preview a sync with Git and Python 3.12 or later:
 
-```
-export PW_TRIAGE_BOT_TOKEN=...
-# create/edit patchwork.project, paths, upstream
-pw-triage-bot --config myproject.yaml sync
-```
-
-`sync` fills the store on its first run and triages what it finds; run it again
-on a timer afterward, e.g. from cron. `-n`/`--dry-run` reports what a run would
-do without writing anything; like `--config` and `--store`, it goes before the
-command. Runs on the same store, `pw-check` ones included, wait for each
-other, through `<store>.lock`.
-
-## Commands
-
-- **`sync`** — reads whatever has newly arrived on patchwork into the local
-  store, then triages every series left holding an undecided patch.
-- **`triage SERIES_ID`** — triages one series by id, reading it into the store
-  first if it isn't held yet. Skips a series already fully decided about.
-- **`archive DAYS`** — archives every patch whose whole series has been quiet
-  for at least DAYS, and drops it from the store.
-- **`check-db`** — exits 0 if this version can use the store, 1 if the store is
-  missing or of another schema version (delete it and `sync` again), 2 if it
-  cannot be read.
-
-Run `pw-triage-bot COMMAND --help` for each command's options (`--force`,
-`--no-triage`), and `pw-triage-bot --help` for the ones the whole run takes
-(`--dry-run`, `--no-hook`, ...).
-
-## pw-check
-
-```
-echo '{"msgid": "<MSGID>", "series": true, "checks": [{"context": "my-ci", "state": "fail"}]}' | pw-check
+```sh
+python3 -m venv .venv
+.venv/bin/pip install .
+cp samples/linux-clk.yaml myproject.yaml
+# Edit myproject.yaml before running the bot.
+.venv/bin/pw-triage-bot --config myproject.yaml --token /path/to/token --dry-run sync
 ```
 
-`pw-check` reports CI results to patchwork as checks, against the mail the CI
-ran on. It takes the same `--config`, `--store`, `--token` and `-n` as
-`pw-triage-bot`, reads one request, a JSON document, on stdin, and answers one
-on stdout. It records in the store what it had to read from patchwork.
+The preview reads from Patchwork without writing changes. **A real `sync`
+can change Patchwork and run hooks on its first run.** To fill the local store
+without triaging, use `sync --no-triage`. If the project contains very old
+Patchwork history, check the [compatibility notes](docs/reference.md#older-patchwork-history)
+before the first sync.
 
-The request:
+## Deploy the scheduler
 
-- `msgid` (with or without `<>`) is looked up in the store, else on patchwork,
-  a cover letter first. Without `series`, it is a patch's, and that patch gets
-  the checks. With `"series": true`, it is the series' cover letter or any of
-  its patches, and every patch of the series gets each check, its context
-  prefixed with `series-`.
-- `checks` lists the checks to upload. Each has a `state`, one of `pending`,
-  `success`, `warning` or `fail`, and a `context` (letters, digits, `-` and
-  `_`) telling it from other testing systems'; `description` and `url` are
-  optional. An empty list uploads nothing, and `msgid` is then not looked up.
+Use the Linux/amd64 image `ghcr.io/jbrun3t/pw-triage-bot`, tagged with the full
+commit SHA from a successful [Publish image](https://github.com/jbrun3t/pw-triage-bot/actions/workflows/image.yml)
+run. The image contains neither project configuration nor credentials or data.
+For example, after previewing your rules:
 
-The whole request is checked before anything is uploaded. The answer lists
-the checks `uploaded`, as `{"patch", "context", "state"}`, and on failure
-holds the `error` that stopped the rest; the run then exits 1.
-
-## Container image
-
-From the repository root, run `podman build -f samples/Containerfile -t localhost/pw-triage-bot .`.
-
-## Configuration
-
-```yaml
-patchwork:
-  url: https://patchwork.kernel.org
-  project: linux-clk
-
-core:
-  paths: [drivers/clk/, include/linux/clk*.h]
-  state: under-review
-  hook: fire-some-checks.sh
-
-foreign:                   # owns no paths: it is what is left
-  state: not-applicable
-
-upstream:
-  default:                 # backs every upstream that leaves a setting out
-    state: awaiting-upstream
-    hook: forward-to.sh
-  foo:
-    paths: [drivers/clk/foo/]
-
-transitions:               # every state the tool may write, and from where
-  under-review:      [new]
-  awaiting-upstream: [new]
-  not-applicable:    [new]
-  superseded: [new, under-review, awaiting-upstream, not-applicable]
+```sh
+revision=YOUR_IMAGE_COMMIT_SHA
+podman secret create pw-triage-token /path/to/token
+podman volume create pw-triage-data
+podman run -d --name pw-triage \
+    -v "$PWD/myproject.yaml:/root/.config/pw-triage-bot/pw-triage-bot.yaml:ro" \
+    --secret pw-triage-token,target=/root/.config/pw-triage-bot/pw-triage-bot.token,mode=0400 \
+    -v pw-triage-data:/root/.local/state/pw-triage-bot \
+    "ghcr.io/jbrun3t/pw-triage-bot:$revision"
 ```
 
-- **`patchwork`**: `url` and `project` (the link name, `linux-clk` in
-  `patchwork.kernel.org/project/linux-clk/`) locate the instance. The token
-  authenticating writes is kept out of the file: it is read from the `--token`
-  file, or `$PW_TRIAGE_BOT_TOKEN` when there is none.
-- **`core`, `foreign`, `upstream.<name>`**: each names the `paths` it owns
-  (gitignore patterns; `foreign` and `upstream.default` own none), the `state`
-  a triage writes on its patches, and an optional `hook` run once its series is
-  triaged, passed the series document (plus `handler`/`owners`) via
-  `$PW_TRIAGE_BOT_JSON`. A path belongs to whichever upstream's patterns cover
-  it, or to `core` otherwise; a series touching more than one section, or
-  touching core paths no upstream claims, belongs to `core`. `upstream.default`
-  supplies `state`/`hook` for an upstream that leaves them unset.
-- **`transitions`**: the only states the tool may write, and per state, the
-  states it may be written from. A state left out as a target — `accepted`,
-  say — is never written over, whatever a section's `state` asks for. A
-  `superseded` target is required.
+The image runs `sync` every 15 minutes and `archive 180` weekly. Use
+`podman logs pw-triage` to inspect runs. After the first scheduled sync,
+confirm that the expected series states appear in Patchwork. Manage the
+container with a service manager if it needs to start at boot.
+
+Keep the data volume across updates. If you already have a store, reuse its
+volume instead of creating a new one. Use `check-db` to verify compatibility
+before replacing a running version; don't discard the store on an error.
+For a non-container deployment, schedule the CLI commands with the same
+configuration, token, and store.
+
+## Optional: report CI checks
+
+Use `pw-check` to post results against a patch or series by Message-ID.
+Point it at the same project and store as the scheduler. See the
+[CI integration reference](docs/reference.md#pw-check) for a request example
+and the JSON format.
+
+See the [reference](docs/reference.md) for configuration, commands, and local
+image builds.
